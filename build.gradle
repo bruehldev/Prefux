@@ -1,0 +1,23 @@
+
+apply plugin: "java"
+apply plugin: "eclipse"
+
+wrapper {
+  gradleVersion='1.11'
+}
+sourceCompatibility=1.8
+targetCompatibility=1.8
+
+repositories {
+	jcenter()
+	mavenCentral()
+	mavenLocal()
+	flatDir {
+		dirs 'lib'
+	}
+}
+
+
+dependencies {
+	compile "org.apache.lucene:lucene-core:1.9.1"
+}
