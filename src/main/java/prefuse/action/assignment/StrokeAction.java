@@ -138,7 +138,7 @@ public class StrokeAction extends EncoderAction {
      * @see prefuse.action.ItemAction#process(prefuse.visual.VisualItem, double)
      */
     public void process(VisualItem item, double frac) {
-        item.setStroke(getStroke(item));
+        //item.setStroke(getStroke(item));
     }
     
     /**

@@ -2,7 +2,7 @@ package prefuse.util.force;
 
 /**
  * Abstract base class for force functions in a force simulation. This
- * skeletal version provides support for storing and retrieving float-valued
+ * skeletal version provides support for storing and retrieving double-valued
  * parameters of the force function. Subclasses should use the protected
  * field <code>params</code> to store parameter values.
  * 
@@ -10,9 +10,9 @@ package prefuse.util.force;
  */
 public abstract class AbstractForce implements Force {
 
-    protected float[] params;
-    protected float[] minValues;
-    protected float[] maxValues;
+    protected double[] params;
+    protected double[] minValues;
+    protected double[] maxValues;
 
     /**
      * Initialize this force function. This default implementation does nothing.
@@ -33,7 +33,7 @@ public abstract class AbstractForce implements Force {
     /**
      * @see prefuse.util.force.Force#getParameter(int)
      */
-    public float getParameter(int i) {
+    public double getParameter(int i) {
         if ( i < 0 || params == null || i >= params.length ) {
             throw new IndexOutOfBoundsException();
         } else {
@@ -44,7 +44,7 @@ public abstract class AbstractForce implements Force {
     /**
      * @see prefuse.util.force.Force#getMinValue(int)
      */
-    public float getMinValue(int i) {
+    public double getMinValue(int i) {
         if ( i < 0 || params == null || i >= params.length ) {
             throw new IndexOutOfBoundsException();
         } else {
@@ -55,7 +55,7 @@ public abstract class AbstractForce implements Force {
     /**
      * @see prefuse.util.force.Force#getMaxValue(int)
      */
-    public float getMaxValue(int i) {
+    public double getMaxValue(int i) {
         if ( i < 0 || params == null || i >= params.length ) {
             throw new IndexOutOfBoundsException();
         } else {
@@ -76,9 +76,9 @@ public abstract class AbstractForce implements Force {
     }
 
     /**
-     * @see prefuse.util.force.Force#setParameter(int, float)
+     * @see prefuse.util.force.Force#setParameter(int, double)
      */
-    public void setParameter(int i, float val) {
+    public void setParameter(int i, double val) {
         if ( i < 0 || params == null || i >= params.length ) {
             throw new IndexOutOfBoundsException();
         } else {
@@ -87,9 +87,9 @@ public abstract class AbstractForce implements Force {
     }
     
     /**
-     * @see prefuse.util.force.Force#setMinValue(int, float)
+     * @see prefuse.util.force.Force#setMinValue(int, double)
      */
-    public void setMinValue(int i, float val) {
+    public void setMinValue(int i, double val) {
         if ( i < 0 || params == null || i >= params.length ) {
             throw new IndexOutOfBoundsException();
         } else {
@@ -98,9 +98,9 @@ public abstract class AbstractForce implements Force {
     }
     
     /**
-     * @see prefuse.util.force.Force#setMaxValue(int, float)
+     * @see prefuse.util.force.Force#setMaxValue(int, double)
      */
-    public void setMaxValue(int i, float val) {
+    public void setMaxValue(int i, double val) {
         if ( i < 0 || params == null || i >= params.length ) {
             throw new IndexOutOfBoundsException();
         } else {

@@ -1,10 +1,10 @@
 package prefuse.util.display;
 
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 
 import prefuse.Display;
+import prefuse.data.util.Point2D;
+import prefuse.data.util.Rectangle2D;
 import prefuse.visual.VisualItem;
 
 
@@ -30,12 +30,12 @@ public class DisplayLib {
     public static Rectangle2D getBounds(
         Iterator iter, double margin, Rectangle2D b)
     {
-        b.setFrame(Double.NaN,Double.NaN,Double.NaN,Double.NaN);
+        b= new Rectangle2D(Double.NaN,Double.NaN,Double.NaN,Double.NaN);
         // TODO: synchronization?
         if ( iter.hasNext() ) {
             VisualItem item = (VisualItem)iter.next();
             Rectangle2D nb = item.getBounds();
-            b.setFrame(nb);
+            b= nb;
         }
         while ( iter.hasNext() ) {   
             VisualItem item = (VisualItem)iter.next();
@@ -44,9 +44,9 @@ public class DisplayLib {
             double x2 = (nb.getMaxX()>b.getMaxX() ? nb.getMaxX() : b.getMaxX());
             double y1 = (nb.getMinY()<b.getMinY() ? nb.getMinY() : b.getMinY());
             double y2 = (nb.getMaxY()>b.getMaxY() ? nb.getMaxY() : b.getMaxY());
-            b.setFrame(x1,y1,x2-x1,y2-y1);
+            b=new Rectangle2D(x1,y1,x2-x1,y2-y1);
         }
-        b.setFrame(b.getMinX() - margin,
+        b=new Rectangle2D(b.getMinX() - margin,
                    b.getMinY() - margin,
                    b.getWidth() + 2*margin,
                    b.getHeight() + 2*margin);
@@ -62,7 +62,7 @@ public class DisplayLib {
      */
     public static Rectangle2D getBounds(Iterator iter, double margin)
     {
-        Rectangle2D b = new Rectangle2D.Double();
+        Rectangle2D b = new Rectangle2D(0.0,0.0,0.0,0.0);
         return getBounds(iter, margin, b);
     }
     
@@ -92,7 +92,7 @@ public class DisplayLib {
             cx /= count;
             cy /= count;
         }
-        p.setLocation(cx, cy);
+        p = new Point2D(cx, cy);
         return p;
     }
     
@@ -104,7 +104,7 @@ public class DisplayLib {
      */
     public static Point2D getCentroid(Iterator iter)
     {
-        return getCentroid(iter, new Point2D.Double());
+        return getCentroid(iter, new Point2D(0.0,0.0));
     }
     
     /**
@@ -151,7 +151,7 @@ public class DisplayLib {
 
         // animate to new display settings
         if ( center == null )
-            center = new Point2D.Double(cx,cy);
+            center = new Point2D(cx,cy);
         if ( duration > 0 ) {
             display.animatePanAndZoomToAbs(center,scale,duration);
         } else {

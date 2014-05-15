@@ -15,9 +15,9 @@ public class RungeKuttaIntegrator implements Integrator {
      * @see prefuse.util.force.Integrator#integrate(prefuse.util.force.ForceSimulator, long)
      */
     public void integrate(ForceSimulator sim, long timestep) {
-        float speedLimit = sim.getSpeedLimit();
-        float vx, vy, v, coeff;
-        float[][] k, l;
+        double speedLimit = sim.getSpeedLimit();
+        double vx, vy, v, coeff;
+        double[][] k, l;
         
         Iterator iter = sim.getItems();
         while ( iter.hasNext() ) {
@@ -48,7 +48,7 @@ public class RungeKuttaIntegrator implements Integrator {
             l = item.l;
             vx = item.velocity[0] + .5f*l[0][0];
             vy = item.velocity[1] + .5f*l[0][1];
-            v = (float)Math.sqrt(vx*vx+vy*vy);
+            v = (double)Math.sqrt(vx*vx+vy*vy);
             if ( v > speedLimit ) {
                 vx = speedLimit * vx / v;
                 vy = speedLimit * vy / v;
@@ -74,7 +74,7 @@ public class RungeKuttaIntegrator implements Integrator {
             l = item.l;
             vx = item.velocity[0] + .5f*l[1][0];
             vy = item.velocity[1] + .5f*l[1][1];
-            v = (float)Math.sqrt(vx*vx+vy*vy);
+            v = (double)Math.sqrt(vx*vx+vy*vy);
             if ( v > speedLimit ) {
                 vx = speedLimit * vx / v;
                 vy = speedLimit * vy / v;
@@ -98,10 +98,10 @@ public class RungeKuttaIntegrator implements Integrator {
             coeff = timestep / item.mass;
             k = item.k;
             l = item.l;
-            float[] p = item.plocation;
+            double[] p = item.plocation;
             vx = item.velocity[0] + l[2][0];
             vy = item.velocity[1] + l[2][1];
-            v = (float)Math.sqrt(vx*vx+vy*vy);
+            v = (double)Math.sqrt(vx*vx+vy*vy);
             if ( v > speedLimit ) {
                 vx = speedLimit * vx / v;
                 vy = speedLimit * vy / v;
@@ -115,7 +115,7 @@ public class RungeKuttaIntegrator implements Integrator {
             
             vx = (l[0][0]+l[3][0])/6.0f + (l[1][0]+l[2][0])/3.0f;
             vy = (l[0][1]+l[3][1])/6.0f + (l[1][1]+l[2][1])/3.0f;
-            v = (float)Math.sqrt(vx*vx+vy*vy);
+            v = (double)Math.sqrt(vx*vx+vy*vy);
             if ( v > speedLimit ) {
                 vx = speedLimit * vx / v;
                 vy = speedLimit * vy / v;

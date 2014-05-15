@@ -12,13 +12,13 @@ public class WallForce extends AbstractForce {
 
     private static String[] pnames = new String[] { "GravitationalConstant" };
     
-    public static final float DEFAULT_GRAV_CONSTANT = -0.1f;
-    public static final float DEFAULT_MIN_GRAV_CONSTANT = -1.0f;
-    public static final float DEFAULT_MAX_GRAV_CONSTANT = 1.0f;
+    public static final double DEFAULT_GRAV_CONSTANT = -0.1f;
+    public static final double DEFAULT_MIN_GRAV_CONSTANT = -1.0f;
+    public static final double DEFAULT_MAX_GRAV_CONSTANT = 1.0f;
     public static final int GRAVITATIONAL_CONST = 0;
     
-    private float x1, y1, x2, y2;
-    private float dx, dy;
+    private double x1, y1, x2, y2;
+    private double dx, dy;
     
     /**
      * Create a new WallForce.
@@ -28,18 +28,18 @@ public class WallForce extends AbstractForce {
      * @param x2 the second x-coordinate of the wall
      * @param y2 the second y-coordinate of the wall
      */
-    public WallForce(float gravConst, 
-        float x1, float y1, float x2, float y2) 
+    public WallForce(double gravConst, 
+        double x1, double y1, double x2, double y2) 
     {
-        params = new float[] { gravConst };
-        minValues = new float[] { DEFAULT_MIN_GRAV_CONSTANT };
-        maxValues = new float[] { DEFAULT_MAX_GRAV_CONSTANT };
+        params = new double[] { gravConst };
+        minValues = new double[] { DEFAULT_MIN_GRAV_CONSTANT };
+        maxValues = new double[] { DEFAULT_MAX_GRAV_CONSTANT };
         
         this.x1 = x1; this.y1 = y1;
         this.x2 = x2; this.y2 = y2;
         dx = x2-x1;
         dy = y2-y1;
-        float r = (float)Math.sqrt(dx*dx+dy*dy);
+        double r = (double)Math.sqrt(dx*dx+dy*dy);
         if ( dx != 0.0 ) dx /= r;
         if ( dy != 0.0 ) dy /= r;
     }
@@ -51,7 +51,7 @@ public class WallForce extends AbstractForce {
      * @param x2 the second x-coordinate of the wall
      * @param y2 the second y-coordinate of the wall
      */
-    public WallForce(float x1, float y1, float x2, float y2) {
+    public WallForce(double x1, double y1, double x2, double y2) {
         this(DEFAULT_GRAV_CONSTANT,x1,y1,x2,y2);
     }
     
@@ -74,11 +74,11 @@ public class WallForce extends AbstractForce {
      * @see prefuse.util.force.Force#getForce(prefuse.util.force.ForceItem)
      */
     public void getForce(ForceItem item) {
-        float[] n = item.location;
+        double[] n = item.location;
         int ccw = Line2D.relativeCCW(x1,y1,x2,y2,n[0],n[1]);
-        float r = (float)Line2D.ptSegDist(x1,y1,x2,y2,n[0],n[1]);
-        if ( r == 0.0 ) r = (float)Math.random() / 100.0f;
-        float v = params[GRAVITATIONAL_CONST]*item.mass / (r*r*r);
+        double r = (double)Line2D.ptSegDist(x1,y1,x2,y2,n[0],n[1]);
+        if ( r == 0.0 ) r = (double)Math.random() / 100.0f;
+        double v = params[GRAVITATIONAL_CONST]*item.mass / (r*r*r);
         if ( n[0] >= Math.min(x1,x2) && n[0] <= Math.max(x1,x2) )
             item.force[1] += ccw*v*dx;
         if ( n[1] >= Math.min(y1,y2) && n[1] <= Math.max(y1,y2) )

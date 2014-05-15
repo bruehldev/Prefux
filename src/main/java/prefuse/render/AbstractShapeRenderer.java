@@ -1,12 +1,17 @@
 package prefuse.render;
 
-import java.awt.BasicStroke;
-import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Point2D;
+//import java.awt.BasicStroke;
+//import java.awt.Graphics2D;
+//import java.awt.Shape;
+//import java.awt.geom.AffineTransform;
+//import prefuse.data.util.Point2D;
 
-import prefuse.util.GraphicsLib;
+import javafx.geometry.Point2D;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+//import javafx.scene.transform.Affine;
+import javafx.scene.transform.Transform;
+import prefuse.util.FxGraphicsLib;
 import prefuse.visual.VisualItem;
 
 
@@ -38,7 +43,7 @@ public abstract class AbstractShapeRenderer implements Renderer {
     public static final int RENDER_TYPE_DRAW_AND_FILL = 3;
 
     private int m_renderType = RENDER_TYPE_DRAW_AND_FILL;
-    protected AffineTransform m_transform = new AffineTransform();
+    protected Transform m_transform ; 
     protected boolean m_manageBounds = true;
     
     public void setManageBounds(boolean b) {
@@ -48,8 +53,8 @@ public abstract class AbstractShapeRenderer implements Renderer {
     /**
      * @see prefuse.render.Renderer#render(java.awt.Graphics2D, prefuse.visual.VisualItem)
      */
-    public void render(Graphics2D g, VisualItem item) {
-        Shape shape = getShape(item);
+    public void render(Parent g, VisualItem item) {
+        Node shape = getShape(item);
         if (shape != null)
             drawShape(g, item, shape);
     }
@@ -59,8 +64,12 @@ public abstract class AbstractShapeRenderer implements Renderer {
      * stroke and fill color values from the specified VisualItem. This method
      * can be called by subclasses in custom rendering routines. 
      */
-    protected void drawShape(Graphics2D g, VisualItem item, Shape shape) {
-        GraphicsLib.paint(g, item, shape, getStroke(item), getRenderType(item));
+    protected void drawShape(Parent g, VisualItem item, Node shape) {
+        FxGraphicsLib.paint(g, item, shape, getStyle(item), getRenderType(item));
+    }
+    
+    public String getStyle(VisualItem item) {
+    	return item.getStyle();
     }
 
     /**
@@ -68,25 +77,14 @@ public abstract class AbstractShapeRenderer implements Renderer {
      * coordinates should be in abolute (item-space) coordinates.
      * @param item the item for which to get the Shape
      */
-    public Shape getShape(VisualItem item) {
-        AffineTransform at = getTransform(item);
-        Shape rawShape = getRawShape(item);
-        return (at==null || rawShape==null ? rawShape 
-                 : at.createTransformedShape(rawShape));
+    public Node getShape(VisualItem item) {
+        Transform at = getTransform(item);
+        Node rawShape = getRawShape(item);
+        if (at!=null)
+        	rawShape.getTransforms().add(at);
+        return rawShape;
     }
 
-    /**
-     * Retursn the stroke to use for drawing lines and shape outlines. By
-     * default returns the value of {@link VisualItem#getStroke()}.
-     * Subclasses can override this method to implement custom stroke
-     * assignment, though changing the <code>VisualItem</code>'s stroke
-     * value is preferred.
-     * @param item the VisualItem
-     * @return the strok to use for drawing lines and shape outlines
-     */
-    protected BasicStroke getStroke(VisualItem item) {
-        return item.getStroke();
-    }
     
     /**
      * Return a non-transformed shape for the visual representation of the
@@ -94,7 +92,7 @@ public abstract class AbstractShapeRenderer implements Renderer {
      * @param item the VisualItem being drawn
      * @return the "raw", untransformed shape.
      */
-    protected abstract Shape getRawShape(VisualItem item);
+    protected abstract Node getRawShape(VisualItem item);
     
     /**
      * Return the graphics space transform applied to this item's shape, if any.
@@ -103,7 +101,7 @@ public abstract class AbstractShapeRenderer implements Renderer {
      * @param item the VisualItem
      * @return the graphics space transform, or null if none
      */
-    protected AffineTransform getTransform(VisualItem item) {
+    protected Transform getTransform(VisualItem item) {
         return null;
     }
 
@@ -131,12 +129,12 @@ public abstract class AbstractShapeRenderer implements Renderer {
     }
     
     /**
-     * @see prefuse.render.Renderer#locatePoint(java.awt.geom.Point2D, prefuse.visual.VisualItem)
+     * @see prefuse.render.Renderer#locatePoint(prefuse.data.util.Point2D, prefuse.visual.VisualItem)
      */
     public boolean locatePoint(Point2D p, VisualItem item) {
         if ( item.getBounds().contains(p) ) {
             // if within bounds, check within shape outline
-            Shape s = getShape(item);
+            Node s = getShape(item);
             return (s != null ? s.contains(p) : false);
         } else {
             return false;
@@ -148,11 +146,11 @@ public abstract class AbstractShapeRenderer implements Renderer {
      */
     public void setBounds(VisualItem item) {
         if ( !m_manageBounds ) return;
-        Shape shape = getShape(item);
+        Node shape = getShape(item);
         if ( shape == null ) {
             item.setBounds(item.getX(), item.getY(), 0, 0);
         } else {
-            GraphicsLib.setBounds(item, shape, getStroke(item));
+            // GraphicsLib.setBounds(item, shape, getStroke(item));
         }
     }
 

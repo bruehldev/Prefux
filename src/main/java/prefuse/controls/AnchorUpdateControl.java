@@ -1,7 +1,7 @@
 package prefuse.controls;
 
 import java.awt.event.MouseEvent;
-import java.awt.geom.Point2D;
+import prefuse.data.util.Point2D;
 
 import prefuse.Display;
 import prefuse.action.layout.Layout;
@@ -20,7 +20,7 @@ public class AnchorUpdateControl extends ControlAdapter {
     private boolean m_anchorOverItem;
     private Layout[] m_layouts;
     private String m_action;
-    private Point2D  m_tmp = new Point2D.Double();
+    private Point2D  m_tmp = new Point2D();
     
     /**
      * Create a new AnchorUpdateControl.

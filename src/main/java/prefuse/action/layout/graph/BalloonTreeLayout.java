@@ -1,6 +1,6 @@
 package prefuse.action.layout.graph;
 
-import java.awt.geom.Point2D;
+import prefuse.data.util.Point2D;
 import java.util.Iterator;
 
 import prefuse.data.Graph;

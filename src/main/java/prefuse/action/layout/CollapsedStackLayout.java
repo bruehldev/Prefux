@@ -1,8 +1,8 @@
 package prefuse.action.layout;
 
-import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 
+import javafx.geometry.Rectangle2D;
 import prefuse.Constants;
 import prefuse.data.Table;
 import prefuse.render.PolygonRenderer;
@@ -84,7 +84,7 @@ public class CollapsedStackLayout extends Layout {
         VisualItem lastItem = null;
         
         Rectangle2D bounds = getLayoutBounds();
-        float floor = (float)
+        double floor = (double)
             (m_horiz ? (m_top?bounds.getMaxX():bounds.getMinX())
                      : (m_top?bounds.getMinY():bounds.getMaxY()));
         int bias = (m_horiz ? 0 : 1);
@@ -98,7 +98,7 @@ public class CollapsedStackLayout extends Layout {
             
             if ( !prev && cur ) {
                 // newly visible, update contour
-                float[] f = (float[])item.get(m_polyField);
+                double[] f = (double[])item.get(m_polyField);
                 if ( f == null ) continue;
                 
                 if ( lastItem == null ) {
@@ -108,7 +108,7 @@ public class CollapsedStackLayout extends Layout {
                 } else {
                     // previous visible item, smash values to the
                     // visible item's contour
-                    float[] l = (float[])lastItem.get(m_polyField);
+                    double[] l = (double[])lastItem.get(m_polyField);
                     for ( int i=0; i<f.length/2; i+=2 )
                         f[i+bias] = f[f.length-2-i+bias]
                                   = l[i+bias];

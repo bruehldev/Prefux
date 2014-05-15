@@ -1,9 +1,9 @@
 package prefuse.action.layout;
 
-import java.awt.geom.Rectangle2D;
 import java.util.Arrays;
 import java.util.Iterator;
 
+import javafx.geometry.Rectangle2D;
 import prefuse.Constants;
 import prefuse.data.Table;
 import prefuse.data.query.NumberRangeModel;
@@ -28,9 +28,9 @@ public class StackedAreaChart extends Layout {
     private String[] columns;
     private double[] baseline;
     private double[] peaks;
-    private float[] poly;
+    private double[] poly;
     private double m_padding = 0.05;
-    private float m_threshold;
+    private double m_threshold;
     private Rectangle2D bounds;
     
     private int m_orientation = Constants.ORIENT_BOTTOM_TOP;
@@ -67,7 +67,7 @@ public class StackedAreaChart extends Layout {
         this.columns = columns;
         baseline = new double[columns.length];
         peaks = new double[columns.length];
-        poly = new float[4*columns.length];
+        poly = new double[4*columns.length];
         
         m_field = field;
         m_start = PrefuseLib.getStartField(field);
@@ -142,7 +142,7 @@ public class StackedAreaChart extends Layout {
      * @param threshold the minimum height threshold for visibility to use
      */
     public void setThreshold(double threshold) {
-        m_threshold = (float)threshold;
+        m_threshold = (double)threshold;
     }
     
     /**
@@ -206,19 +206,19 @@ public class StackedAreaChart extends Layout {
         Arrays.fill(baseline, 0);
         
         // get the orientation specifics sorted out
-        float min = (float)(m_horiz?bounds.getMaxY() :bounds.getMinX());
-        float hgt = (float)(m_horiz?bounds.getWidth():bounds.getHeight());
+        double min = (double)(m_horiz?bounds.getMaxY() :bounds.getMinX());
+        double hgt = (double)(m_horiz?bounds.getWidth():bounds.getHeight());
         int xbias = (m_horiz ? 1 : 0);
         int ybias = (m_horiz ? 0 : 1);
         int mult = m_top ? 1 : -1;
-        float inc = (float) (m_horiz ? (bounds.getMinY()-bounds.getMaxY())
+        double inc = (double) (m_horiz ? (bounds.getMinY()-bounds.getMaxY())
                                      : (bounds.getMaxX()-bounds.getMinX()));
         inc /= columns.length-1;
         int len = columns.length;
         
         // perform first walk to compute max values
         double maxValue = getPeaks();
-        float b = (float)(m_horiz ? (m_top?bounds.getMinX():bounds.getMaxX())
+        double b = (double)(m_horiz ? (m_top?bounds.getMinX():bounds.getMaxX())
                                   : (m_top?bounds.getMinY():bounds.getMaxY()));
         Arrays.fill(baseline, b);
         
@@ -231,11 +231,11 @@ public class StackedAreaChart extends Layout {
             VisualItem item = (VisualItem)iter.next();
             if ( !item.isVisible() ) continue;
             
-            float height = 0;
+            double height = 0;
             
             for ( int i=len; --i >= 0; ) {
                 poly[2*(len-1-i)+xbias] = min + i*inc;
-                poly[2*(len-1-i)+ybias] = (float)baseline[i];
+                poly[2*(len-1-i)+ybias] = (double)baseline[i];
             }
             for ( int i=0; i<columns.length; ++i ) {
                 int base = 2*(len+i);
@@ -243,7 +243,7 @@ public class StackedAreaChart extends Layout {
                 baseline[i] += mult * hgt * 
                                  MathLib.linearInterp(value,0,peaks[i]);
                 poly[base+xbias] = min + i*inc;
-                poly[base+ybias] = (float)baseline[i];
+                poly[base+ybias] = (double)baseline[i];
                 height = Math.max(height,
                         Math.abs(poly[2*(len-1-i)+ybias]-poly[base+ybias]));
             }
@@ -298,10 +298,10 @@ public class StackedAreaChart extends Layout {
     /**
      * Sets the polygon values for a visual item.
      */
-    private void setPolygon(VisualItem item, float[] poly) {
-        float[] a = getPolygon(item, m_field);
-        float[] s = getPolygon(item, m_start);
-        float[] e = getPolygon(item, m_end);
+    private void setPolygon(VisualItem item, double[] poly) {
+        double[] a = getPolygon(item, m_field);
+        double[] s = getPolygon(item, m_start);
+        double[] e = getPolygon(item, m_end);
         System.arraycopy(a, 0, s, 0, a.length);
         System.arraycopy(poly, 0, a, 0, poly.length);
         System.arraycopy(poly, 0, e, 0, poly.length);
@@ -311,25 +311,25 @@ public class StackedAreaChart extends Layout {
     /**
      * Get the polygon values for a visual item.
      */
-    private float[] getPolygon(VisualItem item, String field) {
-        float[] poly = (float[])item.get(field);
+    private double[] getPolygon(VisualItem item, String field) {
+        double[] poly = (double[])item.get(field);
         if ( poly == null || poly.length < 4*columns.length ) {
             // get oriented
             int len = columns.length;
-            float inc = (float) (m_horiz?(bounds.getMinY()-bounds.getMaxY())
+            double inc = (double) (m_horiz?(bounds.getMinY()-bounds.getMaxY())
                                         :(bounds.getMaxX()-bounds.getMinX()));
             inc /= len-1;
-            float max = (float)
+            double max = (double)
                 (m_horiz ? (m_top?bounds.getMaxX():bounds.getMinX())
                          : (m_top?bounds.getMinY():bounds.getMaxY()));
-            float min = (float)(m_horiz?bounds.getMaxY():bounds.getMinX());
+            double min = (double)(m_horiz?bounds.getMaxY():bounds.getMinX());
             int  bias = (m_horiz ? 1 : 0);
             
             // create polygon, populate default values
-            poly = new float[4*len];
+            poly = new double[4*len];
             Arrays.fill(poly, max);
             for ( int i=0; i<len; ++i ) {
-                float x = i*inc + min;
+                double x = i*inc + min;
                 poly[2*(len+i)  +bias] = x;
                 poly[2*(len-1-i)+bias] = x;
             }

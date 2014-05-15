@@ -25,7 +25,7 @@ public interface Force {
      * @param i the index of the parameter to return
      * @return the parameter value
      */
-    public float getParameter(int i);
+    public double getParameter(int i);
     
     /**
      * Get the suggested minimum value for a parameter. This value is not
@@ -34,7 +34,7 @@ public interface Force {
      * @param param the parameter index
      * @return the suggested minimum value.
      */
-    public float getMinValue(int param);
+    public double getMinValue(int param);
     
     /**
      * Get the suggested maximum value for a parameter. This value is not
@@ -43,7 +43,7 @@ public interface Force {
      * @param param the parameter index
      * @return the suggested maximum value.
      */
-    public float getMaxValue(int param);
+    public double getMaxValue(int param);
     
     /**
      * Gets the text name of the requested parameter.
@@ -57,7 +57,7 @@ public interface Force {
      * @param i the index of the parameter
      * @param val the new value of the parameter
      */
-    public void setParameter(int i, float val);
+    public void setParameter(int i, double val);
     
     /**
      * Set the suggested minimum value for a parameter. This value is not
@@ -66,7 +66,7 @@ public interface Force {
      * @param i the parameter index
      * @param val the suggested minimum value to use
      */
-    public void setMinValue(int i, float val);
+    public void setMinValue(int i, double val);
     
     /**
      * Set the suggested maximum value for a parameter. This value is not
@@ -75,7 +75,7 @@ public interface Force {
      * @param i the parameter index
      * @return the suggested maximum value to use
      */
-    public void setMaxValue(int i, float val);
+    public void setMaxValue(int i, double val);
     
     /**
      * Indicates if this force function will compute forces

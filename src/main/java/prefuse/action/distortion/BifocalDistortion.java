@@ -1,7 +1,8 @@
 package prefuse.action.distortion;
 
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
+import prefuse.data.util.Point2D;
+
+import javafx.geometry.Rectangle2D;
 
 /**
  * <p>
@@ -85,21 +86,21 @@ public class BifocalDistortion extends Distortion {
     }
     
     /**
-     * @see prefuse.action.distortion.Distortion#distortX(double, java.awt.geom.Point2D, java.awt.geom.Rectangle2D)
+     * @see prefuse.action.distortion.Distortion#distortX(double, prefuse.data.util.Point2D, javafx.geometry.Rectangle2D)
      */
     protected double distortX(double x, Point2D a, Rectangle2D b) {
         return bifocal(x, a.getX(), rx, mx, b.getMinX(), b.getMaxX());
     }
     
     /**
-     * @see prefuse.action.distortion.Distortion#distortY(double, java.awt.geom.Point2D, java.awt.geom.Rectangle2D)
+     * @see prefuse.action.distortion.Distortion#distortY(double, prefuse.data.util.Point2D, javafx.geometry.Rectangle2D)
      */
     protected double distortY(double y, Point2D a, Rectangle2D b) {
         return bifocal(y, a.getY(), ry, my, b.getMinY(), b.getMaxY());
     }
     
     /**
-     * @see prefuse.action.distortion.Distortion#distortSize(java.awt.geom.Rectangle2D, double, double, java.awt.geom.Point2D, java.awt.geom.Rectangle2D)
+     * @see prefuse.action.distortion.Distortion#distortSize(javafx.geometry.Rectangle2D, double, double, prefuse.data.util.Point2D, javafx.geometry.Rectangle2D)
      */
     protected double distortSize(Rectangle2D bbox, double x, double y, 
             Point2D anchor, Rectangle2D bounds)
@@ -108,7 +109,7 @@ public class BifocalDistortion extends Distortion {
         double m;
         
         if ( m_distortX ) {
-            double cx = bbox.getCenterX(), ax = anchor.getX();
+            double cx = bbox.getMinX()+bbox.getWidth()/2.0, ax = anchor.getX();
             double minX = bounds.getMinX(), maxX = bounds.getMaxX();
             m = (cx<ax ? ax-minX : maxX-ax);
             if ( m == 0 ) m = maxX-minX;
@@ -117,7 +118,7 @@ public class BifocalDistortion extends Distortion {
         }
         
         if ( m_distortY ) {
-            double cy = bbox.getCenterY(), ay = anchor.getY();
+            double cy = bbox.getMinY()+bbox.getHeight()/2.0, ay = anchor.getY();
             double minY = bounds.getMinY(), maxY = bounds.getMaxY();
             m = (cy<ay ? ay-minY : maxY-ay);
             if ( m == 0 ) m = maxY-minY;

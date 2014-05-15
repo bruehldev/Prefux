@@ -1,7 +1,7 @@
 package prefuse.util.display;
 
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
+import prefuse.data.util.Rectangle2D;
 import java.util.logging.Logger;
 
 /**

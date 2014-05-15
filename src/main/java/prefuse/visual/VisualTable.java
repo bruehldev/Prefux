@@ -1,15 +1,15 @@
 package prefuse.visual;
 
-import java.awt.BasicStroke;
-import java.awt.Font;
-import java.awt.geom.Rectangle2D;
-
+//import java.awt.BasicStroke;
+//import java.awt.Font;
+import javafx.scene.text.Font;
 import prefuse.Visualization;
 import prefuse.data.CascadedTable;
 import prefuse.data.Schema;
 import prefuse.data.Table;
 import prefuse.data.event.EventConstants;
 import prefuse.data.expression.Predicate;
+import prefuse.data.util.Rectangle2D;
 import prefuse.visual.tuple.TableVisualItem;
 
 /**
@@ -532,7 +532,8 @@ public class VisualTable extends CascadedTable implements VisualTupleSet {
      * @see VisualItem#BOUNDS
      */
     public void setBounds(int row, double x, double y, double w, double h) {
-        getBounds(row).setRect(x, y, w, h);
+    	Rectangle2D rec = new Rectangle2D(x, y, w, h);
+    	set(row, VisualItem.BOUNDS, rec);
         fireTableEvent(row, row,
                 getColumnNumber(VisualItem.BOUNDS), EventConstants.UPDATE);
     }
@@ -887,22 +888,6 @@ public class VisualTable extends CascadedTable implements VisualTupleSet {
     
     // ------------------------------------------------------------------------
     
-    /**
-     * Get the current stroke used to draw lines and shape outlines for the
-     * item at the given row.
-     * @return the stroke used to draw lines and shape outlines
-     */
-    public BasicStroke getStroke(int row) {
-        return (BasicStroke)get(row, VisualItem.STROKE);
-    }
-    
-    /**
-     * Set the current stroke used to draw lines and shape outlines.
-     * @param stroke the stroke to use to draw lines and shape outlines
-     */
-    public void setStroke(int row, BasicStroke stroke) {
-        set(row, VisualItem.STROKE, stroke);
-    }
     
     // ------------------------------------------------------------------------
     
@@ -994,4 +979,12 @@ public class VisualTable extends CascadedTable implements VisualTupleSet {
         setDouble(row, VisualItem.DOI, doi);
     }
     
+    public String getStyle(int row) {
+    	return getString(row, VisualItem.STYLE);
+    }
+
+    public void setStyle(int row, String style) {
+    	setString(row, VisualItem.STYLE, style);
+    }
+
 } // end of class VisualTable

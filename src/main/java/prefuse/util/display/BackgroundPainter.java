@@ -100,8 +100,8 @@ public class BackgroundPainter implements PaintListener {
             g.setTransform(getIdentity());
             if ( m_tiled ) {
                 // if tiled, compute visible background region and draw tiles
-                int w = d.getWidth(),  iw = m_img.getWidth(null);
-                int h = d.getHeight(), ih = m_img.getHeight(null);
+                int w = new Double(d.getWidth()).intValue(),  iw = m_img.getWidth(null);
+                int h = new Double(d.getHeight()).intValue(), ih = m_img.getHeight(null);
                 
                 int sx = m_fixed ? 0 : tx%iw;
                 int sy = m_fixed ? 0 : ty%ih;

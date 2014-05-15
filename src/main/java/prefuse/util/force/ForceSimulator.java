@@ -174,14 +174,14 @@ public class ForceSimulator {
      * Add a Spring to the simulation.
      * @param item1 the first endpoint of the spring
      * @param item2 the second endpoint of the spring
-     * @param coeff the spring coefficient
-     * @param length the spring length
+     * @param d the spring coefficient
+     * @param e the spring length
      * @return the Spring added to the simulation
      */
-    public Spring addSpring(ForceItem item1, ForceItem item2, float coeff, float length) {
+    public Spring addSpring(ForceItem item1, ForceItem item2, double d, double e) {
         if ( item1 == null || item2 == null )
             throw new IllegalArgumentException("ForceItems must be non-null");
-        Spring s = Spring.getFactory().getSpring(item1, item2, coeff, length);
+        Spring s = Spring.getFactory().getSpring(item1, item2, d, e);
         springs.add(s);
         return s;
     }

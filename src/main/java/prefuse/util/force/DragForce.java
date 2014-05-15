@@ -9,19 +9,19 @@ public class DragForce extends AbstractForce {
 
     private static String[] pnames = new String[] { "DragCoefficient" };
     
-    public static final float DEFAULT_DRAG_COEFF = 0.01f;
-    public static final float DEFAULT_MIN_DRAG_COEFF = 0.0f;
-    public static final float DEFAULT_MAX_DRAG_COEFF = 0.1f;
+    public static final double DEFAULT_DRAG_COEFF = 0.01;
+    public static final double DEFAULT_MIN_DRAG_COEFF = 0.0;
+    public static final double DEFAULT_MAX_DRAG_COEFF = 0.1;
     public static final int DRAG_COEFF = 0;
 
     /**
      * Create a new DragForce.
      * @param dragCoeff the drag co-efficient
      */
-    public DragForce(float dragCoeff) {
-        params = new float[] { dragCoeff };
-        minValues = new float[] { DEFAULT_MIN_DRAG_COEFF };
-        maxValues = new float[] { DEFAULT_MAX_DRAG_COEFF };
+    public DragForce(double dragCoeff) {
+        params = new double[] { dragCoeff };
+        minValues = new double[] { DEFAULT_MIN_DRAG_COEFF };
+        maxValues = new double[] { DEFAULT_MAX_DRAG_COEFF };
     }
 
     /**

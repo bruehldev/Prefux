@@ -1,8 +1,8 @@
 package prefuse.action.layout;
 
-import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 
+import javafx.geometry.Rectangle2D;
 import prefuse.data.tuple.TupleSet;
 import prefuse.visual.VisualItem;
 
@@ -63,8 +63,8 @@ public class CircleLayout extends Layout {
         Rectangle2D r = getLayoutBounds();  
         double height = r.getHeight();
         double width = r.getWidth();
-        double cx = r.getCenterX();
-        double cy = r.getCenterY();
+        double cx = r.getMinX()+r.getWidth()/2.0;
+        double cy = r.getMinY()+r.getHeight()/2.0;
 
         double radius = m_radius;
         if (radius <= 0) {

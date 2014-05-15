@@ -1,8 +1,7 @@
 package prefuse.render;
 
-import java.awt.Graphics2D;
-import java.awt.geom.Point2D;
-
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import prefuse.visual.VisualItem;
 
 
@@ -16,19 +15,7 @@ import prefuse.visual.VisualItem;
  */
 public class NullRenderer implements Renderer {
 
-    /**
-     * @see prefuse.render.Renderer#render(java.awt.Graphics2D, prefuse.visual.VisualItem)
-     */
-    public void render(Graphics2D g, VisualItem item) {
-        // do nothing
-    }
     
-    /**
-     * @see prefuse.render.Renderer#locatePoint(java.awt.geom.Point2D, prefuse.visual.VisualItem)
-     */
-    public boolean locatePoint(Point2D p, VisualItem item) {
-        return false;
-    }
     
     /**
      * @see prefuse.render.Renderer#setBounds(prefuse.visual.VisualItem)
@@ -36,5 +23,18 @@ public class NullRenderer implements Renderer {
     public void setBounds(VisualItem item) {
         item.setBounds(item.getX(), item.getY(), 0, 0);
     }
+
+	@Override
+	public void render(Parent g, VisualItem item) {
+		// Do nothing
+		
+	}
+
+	@Override
+	public boolean locatePoint(javafx.geometry.Point2D p, VisualItem item) {
+		return false;
+	}
+
+
 
 } // end of class NullRenderer

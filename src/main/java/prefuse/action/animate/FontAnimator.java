@@ -1,7 +1,7 @@
 package prefuse.action.animate;
 
-import java.awt.Font;
 
+import javafx.scene.text.Font;
 import prefuse.action.ItemAction;
 import prefuse.util.FontLib;
 import prefuse.visual.VisualItem;

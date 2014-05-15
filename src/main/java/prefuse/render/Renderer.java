@@ -1,9 +1,10 @@
 package prefuse.render;
 
-import java.awt.Graphics2D;
-import java.awt.geom.Point2D;
-import java.awt.image.BufferedImage;
-
+//import java.awt.Graphics2D;
+//import prefuse.data.util.Point2D;
+import javafx.geometry.Point2D;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import prefuse.visual.VisualItem;
 
 
@@ -21,15 +22,15 @@ public interface Renderer {
      * things like compute string widths when an external graphics context
      * has not yet been provided.
      */
-    public static final Graphics2D DEFAULT_GRAPHICS = (Graphics2D)
-        new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB).getGraphics();
+//    public static final Graphics2D DEFAULT_GRAPHICS = (Graphics2D)
+//        new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB).getGraphics();
 
     /**
      * Render item into a Graphics2D context.
      * @param g the Graphics2D context
      * @param item the visual item to draw
      */
-    public void render(Graphics2D g, VisualItem item);
+    public void render(Parent g, VisualItem item);
 
     /**
      * Returns true if the Point is located inside the extents of the item.
@@ -47,5 +48,6 @@ public interface Renderer {
      * @param item the item to compute the bounding box for
      */
     public void setBounds(VisualItem item);
+    
 
 } // end of interface Renderer

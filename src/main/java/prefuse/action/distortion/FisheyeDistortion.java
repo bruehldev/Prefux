@@ -1,7 +1,8 @@
 package prefuse.action.distortion;
 
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
+import prefuse.data.util.Point2D;
+
+import javafx.geometry.Rectangle2D;
 
 
 /**
@@ -92,21 +93,21 @@ public class FisheyeDistortion extends Distortion {
     }
     
     /**
-     * @see prefuse.action.distortion.Distortion#distortX(double, java.awt.geom.Point2D, java.awt.geom.Rectangle2D)
+     * @see prefuse.action.distortion.Distortion#distortX(double, prefuse.data.util.Point2D, javafx.geometry.Rectangle2D)
      */
     protected double distortX(double x, Point2D anchor, Rectangle2D bounds) {
         return fisheye(x,anchor.getX(),dx,bounds.getMinX(),bounds.getMaxX());
     }
     
     /**
-     * @see prefuse.action.distortion.Distortion#distortY(double, java.awt.geom.Point2D, java.awt.geom.Rectangle2D)
+     * @see prefuse.action.distortion.Distortion#distortY(double, prefuse.data.util.Point2D, javafx.geometry.Rectangle2D)
      */
     protected double distortY(double y, Point2D anchor, Rectangle2D bounds) {
         return fisheye(y,anchor.getY(),dy,bounds.getMinY(),bounds.getMaxY());
     }
     
     /**
-     * @see prefuse.action.distortion.Distortion#distortSize(java.awt.geom.Rectangle2D, double, double, java.awt.geom.Point2D, java.awt.geom.Rectangle2D)
+     * @see prefuse.action.distortion.Distortion#distortSize(javafx.geometry.Rectangle2D, double, double, prefuse.data.util.Point2D, javafx.geometry.Rectangle2D)
      */
     protected double distortSize(Rectangle2D bbox, double x, double y, 
             Point2D anchor, Rectangle2D bounds)

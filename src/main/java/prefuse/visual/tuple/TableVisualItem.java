@@ -1,16 +1,18 @@
 package prefuse.visual.tuple;
 
-import java.awt.BasicStroke;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.geom.Rectangle2D;
-
+//import java.awt.BasicStroke;
+//import java.awt.Font;
+//import java.awt.Graphics2D;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.text.Font;
 import prefuse.Visualization;
 import prefuse.data.Graph;
 import prefuse.data.Table;
 import prefuse.data.Tuple;
 import prefuse.data.tuple.TableTuple;
 import prefuse.data.tuple.TupleSet;
+import prefuse.data.util.Rectangle2D;
 import prefuse.render.Renderer;
 import prefuse.visual.VisualItem;
 import prefuse.visual.VisualTable;
@@ -21,6 +23,8 @@ import prefuse.visual.VisualTable;
  * @author <a href="http://jheer.org">jeffrey heer</a>
  */
 public class TableVisualItem extends TableTuple implements VisualItem {
+	
+	private Node node;
 
     /**
      * Initialize a new TableVisualItem for the given table and row. This
@@ -104,7 +108,7 @@ public class TableVisualItem extends TableTuple implements VisualItem {
     /**
      * @see prefuse.visual.VisualItem#render(java.awt.Graphics2D)
      */
-    public void render(Graphics2D g) {
+    public void render(Parent g) {
         getRenderer().render(g, this);
     }
     
@@ -554,19 +558,7 @@ public class TableVisualItem extends TableTuple implements VisualItem {
     
     // ------------------------------------------------------------------------
     
-    /**
-     * @see prefuse.visual.VisualItem#getStroke()
-     */
-    public BasicStroke getStroke() {
-        return ((VisualTable)m_table).getStroke(m_row);
-    }
     
-    /**
-     * @see prefuse.visual.VisualItem#setStroke(java.awt.BasicStroke)
-     */
-    public void setStroke(BasicStroke stroke) {
-        ((VisualTable)m_table).setStroke(m_row, stroke);
-    }
     
     // ------------------------------------------------------------------------    
     
@@ -627,5 +619,25 @@ public class TableVisualItem extends TableTuple implements VisualItem {
     public void setDOI(double doi) {
         ((VisualTable)m_table).setDOI(m_row, doi);
     }
-    
+
+	@Override
+	public String getStyle() {
+		return ((VisualTable)m_table).getStyle(m_row);
+	}
+
+	public void setStyle(String style) {
+		((VisualTable)m_table).setStyle(m_row, style);
+	}
+
+	@Override
+	public Node getNode() {
+		return node;
+	}
+
+	@Override
+	public void setNode(Node node) {
+		this.node = node;
+		
+	}
+
 } // end of class TableVisualItem

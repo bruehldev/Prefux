@@ -16,13 +16,13 @@ public class GravitationalForce extends AbstractForce {
     public static final int GRAVITATIONAL_CONST = 0;
     public static final int DIRECTION = 1;
     
-    public static final float DEFAULT_FORCE_CONSTANT = 1E-4f;
-    public static final float DEFAULT_MIN_FORCE_CONSTANT = 1E-5f;
-    public static final float DEFAULT_MAX_FORCE_CONSTANT = 1E-3f;
+    public static final double DEFAULT_FORCE_CONSTANT = 1E-4f;
+    public static final double DEFAULT_MIN_FORCE_CONSTANT = 1E-5f;
+    public static final double DEFAULT_MAX_FORCE_CONSTANT = 1E-3f;
     
-    public static final float DEFAULT_DIRECTION = (float)-Math.PI/2;
-    public static final float DEFAULT_MIN_DIRECTION = (float)-Math.PI;
-    public static final float DEFAULT_MAX_DIRECTION = (float)Math.PI;
+    public static final double DEFAULT_DIRECTION = (double)-Math.PI/2;
+    public static final double DEFAULT_MIN_DIRECTION = (double)-Math.PI;
+    public static final double DEFAULT_MAX_DIRECTION = (double)Math.PI;
     
     /**
      * Create a new GravitationForce.
@@ -30,11 +30,11 @@ public class GravitationalForce extends AbstractForce {
      * @param direction the direction in which gravity should act,
      * in radians.
      */
-    public GravitationalForce(float forceConstant, float direction) {
-        params = new float[] { forceConstant, direction };
-        minValues = new float[] 
+    public GravitationalForce(double forceConstant, double direction) {
+        params = new double[] { forceConstant, direction };
+        minValues = new double[] 
             { DEFAULT_MIN_FORCE_CONSTANT, DEFAULT_MIN_DIRECTION };
-        maxValues = new float[] 
+        maxValues = new double[] 
             { DEFAULT_MAX_FORCE_CONSTANT, DEFAULT_MAX_DIRECTION };
     }
     
@@ -65,8 +65,8 @@ public class GravitationalForce extends AbstractForce {
      * @see prefuse.util.force.Force#getForce(prefuse.util.force.ForceItem)
      */
     public void getForce(ForceItem item) {
-        float theta = params[DIRECTION];
-        float coeff = params[GRAVITATIONAL_CONST]*item.mass;
+        double theta = params[DIRECTION];
+        double coeff = params[GRAVITATIONAL_CONST]*item.mass;
         
         item.force[0] += Math.cos(theta)*coeff;
         item.force[1] += Math.sin(theta)*coeff;

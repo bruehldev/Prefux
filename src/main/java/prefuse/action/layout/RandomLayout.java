@@ -1,9 +1,9 @@
 package prefuse.action.layout;
 
-import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 import java.util.Random;
 
+import javafx.geometry.Rectangle2D;
 import prefuse.visual.VisualItem;
 
 
@@ -50,8 +50,8 @@ public class RandomLayout extends Layout {
         Iterator iter = getVisualization().visibleItems(m_group);
         while ( iter.hasNext() ) {
             VisualItem item = (VisualItem)iter.next();
-            x = (int)(b.getX() + r.nextDouble()*w);
-            y = (int)(b.getY() + r.nextDouble()*h);
+            x = (int)(b.getMinX() + r.nextDouble()*w);
+            y = (int)(b.getMinY() + r.nextDouble()*h);
             setX(item,null,x);
             setY(item,null,y);
         }

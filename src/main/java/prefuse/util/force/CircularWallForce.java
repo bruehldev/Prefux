@@ -10,12 +10,12 @@ public class CircularWallForce extends AbstractForce {
 
     private static String[] pnames = new String[] { "GravitationalConstant" };
     
-    public static final float DEFAULT_GRAV_CONSTANT = -0.1f;
-    public static final float DEFAULT_MIN_GRAV_CONSTANT = -1.0f;
-    public static final float DEFAULT_MAX_GRAV_CONSTANT = 1.0f;
+    public static final double DEFAULT_GRAV_CONSTANT = -0.1;
+    public static final double DEFAULT_MIN_GRAV_CONSTANT = -1.0;
+    public static final double DEFAULT_MAX_GRAV_CONSTANT = 1.0;
     public static final int GRAVITATIONAL_CONST = 0;
     
-    private float x, y, r;
+    private double x, y, r;
 
     /**
      * Create a new CircularWallForce.
@@ -24,12 +24,12 @@ public class CircularWallForce extends AbstractForce {
      * @param y the center y-coordinate of the circle
      * @param r the radius of the circle
      */
-    public CircularWallForce(float gravConst, 
-        float x, float y, float r) 
+    public CircularWallForce(double gravConst, 
+        double x, double y, double r) 
     {
-        params = new float[] { gravConst };
-        minValues = new float[] { DEFAULT_MIN_GRAV_CONSTANT };
-        maxValues = new float[] { DEFAULT_MAX_GRAV_CONSTANT };
+        params = new double[] { gravConst };
+        minValues = new double[] { DEFAULT_MIN_GRAV_CONSTANT };
+        maxValues = new double[] { DEFAULT_MAX_GRAV_CONSTANT };
         this.x = x; this.y = y;
         this.r = r;
     }
@@ -40,7 +40,7 @@ public class CircularWallForce extends AbstractForce {
      * @param y the center y-coordinate of the circle
      * @param r the radius of the circle
      */
-    public CircularWallForce(float x, float y, float r) {
+    public CircularWallForce(double x, double y, double r) {
         this(DEFAULT_GRAV_CONSTANT,x,y,r);
     }
     
@@ -63,17 +63,17 @@ public class CircularWallForce extends AbstractForce {
      * @see prefuse.util.force.Force#getForce(prefuse.util.force.ForceItem)
      */
     public void getForce(ForceItem item) {
-        float[] n = item.location;
-        float dx = x-n[0];
-        float dy = y-n[1];
-        float d = (float)Math.sqrt(dx*dx+dy*dy);
-        float dr = r-d;
-        float c = dr > 0 ? -1 : 1;
-        float v = c*params[GRAVITATIONAL_CONST]*item.mass / (dr*dr);
+        double[] n = item.location;
+        double dx = x-n[0];
+        double dy = y-n[1];
+        double d = (double)Math.sqrt(dx*dx+dy*dy);
+        double dr = r-d;
+        double c = dr > 0 ? -1 : 1;
+        double v = c*params[GRAVITATIONAL_CONST]*item.mass / (dr*dr);
         if ( d == 0.0 ) {
-            dx = ((float)Math.random()-0.5f) / 50.0f;
-            dy = ((float)Math.random()-0.5f) / 50.0f;
-            d  = (float)Math.sqrt(dx*dx+dy*dy);
+            dx = ((double)Math.random()-0.5) / 50.0;
+            dy = ((double)Math.random()-0.5) / 50.0;
+            d  = (double)Math.sqrt(dx*dx+dy*dy);
         }
         item.force[0] += v*dx/d;
         item.force[1] += v*dy/d;

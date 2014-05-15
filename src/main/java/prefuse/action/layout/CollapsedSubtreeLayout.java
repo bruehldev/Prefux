@@ -1,9 +1,9 @@
 package prefuse.action.layout;
 
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
+import prefuse.data.util.Point2D;
 import java.util.Iterator;
 
+import javafx.geometry.Rectangle2D;
 import prefuse.Constants;
 import prefuse.visual.NodeItem;
 import prefuse.visual.VisualItem;
@@ -20,7 +20,7 @@ import prefuse.visual.expression.StartVisiblePredicate;
 public class CollapsedSubtreeLayout extends Layout {
 
     private int m_orientation;
-    private Point2D m_point = new Point2D.Double();
+    private Point2D m_point = new Point2D();
     
     /**
      * Create a new CollapsedSubtreeLayout. By default, nodes will collapse
@@ -128,7 +128,7 @@ public class CollapsedSubtreeLayout extends Layout {
         else
             for (; p!=null && !p.isEndVisible(); p=(NodeItem)p.getParent());
         if ( p == null ) {
-            m_point.setLocation(n.getX(), n.getY());
+            m_point = new Point2D(n.getX(), n.getY());
             return m_point;
         }
         
@@ -138,19 +138,19 @@ public class CollapsedSubtreeLayout extends Layout {
         Rectangle2D b = p.getBounds();
         switch ( m_orientation ) {
         case Constants.ORIENT_LEFT_RIGHT:
-            m_point.setLocation(x+b.getWidth(), y);
+            m_point= new Point2D(x+b.getWidth(), y);
             break;
         case Constants.ORIENT_RIGHT_LEFT:
-            m_point.setLocation(x-b.getWidth(), y);
+            m_point= new Point2D(x-b.getWidth(), y);
             break;
         case Constants.ORIENT_TOP_BOTTOM:
-            m_point.setLocation(x, y+b.getHeight());
+            m_point= new Point2D(x, y+b.getHeight());
             break;
         case Constants.ORIENT_BOTTOM_TOP:
-            m_point.setLocation(x, y-b.getHeight());
+            m_point= new Point2D(x, y-b.getHeight());
             break;
         case Constants.ORIENT_CENTER:
-            m_point.setLocation(x, y);
+            m_point= new Point2D(x, y);
             break;
         }
         return m_point;

@@ -1,8 +1,8 @@
 package prefuse.action.layout;
 
-import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 
+import javafx.geometry.Rectangle2D;
 import prefuse.Constants;
 import prefuse.data.Table;
 import prefuse.data.Tuple;

@@ -12,13 +12,13 @@ public class ForceItem implements Cloneable {
      * Create a new ForceItem.
      */
     public ForceItem() {
-        mass = 1.0f;
-        force = new float[] { 0.f, 0.f };
-        velocity = new float[] { 0.f, 0.f };
-        location = new float[] { 0.f, 0.f };
-        plocation = new float[] { 0.f, 0.f };
-        k = new float[4][2];
-        l = new float[4][2];
+        mass = 1.0;
+        force = new double[] { 0., 0. };
+        velocity = new double[] { 0., 0. };
+        location = new double[] { 0., 0. };
+        plocation = new double[] { 0., 0. };
+        k = new double[4][2];
+        l = new double[4][2];
     }
     
     /**
@@ -40,19 +40,19 @@ public class ForceItem implements Cloneable {
     }
     
     /** The mass value of this ForceItem. */
-    public float   mass;
+    public double   mass;
     /** The values of the forces acting on this ForceItem. */
-    public float[] force;
+    public double[] force;
     /** The velocity values of this ForceItem. */
-    public float[] velocity;
+    public double[] velocity;
     /** The location values of this ForceItem. */
-    public float[] location;
+    public double[] location;
     /** The previous location values of this ForceItem. */
-    public float[] plocation;
+    public double[] plocation;
     /** Temporary variables for Runge-Kutta integration */
-    public float[][] k;
+    public double[][] k;
     /** Temporary variables for Runge-Kutta integration */
-    public float[][] l;
+    public double[][] l;
     
     /**
      * Checks a ForceItem to make sure its values are all valid numbers
@@ -62,10 +62,10 @@ public class ForceItem implements Cloneable {
      */
     public static final boolean isValid(ForceItem item) {
         return
-          !( Float.isNaN(item.location[0])  || Float.isNaN(item.location[1])  || 
-             Float.isNaN(item.plocation[0]) || Float.isNaN(item.plocation[1]) ||
-             Float.isNaN(item.velocity[0])  || Float.isNaN(item.velocity[1])  ||
-             Float.isNaN(item.force[0])     || Float.isNaN(item.force[1]) );
+          !( Double.isNaN(item.location[0])  || Double.isNaN(item.location[1])  || 
+             Double.isNaN(item.plocation[0]) || Double.isNaN(item.plocation[1]) ||
+             Double.isNaN(item.velocity[0])  || Double.isNaN(item.velocity[1])  ||
+             Double.isNaN(item.force[0])     || Double.isNaN(item.force[1]) );
     }
     
 } // end of class ForceItem

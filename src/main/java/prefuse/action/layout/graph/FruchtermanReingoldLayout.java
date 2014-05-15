@@ -1,9 +1,9 @@
 package prefuse.action.layout.graph;
 
-import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 import java.util.Random;
 
+import javafx.geometry.Rectangle2D;
 import prefuse.action.layout.Layout;
 import prefuse.data.Graph;
 import prefuse.data.Schema;
@@ -126,8 +126,8 @@ public class FruchtermanReingoldLayout extends Layout {
         while ( nodeIter.hasNext() ) {
             NodeItem n = (NodeItem)nodeIter.next();
             Params np = getParams(n);
-            np.loc[0] = b.getCenterX() + rand.nextDouble()*scaleW;
-            np.loc[1] = b.getCenterY() + rand.nextDouble()*scaleH;
+            np.loc[0] = b.getMinX()+b.getWidth()/2.0 + rand.nextDouble()*scaleW;
+            np.loc[1] = b.getMinY()+b.getHeight()/2.0 + rand.nextDouble()*scaleH;
         }
     }
     

@@ -1,10 +1,10 @@
 package prefuse.util;
 
 import java.awt.BasicStroke;
-import java.awt.Font;
 import java.awt.Stroke;
-import java.awt.geom.Rectangle2D;
 
+import javafx.scene.text.Font;
+import prefuse.data.util.Rectangle2D;
 import prefuse.Constants;
 import prefuse.Display;
 import prefuse.data.Schema;
@@ -371,7 +371,7 @@ public class PrefuseLib {
         s.addInterpolatedColumn(VisualItem.Y, double.class);
         
         // bounding box
-        s.addColumn(VisualItem.BOUNDS, Rectangle2D.class, new Rectangle2D.Double());
+        s.addColumn(VisualItem.BOUNDS, Rectangle2D.class, new Rectangle2D(0.0,0.0,0.0,0.0));
         
         // color
         Integer defStroke = new Integer(ColorLib.rgba(0,0,0,0));
@@ -394,12 +394,13 @@ public class PrefuseLib {
         s.addColumn(VisualItem.STROKE, Stroke.class, new BasicStroke());
         
         // font
-        Font defFont = FontLib.getFont("SansSerif",Font.PLAIN,10);
+        Font defFont = FontLib.getFont("SansSerif",10);
         s.addInterpolatedColumn(VisualItem.FONT, Font.class, defFont);
         
         // degree-of-interest
         s.addColumn(VisualItem.DOI, double.class, new Double(Double.MIN_VALUE));
 
+        s.addColumn(VisualItem.STYLE, String.class, "");
         return s;
     }
     
@@ -420,7 +421,7 @@ public class PrefuseLib {
         s.addColumn(VisualItem.INTERACTIVE, boolean.class, Boolean.TRUE);
         
         // bounding box
-        s.addColumn(VisualItem.BOUNDS, Rectangle2D.class, new Rectangle2D.Double());
+        s.addColumn(VisualItem.BOUNDS, Rectangle2D.class, new Rectangle2D(0.0,0.0,0.0,0.0));
         
         return s;
     }

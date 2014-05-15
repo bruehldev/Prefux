@@ -1,7 +1,6 @@
 package prefuse.util;
 
-import java.awt.Font;
-
+import javafx.scene.text.Font;
 import prefuse.util.collections.IntObjectHashMap;
 
 /**
@@ -16,19 +15,6 @@ public class FontLib {
     private static int misses = 0;
     private static int lookups = 0;
     
-    /**
-     * Get a Font instance with the given font family name and size. A
-     * plain font style is assumed.
-     * @param name the font name. Any font installed on your system should
-     * be valid. Common examples include "Arial", "Verdana", "Tahoma",
-     * "Times New Roman", "Georgia", and "Courier New".
-     * @param size the size, in points, of the font
-     * @return the requested Font instance
-     */
-    public static Font getFont(String name, double size) {
-        int isize = (int)Math.floor(size);
-        return getFont(name, Font.PLAIN, isize);
-    }
     
     /**
      * Get a Font instance with the given font family name, style, and size
@@ -55,11 +41,11 @@ public class FontLib {
      * @param size the size, in points, of the font
      * @return the requested Font instance
      */
-    public static Font getFont(String name, int style, int size) {
-        int key = (name.hashCode()<<8)+(size<<2)+style;
+    public static Font getFont(String name, int size) {
+        int key = (name.hashCode()<<8)+(size<<2);
         Font f = null;
         if ( (f=(Font)fontMap.get(key)) == null ) {
-            f = new Font(name, style, size);
+            f = new Font(name, size);
             fontMap.put(key, f);
             misses++;
         }
@@ -103,7 +89,8 @@ public class FontLib {
      */
     public static Font getIntermediateFont(Font f1, Font f2, double frac) {
         String name;
-        int size, style;
+        int size;
+        String style;
         if ( frac < 0.5 ) {
             name  = f1.getName();
             style = f1.getStyle();
@@ -112,7 +99,7 @@ public class FontLib {
             style = f2.getStyle();
         }
         size = (int)Math.round(frac*f2.getSize()+(1-frac)*f1.getSize());
-        return getFont(name,style,size);
+        return getFont(name,size);
     }
     
 } // end of class FontLib

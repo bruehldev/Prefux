@@ -11,12 +11,12 @@ public class SpringForce extends AbstractForce {
     private static String[] pnames 
         = new String[] { "SpringCoefficient", "DefaultSpringLength" };
     
-    public static final float DEFAULT_SPRING_COEFF = 1E-4f;
-    public static final float DEFAULT_MAX_SPRING_COEFF = 1E-3f;
-    public static final float DEFAULT_MIN_SPRING_COEFF = 1E-5f;
-    public static final float DEFAULT_SPRING_LENGTH = 50;
-    public static final float DEFAULT_MIN_SPRING_LENGTH = 0;
-    public static final float DEFAULT_MAX_SPRING_LENGTH = 200;
+    public static final double DEFAULT_SPRING_COEFF = 1E-4f;
+    public static final double DEFAULT_MAX_SPRING_COEFF = 1E-3f;
+    public static final double DEFAULT_MIN_SPRING_COEFF = 1E-5f;
+    public static final double DEFAULT_SPRING_LENGTH = 50;
+    public static final double DEFAULT_MIN_SPRING_LENGTH = 0;
+    public static final double DEFAULT_MAX_SPRING_LENGTH = 200;
     public static final int SPRING_COEFF = 0;
     public static final int SPRING_LENGTH = 1;
     
@@ -27,11 +27,11 @@ public class SpringForce extends AbstractForce {
      * @param defaultLength the default spring length to use. This will
      * be used if the spring's own length is less than zero.
      */
-    public SpringForce(float springCoeff, float defaultLength) {
-        params = new float[] { springCoeff, defaultLength };
-        minValues = new float[] 
+    public SpringForce(double springCoeff, double defaultLength) {
+        params = new double[] { springCoeff, defaultLength };
+        minValues = new double[] 
             { DEFAULT_MIN_SPRING_COEFF, DEFAULT_MIN_SPRING_LENGTH };
-        maxValues = new float[] 
+        maxValues = new double[] 
             { DEFAULT_MAX_SPRING_COEFF, DEFAULT_MAX_SPRING_LENGTH };
     }
     
@@ -65,18 +65,18 @@ public class SpringForce extends AbstractForce {
     public void getForce(Spring s) {
         ForceItem item1 = s.item1;
         ForceItem item2 = s.item2;
-        float length = (s.length < 0 ? params[SPRING_LENGTH] : s.length);
-        float x1 = item1.location[0], y1 = item1.location[1];
-        float x2 = item2.location[0], y2 = item2.location[1];
-        float dx = x2-x1, dy = y2-y1;
-        float r  = (float)Math.sqrt(dx*dx+dy*dy);
+        double length = (s.length < 0 ? params[SPRING_LENGTH] : s.length);
+        double x1 = item1.location[0], y1 = item1.location[1];
+        double x2 = item2.location[0], y2 = item2.location[1];
+        double dx = x2-x1, dy = y2-y1;
+        double r  = (double)Math.sqrt(dx*dx+dy*dy);
         if ( r == 0.0 ) {
-            dx = ((float)Math.random()-0.5f) / 50.0f;
-            dy = ((float)Math.random()-0.5f) / 50.0f;
-            r  = (float)Math.sqrt(dx*dx+dy*dy);
+            dx = ((double)Math.random()-0.5f) / 50.0f;
+            dy = ((double)Math.random()-0.5f) / 50.0f;
+            r  = (double)Math.sqrt(dx*dx+dy*dy);
         }
-        float d  = r-length;
-        float coeff = (s.coeff < 0 ? params[SPRING_COEFF] : s.coeff)*d/r;
+        double d  = r-length;
+        double coeff = (s.coeff < 0 ? params[SPRING_COEFF] : s.coeff)*d/r;
         item1.force[0] += coeff*dx;
         item1.force[1] += coeff*dy;
         item2.force[0] += -coeff*dx;

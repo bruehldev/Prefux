@@ -1,14 +1,16 @@
 package prefuse.visual;
 
-import java.awt.BasicStroke;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.geom.Rectangle2D;
-
+//import java.awt.BasicStroke;
+//import java.awt.Font;
+//import java.awt.Graphics2D;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.text.Font;
 import prefuse.Visualization;
 import prefuse.data.Schema;
 import prefuse.data.Tuple;
 import prefuse.data.tuple.TupleSet;
+import prefuse.data.util.Rectangle2D;
 import prefuse.render.Renderer;
 import prefuse.util.PrefuseLib;
 
@@ -90,7 +92,8 @@ public interface VisualItem extends Tuple {
      * RendererFactory, and then using the Renderer to draw this item.
      * @param g the graphics context to render into.
      */
-    public void render(Graphics2D g);
+    public void render(Parent g);
+    
     
     /**
      * Get the Renderer instance for drawing this VisualItem. The Renderer is
@@ -659,17 +662,7 @@ public interface VisualItem extends Tuple {
     
     // ------------------------------------------------------------------------
     
-    /**
-     * Get the current stroke used to draw lines and shape outlines.
-     * @return the stroke used to draw lines and shape outlines
-     */
-    public BasicStroke getStroke();
     
-    /**
-     * Set the current stroke used to draw lines and shape outlines.
-     * @param stroke the stroke to use to draw lines and shape outlines
-     */
-    public void setStroke(BasicStroke stroke);
     
     // ------------------------------------------------------------------------
     
@@ -744,6 +737,16 @@ public interface VisualItem extends Tuple {
      * @see #DOI
      */
     public void setDOI(double doi);
+    
+    /**
+     * Returns the style (in JavaFX the css class) to use for rendering this
+     * item.
+     * @return
+     */
+    public String getStyle();
+    
+    public void setStyle(String style);
+    
     
     // ------------------------------------------------------------------------
     // VisualItem Base Schema
@@ -850,6 +853,9 @@ public interface VisualItem extends Tuple {
     /** The doi data field */
     public static final String DOI
         = PrefuseLib.FIELD_PREFIX+"doi";
+    /** The style data field */  
+	public static final String STYLE = PrefuseLib.FIELD_PREFIX+"style";
+
     
     /** A permanent, locked copy of the base VisualItem schema */
     public static final Schema SCHEMA
@@ -912,5 +918,11 @@ public interface VisualItem extends Tuple {
      * Not included in the VisualItem schema by default */
     public static final String ENDY2
         = PrefuseLib.getEndField(Y2);
+    
+    
+	
+	public Node getNode();
+	
+	public void setNode(Node node);
     
 } // end of interface VisualItem

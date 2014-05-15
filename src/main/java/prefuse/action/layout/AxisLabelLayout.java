@@ -1,10 +1,10 @@
 package prefuse.action.layout;
 
-import java.awt.geom.Rectangle2D;
 import java.text.NumberFormat;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
+import javafx.geometry.Rectangle2D;
 import prefuse.Constants;
 import prefuse.data.Schema;
 import prefuse.data.query.ObjectRangeModel;

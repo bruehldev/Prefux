@@ -1,8 +1,10 @@
 package prefuse.action.assignment;
 
-import java.awt.Font;
+//import java.awt.Font;
 import java.util.logging.Logger;
 
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
 import prefuse.action.EncoderAction;
 import prefuse.data.expression.Predicate;
 import prefuse.data.expression.parser.ExpressionParser;
@@ -31,7 +33,7 @@ import prefuse.visual.VisualItem;
  */
 public class FontAction extends EncoderAction {
 
-    protected Font defaultFont = FontLib.getFont("SansSerif",Font.PLAIN,10);
+    protected javafx.scene.text.Font defaultFont = FontLib.getFont("SansSerif",10);
     
     /**
      * Create a new FontAction that processes all data groups.
@@ -135,8 +137,8 @@ public class FontAction extends EncoderAction {
      * @see prefuse.action.ItemAction#process(prefuse.visual.VisualItem, double)
      */
     public void process(VisualItem item, double frac) {
-        Font f = getFont(item);
-        Font o = item.getFont();
+    	javafx.scene.text.Font f = getFont(item);
+        javafx.scene.text.Font o = item.getFont();
         item.setStartFont(o);
         item.setEndFont(f);
         item.setFont(f);
@@ -148,13 +150,13 @@ public class FontAction extends EncoderAction {
      * @param item the VisualItem for which to get the Font
      * @return the Font for the given item
      */
-    public Font getFont(VisualItem item) {
+    public javafx.scene.text.Font getFont(VisualItem item) {
         Object o = lookup(item);
         if ( o != null ) {
             if ( o instanceof FontAction ) {
                 return ((FontAction)o).getFont(item);
             } else if ( o instanceof Font ) {
-                return (Font)o;
+                return (javafx.scene.text.Font)o;
             } else {
                 Logger.getLogger(this.getClass().getName())
                     .warning("Unrecognized Object from predicate chain.");

@@ -23,14 +23,14 @@ public class Spring {
      * Create a new Spring instance
      * @param fi1 the first ForceItem endpoint
      * @param fi2 the second ForceItem endpoint
-     * @param k the spring tension co-efficient
-     * @param len the spring's resting length
+     * @param d the spring tension co-efficient
+     * @param e the spring's resting length
      */
-    public Spring(ForceItem fi1, ForceItem fi2, float k, float len) {
+    public Spring(ForceItem fi1, ForceItem fi2, double d, double e) {
         item1 = fi1;
         item2 = fi2;
-        coeff = k;
-        length = len;
+        coeff = d;
+        length = e;
     }
     
     /** The first ForceItem endpoint */
@@ -38,9 +38,9 @@ public class Spring {
     /** The second ForceItem endpoint */
     public ForceItem item2;
     /** The spring's resting length */
-    public float length;
+    public double length;
     /** The spring tension co-efficient */
-    public float coeff;
+    public double coeff;
     
     /**
      * The SpringFactory is responsible for generating Spring instances
@@ -54,16 +54,16 @@ public class Spring {
         /**
          * Get a Spring instance and set it to the given parameters.
          */
-        public Spring getSpring(ForceItem f1, ForceItem f2, float k, float length) {
+        public Spring getSpring(ForceItem f1, ForceItem f2, double d, double e) {
             if ( springs.size() > 0 ) {
                 Spring s = (Spring)springs.remove(springs.size()-1);
                 s.item1 = f1;
                 s.item2 = f2;
-                s.coeff = k;
-                s.length = length;
+                s.coeff = d;
+                s.length = e;
                 return s;
             } else {
-                return new Spring(f1,f2,k,length);
+                return new Spring(f1,f2,d,e);
             }
         }
         /**

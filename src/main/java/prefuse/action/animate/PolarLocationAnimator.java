@@ -1,6 +1,6 @@
 package prefuse.action.animate;
 
-import java.awt.geom.Point2D;
+import prefuse.data.util.Point2D;
 
 import prefuse.Display;
 import prefuse.action.ItemAction;
@@ -16,7 +16,7 @@ import prefuse.visual.VisualItem;
  */
 public class PolarLocationAnimator extends ItemAction {
     
-    private Point2D m_anchor = new Point2D.Double();
+    private Point2D m_anchor = new Point2D();
     private String  m_linear = null;
     
     // temp variables
@@ -58,7 +58,7 @@ public class PolarLocationAnimator extends ItemAction {
 
     private void setAnchor() {
         Display d = getVisualization().getDisplay(0);
-        m_anchor.setLocation(d.getWidth()/2,d.getHeight()/2);
+        m_anchor = new Point2D(d.getWidth()/2,d.getHeight()/2);
         d.getAbsoluteCoordinate(m_anchor, m_anchor);
         ax = m_anchor.getX();
         ay = m_anchor.getY();

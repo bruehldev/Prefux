@@ -1,9 +1,9 @@
 package prefuse.action.layout.graph;
 
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
+import prefuse.data.util.Point2D;
 import java.util.Arrays;
 
+import javafx.geometry.Rectangle2D;
 import prefuse.Constants;
 import prefuse.Display;
 import prefuse.data.Graph;
@@ -183,25 +183,25 @@ public class NodeLinkTreeLayout extends TreeLayout {
         if ( m_anchor != null )
             return m_anchor;
         
-        m_tmpa.setLocation(0,0);
+        m_tmpa= new Point2D(0,0);
         if ( m_vis != null ) {
             Display d = m_vis.getDisplay(0);
             Rectangle2D b = this.getLayoutBounds();
             switch ( m_orientation ) {
             case Constants.ORIENT_LEFT_RIGHT:
-                m_tmpa.setLocation(m_offset, d.getHeight()/2.0);
+                m_tmpa= new Point2D(m_offset, d.getHeight()/2.0);
                 break;
             case Constants.ORIENT_RIGHT_LEFT:
-                m_tmpa.setLocation(b.getMaxX()-m_offset, d.getHeight()/2.0);
+                m_tmpa= new Point2D(b.getMaxX()-m_offset, d.getHeight()/2.0);
                 break;
             case Constants.ORIENT_TOP_BOTTOM:
-                m_tmpa.setLocation(d.getWidth()/2.0, m_offset);
+                m_tmpa= new Point2D(d.getWidth()/2.0, m_offset);
                 break;
             case Constants.ORIENT_BOTTOM_TOP:
-                m_tmpa.setLocation(d.getWidth()/2.0, b.getMaxY()-m_offset);
+                m_tmpa= new Point2D(d.getWidth()/2.0, b.getMaxY()-m_offset);
                 break;
             }
-            d.getInverseTransform().transform(m_tmpa, m_tmpa);
+            //d.getInverseTransform().transform(m_tmpa, m_tmpa);
         }
         return m_tmpa;
     }

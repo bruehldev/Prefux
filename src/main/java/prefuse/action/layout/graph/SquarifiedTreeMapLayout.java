@@ -1,12 +1,12 @@
 package prefuse.action.layout.graph;
 
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
+import javafx.geometry.Rectangle2D;
 import prefuse.data.Graph;
 import prefuse.data.Schema;
 import prefuse.data.tuple.TupleSet;
@@ -57,7 +57,7 @@ public class SquarifiedTreeMapLayout extends TreeLayout {
     };
     private ArrayList m_kids = new ArrayList();
     private ArrayList m_row  = new ArrayList();
-    private Rectangle2D m_r  = new Rectangle2D.Double();
+    private Rectangle2D m_r  = Rectangle2D.EMPTY;
     
     private double m_frame; // space between parents border and children
     
@@ -113,7 +113,7 @@ public class SquarifiedTreeMapLayout extends TreeLayout {
         // setup
         NodeItem root = getLayoutRoot();
         Rectangle2D b = getLayoutBounds();
-        m_r.setRect(b.getX(), b.getY(), b.getWidth()-1, b.getHeight()-1);
+        m_r = new Rectangle2D(b.getMinX(), b.getMinY(), b.getWidth()-1, b.getHeight()-1);
         
         // process size values
         computeAreas(root);
@@ -206,7 +206,7 @@ public class SquarifiedTreeMapLayout extends TreeLayout {
         Rectangle2D b = n.getBounds();
         if ( m_frame == 0.0 ) {
             // if no framing, simply update bounding rectangle
-            r.setRect(b);
+            r= b;
             return;
         }
         
@@ -229,7 +229,7 @@ public class SquarifiedTreeMapLayout extends TreeLayout {
         }
         
         // set bounding rectangle and return
-        r.setRect(b.getX()+m_frame,       b.getY()+m_frame, 
+        r = new Rectangle2D(b.getMinX()+m_frame,       b.getMinY()+m_frame, 
                   b.getWidth()-2*m_frame, b.getHeight()-2*m_frame);
         return;
     }
@@ -284,7 +284,7 @@ public class SquarifiedTreeMapLayout extends TreeLayout {
         Iterator rowIter = row.iterator();
         while ( rowIter.hasNext() )
             s += ((VisualItem)rowIter.next()).getDouble(AREA);
-        double x = r.getX(), y = r.getY(), d = 0;
+        double x = r.getMinX(), y = r.getMinY(), d = 0;
         double h = w==0 ? 0 : s/w;
         boolean horiz = (w == r.getWidth());
         
@@ -311,9 +311,9 @@ public class SquarifiedTreeMapLayout extends TreeLayout {
         }
         // update space available in rectangle r
         if ( horiz )
-            r.setRect(x,y+h,r.getWidth(),r.getHeight()-h);
+            r = new Rectangle2D(x,y+h,r.getWidth(),r.getHeight()-h);
         else
-            r.setRect(x+h,y,r.getWidth()-h,r.getHeight());
+            r = new Rectangle2D(x+h,y,r.getWidth()-h,r.getHeight());
         return r;
     }
     

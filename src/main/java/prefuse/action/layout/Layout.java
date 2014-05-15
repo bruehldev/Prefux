@@ -1,9 +1,9 @@
 package prefuse.action.layout;
 
 import java.awt.Insets;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
+import prefuse.data.util.Point2D;
 
+import javafx.geometry.Rectangle2D;
 import prefuse.Display;
 import prefuse.action.GroupAction;
 import prefuse.util.PrefuseLib;
@@ -25,8 +25,8 @@ public abstract class Layout extends GroupAction {
     protected boolean     m_margin = false;
     protected Insets      m_insets = new Insets(0,0,0,0);
     protected double[]    m_bpts   = new double[4];
-    protected Rectangle2D m_tmpb   = new Rectangle2D.Double();
-    protected Point2D     m_tmpa   = new Point2D.Double();
+    protected Rectangle2D m_tmpb   = Rectangle2D.EMPTY;
+    protected Point2D     m_tmpa   = new Point2D();
     
     // ------------------------------------------------------------------------
     
@@ -81,13 +81,13 @@ public abstract class Layout extends GroupAction {
         if ( m_vis != null && m_vis.getDisplayCount() > 0 )
         {
             Display d = m_vis.getDisplay(0);
-            Insets i = m_margin ? m_insets : d.getInsets(m_insets);
-            m_bpts[0] = i.left; 
-            m_bpts[1] = i.top;
-            m_bpts[2] = d.getWidth()-i.right;
-            m_bpts[3] = d.getHeight()-i.bottom;
-            d.getInverseTransform().transform(m_bpts,0,m_bpts,0,2);
-            m_tmpb.setRect(m_bpts[0],m_bpts[1],
+            //Insets i = m_margin ? m_insets : d.getInsets(m_insets);
+            //m_bpts[0] = i.left; 
+            //m_bpts[1] = i.top;
+            //m_bpts[2] = d.getWidth()-i.right;
+            //m_bpts[3] = d.getHeight()-i.bottom;
+            //d.getInverseTransform().transform(m_bpts,0,m_bpts,0,2);
+            m_tmpb = new Rectangle2D(m_bpts[0],m_bpts[1],
                           m_bpts[2]-m_bpts[0],
                           m_bpts[3]-m_bpts[1]);
             return m_tmpb;
@@ -119,11 +119,11 @@ public abstract class Layout extends GroupAction {
         if ( m_anchor != null )
             return m_anchor;
         
-        m_tmpa.setLocation(0,0);
+        m_tmpa= new Point2D(0,0);
         if ( m_vis != null ) {
             Display d = m_vis.getDisplay(0);
-            m_tmpa.setLocation(d.getWidth()/2.0,d.getHeight()/2.0);
-            d.getInverseTransform().transform(m_tmpa, m_tmpa);
+            m_tmpa= new Point2D(d.getWidth()/2.0,d.getHeight()/2.0);
+            //d.getInverseTransform().transform(m_tmpa, m_tmpa);
         }
         return m_tmpa;
     }

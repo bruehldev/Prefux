@@ -36,23 +36,23 @@ public class NBodyForce extends AbstractForce {
     private static String[] pnames = new String[] { "GravitationalConstant", 
             "Distance", "BarnesHutTheta"  };
     
-    public static final float DEFAULT_GRAV_CONSTANT = -1.0f;
-    public static final float DEFAULT_MIN_GRAV_CONSTANT = -10f;
-    public static final float DEFAULT_MAX_GRAV_CONSTANT = 10f;
+    public static final double DEFAULT_GRAV_CONSTANT = -1.0f;
+    public static final double DEFAULT_MIN_GRAV_CONSTANT = -10f;
+    public static final double DEFAULT_MAX_GRAV_CONSTANT = 10f;
     
-    public static final float DEFAULT_DISTANCE = -1f;
-    public static final float DEFAULT_MIN_DISTANCE = -1f;
-    public static final float DEFAULT_MAX_DISTANCE = 500f;
+    public static final double DEFAULT_DISTANCE = -1f;
+    public static final double DEFAULT_MIN_DISTANCE = -1f;
+    public static final double DEFAULT_MAX_DISTANCE = 500f;
     
-    public static final float DEFAULT_THETA = 0.9f;
-    public static final float DEFAULT_MIN_THETA = 0.0f;
-    public static final float DEFAULT_MAX_THETA = 1.0f;
+    public static final double DEFAULT_THETA = 0.9f;
+    public static final double DEFAULT_MIN_THETA = 0.0f;
+    public static final double DEFAULT_MAX_THETA = 1.0f;
     
     public static final int GRAVITATIONAL_CONST = 0;
     public static final int MIN_DISTANCE = 1;
     public static final int BARNES_HUT_THETA = 2;
     
-    private float xMin, xMax, yMin, yMax;
+    private double xMin, xMax, yMin, yMax;
     private QuadTreeNodeFactory factory = new QuadTreeNodeFactory();
     private QuadTreeNode root;
     
@@ -76,11 +76,11 @@ public class NBodyForce extends AbstractForce {
      * an aggregated mass is used rather than drilling down to individual
      * item mass values.
      */
-    public NBodyForce(float gravConstant, float minDistance, float theta) {
-        params = new float[] { gravConstant, minDistance, theta };
-        minValues = new float[] { DEFAULT_MIN_GRAV_CONSTANT,
+    public NBodyForce(double gravConstant, double minDistance, double theta) {
+        params = new double[] { gravConstant, minDistance, theta };
+        minValues = new double[] { DEFAULT_MIN_GRAV_CONSTANT,
             DEFAULT_MIN_DISTANCE, DEFAULT_MIN_THETA };
-        maxValues = new float[] { DEFAULT_MAX_GRAV_CONSTANT,
+        maxValues = new double[] { DEFAULT_MAX_GRAV_CONSTANT,
             DEFAULT_MAX_DISTANCE, DEFAULT_MAX_THETA };
         root = factory.getQuadTreeNode();
     }
@@ -107,7 +107,7 @@ public class NBodyForce extends AbstractForce {
      * @param xMax the maximum x-coordinate
      * @param yMax the maximum y-coordinate
      */
-    private void setBounds(float xMin, float yMin, float xMax, float yMax) {
+    private void setBounds(double xMin, double yMin, double xMax, double yMax) {
         this.xMin = xMin;
         this.yMin = yMin;
         this.xMax = xMax;
@@ -140,19 +140,19 @@ public class NBodyForce extends AbstractForce {
         clear(); // clear internal state
         
         // compute and squarify bounds of quadtree
-        float x1 = Float.MAX_VALUE, y1 = Float.MAX_VALUE;
-        float x2 = Float.MIN_VALUE, y2 = Float.MIN_VALUE;
+        double x1 = Float.MAX_VALUE, y1 = Float.MAX_VALUE;
+        double x2 = Float.MIN_VALUE, y2 = Float.MIN_VALUE;
         Iterator itemIter = fsim.getItems();
         while ( itemIter.hasNext() ) {
             ForceItem item = (ForceItem)itemIter.next();
-            float x = item.location[0];
-            float y = item.location[1];
+            double x = item.location[0];
+            double y = item.location[1];
             if ( x < x1 ) x1 = x;
             if ( y < y1 ) y1 = y;
             if ( x > x2 ) x2 = x;
             if ( y > y2 ) y2 = y;
         }
-        float dx = x2-x1, dy = y2-y1;
+        double dx = x2-x1, dy = y2-y1;
         if ( dx > dy ) { y2 = y1 + dx; } else { x2 = x1 + dy; }
         setBounds(x1,y1,x2,y2);
         
@@ -184,7 +184,7 @@ public class NBodyForce extends AbstractForce {
     }
 
     private void insert(ForceItem p, QuadTreeNode n, 
-                        float x1, float y1, float x2, float y2)
+                        double x1, double y1, double x2, double y2)
     {
         // try to insert particle p at node n in the quadtree
         // by construction, each leaf will contain either 1 or 0 particles
@@ -207,17 +207,17 @@ public class NBodyForce extends AbstractForce {
     }
     
     private static boolean isSameLocation(ForceItem f1, ForceItem f2) {
-        float dx = Math.abs(f1.location[0]-f2.location[0]);
-        float dy = Math.abs(f1.location[1]-f2.location[1]);
+        double dx = Math.abs(f1.location[0]-f2.location[0]);
+        double dy = Math.abs(f1.location[1]-f2.location[1]);
         return ( dx < 0.01 && dy < 0.01 );
     }
     
     private void insertHelper(ForceItem p, QuadTreeNode n, 
-                              float x1, float y1, float x2, float y2)
+                              double x1, double y1, double x2, double y2)
     {   
-        float x = p.location[0], y = p.location[1];
-        float splitx = (x1+x2)/2;
-        float splity = (y1+y2)/2;
+        double x = p.location[0], y = p.location[1];
+        double splitx = (x1+x2)/2;
+        double splity = (y1+y2)/2;
         int i = (x>=splitx ? 1 : 0) + (y>=splity ? 2 : 0);
         // create new child node, if necessary
         if ( n.children[i] == null ) {
@@ -232,7 +232,7 @@ public class NBodyForce extends AbstractForce {
     }
 
     private void calcMass(QuadTreeNode n) {
-        float xcom = 0, ycom = 0;
+        double xcom = 0, ycom = 0;
         n.mass = 0;
         if ( n.hasChildren ) {
             for ( int i=0; i < n.children.length; i++ ) {
@@ -267,17 +267,17 @@ public class NBodyForce extends AbstractForce {
     }
     
     private void forceHelper(ForceItem item, QuadTreeNode n, 
-                             float x1, float y1, float x2, float y2)
+                             double x1, double y1, double x2, double y2)
     {
-        float dx = n.com[0] - item.location[0];
-        float dy = n.com[1] - item.location[1];
-        float r  = (float)Math.sqrt(dx*dx+dy*dy);
+        double dx = n.com[0] - item.location[0];
+        double dy = n.com[1] - item.location[1];
+        double r  = (double)Math.sqrt(dx*dx+dy*dy);
         boolean same = false;
         if ( r == 0.0f ) {
             // if items are in the exact same place, add some noise
             dx = (rand.nextFloat()-0.5f) / 50.0f;
             dy = (rand.nextFloat()-0.5f) / 50.0f;
-            r  = (float)Math.sqrt(dx*dx+dy*dy);
+            r  = (double)Math.sqrt(dx*dx+dy*dy);
             same = true;
         }
         boolean minDist = params[MIN_DISTANCE]>0f && r>params[MIN_DISTANCE];
@@ -291,14 +291,14 @@ public class NBodyForce extends AbstractForce {
             if ( minDist ) return;
             // either only 1 particle or we meet criteria
             // for Barnes-Hut approximation, so calc force
-            float v = params[GRAVITATIONAL_CONST]*item.mass*n.mass 
+            double v = params[GRAVITATIONAL_CONST]*item.mass*n.mass 
                         / (r*r*r);
             item.force[0] += v*dx;
             item.force[1] += v*dy;
         } else if ( n.hasChildren ) {
             // recurse for more accurate calculation
-            float splitx = (x1+x2)/2;
-            float splity = (y1+y2)/2;
+            double splitx = (x1+x2)/2;
+            double splity = (y1+y2)/2;
             for ( int i=0; i<n.children.length; i++ ) {
                 if ( n.children[i] != null ) {
                     forceHelper(item, n.children[i],
@@ -308,7 +308,7 @@ public class NBodyForce extends AbstractForce {
             }
             if ( minDist ) return;
             if ( n.value != null && n.value != item ) {
-                float v = params[GRAVITATIONAL_CONST]*item.mass*n.value.mass
+                double v = params[GRAVITATIONAL_CONST]*item.mass*n.value.mass
                             / (r*r*r);
                 item.force[0] += v*dx;
                 item.force[1] += v*dy;
@@ -321,12 +321,12 @@ public class NBodyForce extends AbstractForce {
      */
     public static final class QuadTreeNode {
         public QuadTreeNode() {
-            com = new float[] {0.0f, 0.0f};
+            com = new double[] {0.0f, 0.0f};
             children = new QuadTreeNode[4];
         } //
         boolean hasChildren = false;
-        float mass; // total mass held by this node
-        float[] com; // center of mass of this node 
+        double mass; // total mass held by this node
+        double[] com; // center of mass of this node 
         ForceItem value; // ForceItem in this node, null if node has children
         QuadTreeNode[] children; // children nodes
     } // end of inner class QuadTreeNode

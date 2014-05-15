@@ -1,13 +1,17 @@
 package prefuse;
 
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javafx.geometry.Rectangle2D;
 import prefuse.action.Action;
 import prefuse.activity.Activity;
 import prefuse.activity.ActivityMap;
@@ -156,6 +160,8 @@ import prefuse.visual.tuple.TableNodeItem;
  * @author <a href="http://jheer.org">jeffrey heer</a>
  */
 public class Visualization {
+	
+	private static final Logger log = LoggerFactory.getLogger(Visualization.class);
     
     /** Data group name for indicating all groups */
     public static final String ALL_ITEMS 
@@ -172,9 +178,9 @@ public class Visualization {
     
     // visual abstraction
     // filtered tables and groups
-    private Map m_visual;
-    private Map m_source;
-    private Map m_focus;
+    private Map<String, VisualTupleSet> m_visual;
+    private Map<String, TupleSet> m_source;
+    private Map<String, TupleSet> m_focus;
     
     // actions
     private ActivityMap m_actions;
@@ -183,7 +189,7 @@ public class Visualization {
     private RendererFactory m_renderers;
     
     // displays
-    private ArrayList m_displays;
+    private ArrayList<Display> m_displays;
     
     // ------------------------------------------------------------------------
     // Constructor
@@ -194,10 +200,10 @@ public class Visualization {
     public Visualization() {
         m_actions = new ActivityMap();
         m_renderers = new DefaultRendererFactory();
-        m_visual = new LinkedHashMap();
-        m_source = new HashMap();
-        m_focus = new HashMap();
-        m_displays = new ArrayList();
+        m_visual = new LinkedHashMap<String, VisualTupleSet>();
+        m_source = new HashMap<String, TupleSet>();
+        m_focus = new HashMap<String, TupleSet>();
+        m_displays = new ArrayList<Display>();
         
         addFocusGroup(Visualization.FOCUS_ITEMS,    new DefaultTupleSet());
         addFocusGroup(Visualization.SELECTED_ITEMS, new DefaultTupleSet());
@@ -678,7 +684,7 @@ public class Visualization {
         TupleSet ts = getFocusGroup(group);
         if ( ts != null ) {
             // invalidate the item to reflect group membership change
-            for ( Iterator items = ts.tuples(ValidatedPredicate.TRUE);
+            for ( Iterator<Tuple> items = ts.tuples(ValidatedPredicate.TRUE);
                   items.hasNext(); )
             {
                 ((VisualItem)items.next()).setValidated(false);
@@ -697,7 +703,7 @@ public class Visualization {
         // remove group members from focus sets and invalidate them
         TupleSet[] focus = new TupleSet[m_focus.size()];
         m_focus.values().toArray(focus);
-        for ( Iterator items = ts.tuples(); items.hasNext(); ) {
+        for ( Iterator<Tuple> items = ts.tuples(); items.hasNext(); ) {
             VisualItem item = (VisualItem)items.next();
             for ( int j=0; j<focus.length; ++j ) {
                 focus[j].removeTuple(item);
@@ -707,7 +713,7 @@ public class Visualization {
         // remove data
         if ( ts instanceof CompositeTupleSet ) {
             CompositeTupleSet cts = (CompositeTupleSet)ts;
-            for ( Iterator names = cts.setNames(); names.hasNext(); ) {
+            for ( Iterator<String> names = cts.setNames(); names.hasNext(); ) {
                 String name = (String)names.next();
                 String subgroup = PrefuseLib.getGroupName(group,name); 
                 m_visual.remove(subgroup);
@@ -728,9 +734,9 @@ public class Visualization {
      */
     public synchronized void reset() {
         // first clear out all the focus groups
-        Iterator iter = m_focus.entrySet().iterator();
+        Iterator<Entry<String, TupleSet>> iter = m_focus.entrySet().iterator();
         while ( iter.hasNext() ) {
-            Map.Entry entry = (Map.Entry)iter.next();
+            Map.Entry<String, TupleSet> entry = iter.next();
             TupleSet ts = (TupleSet)entry.getValue();
             ts.clear();
         }
@@ -748,7 +754,7 @@ public class Visualization {
      * data set
      */
     public TupleSet getSourceData(String group) {
-        return (TupleSet)m_source.get(group);
+        return m_source.get(group);
     }
     
     /**
@@ -757,7 +763,7 @@ public class Visualization {
      * data set
      */
     public TupleSet getSourceData(VisualTupleSet ts) {
-        return (TupleSet)m_source.get(ts.getGroup());
+        return m_source.get(ts.getGroup());
     }
     
     /**
@@ -894,8 +900,8 @@ public class Visualization {
      * @param group the visual data group
      * @return the requested data group, or null if not found
      */
-    public TupleSet getVisualGroup(String group) {
-        return (TupleSet)m_visual.get(group);
+    public VisualTupleSet getVisualGroup(String group) {
+        return m_visual.get(group);
     }
     
     /**
@@ -905,7 +911,7 @@ public class Visualization {
      * @return the requested data group, or null if not found
      */
     public TupleSet getFocusGroup(String group) {
-        return (TupleSet)m_focus.get(group);
+        return m_focus.get(group);
     }
     
     /**
@@ -915,7 +921,7 @@ public class Visualization {
      * @param group the visual data group to invalidate
      */
     public void invalidate(String group) {
-        Iterator items = items(group, ValidatedPredicate.TRUE);
+        Iterator<VisualItem> items = items(group, ValidatedPredicate.TRUE);
         while ( items.hasNext() ) {
             VisualItem item = (VisualItem)items.next();
             item.setValidated(false);
@@ -935,7 +941,7 @@ public class Visualization {
      * Get an iterator over all visible items.
      * @return an iterator over all visible items.
      */
-    public Iterator visibleItems() {
+    public Iterator<VisualItem> visibleItems() {
         return items(VisiblePredicate.TRUE);
     }
     
@@ -944,7 +950,7 @@ public class Visualization {
      * @param group the visual data group name
      * @return an iterator over all visible items in the specified group
      */
-    public Iterator visibleItems(String group) {
+    public Iterator<VisualItem> visibleItems(String group) {
         return items(group, VisiblePredicate.TRUE);
     }
     
@@ -952,7 +958,7 @@ public class Visualization {
      * Get an iterator over all items, visible or not.
      * @return an iterator over all items, visible or not.
      */
-    public Iterator items() {
+    public Iterator<VisualItem> items() {
         return items((Predicate)null);
     }
     
@@ -963,18 +969,18 @@ public class Visualization {
      * in the iteration
      * @return a filtered iterator over VisualItems
      */
-    public Iterator items(Predicate filter) {
+    public Iterator<VisualItem> items(Predicate filter) {
         int size = m_visual.size();
         if ( size == 0 ) {
-            return Collections.EMPTY_LIST.iterator();
+            return Collections.emptyIterator();
         } else if ( size == 1 ) {
-            Iterator it = m_visual.keySet().iterator();
-            return items((String)it.next(), filter);
+            Iterator<String> it = m_visual.keySet().iterator();
+            return items(it.next(), filter);
         } else {
             CompositeIterator iter = new CompositeIterator(m_visual.size());
-            Iterator it = m_visual.keySet().iterator();
+            Iterator<String> it = m_visual.keySet().iterator();
             for ( int i=0; it.hasNext(); ) {
-                String group = (String)it.next();
+                String group = it.next();
                 if ( !PrefuseLib.isChildGroup(group) )
                     iter.setIterator(i++, items(group, filter));
             }
@@ -987,7 +993,7 @@ public class Visualization {
      * @param group the visual data group name
      * @return an iterator over all items in the specified group.
      */
-    public Iterator items(String group) {
+    public Iterator<VisualItem> items(String group) {
         return items(group, (Predicate)null);
     }
     
@@ -1002,10 +1008,10 @@ public class Visualization {
      * parse error occurs, an empty iterator is returned.
      * @return a filtered iterator over VisualItems
      */
-    public Iterator items(String group, String expr) {
+    public Iterator<VisualItem> items(String group, String expr) {
         Expression e = ExpressionParser.parse(expr);
         if ( !(e instanceof Predicate) || ExpressionParser.getError()!=null )
-            return Collections.EMPTY_LIST.iterator();
+            return Collections.emptyIterator();
         return items(group, (Predicate)e);
     }
     
@@ -1017,13 +1023,30 @@ public class Visualization {
      * the iteration.
      * @return a filtered iterator over VisualItems
      */
-    public Iterator items(String group, Predicate filter) {
+    public Iterator<VisualItem> items(String group, Predicate filter) {
         if ( ALL_ITEMS.equals(group) )
             return items(filter);
 
         TupleSet t = getGroup(group);
-        return ( t==null ? Collections.EMPTY_LIST.iterator() 
-                         : t.tuples(filter) );
+        return ( t==null ? Collections.emptyIterator() 
+                         : convert(t.tuples(filter)));
+    }
+    
+    public Iterator<VisualItem> convert(Iterator<Tuple> tupleIt) {
+    	return new Iterator<VisualItem>() {
+
+			@Override
+			public boolean hasNext() {
+				return tupleIt.hasNext();
+			}
+
+			@Override
+			public VisualItem next() {
+				Tuple myNext = tupleIt.next();
+				return (myNext instanceof VisualItem) ? (VisualItem)myNext : null;
+			}
+    		
+    	};
     }
     
     // ------------------------------------------------------------------------
@@ -1038,7 +1061,7 @@ public class Visualization {
      * @param val the value to set
      */
     public void setValue(String group, Predicate p, String field, Object val) {
-        Iterator items = items(group, p);
+        Iterator<VisualItem> items = items(group, p);
         while ( items.hasNext() ) {
             VisualItem item = (VisualItem)items.next();
             item.set(field, val);
@@ -1053,7 +1076,7 @@ public class Visualization {
      * @param value the visibility value to set
      */
     public void setVisible(String group, Predicate p, boolean value) {
-        Iterator items = items(group, p);
+        Iterator<VisualItem> items = items(group, p);
         while ( items.hasNext() ) {
             VisualItem item = (VisualItem)items.next();
             item.setVisible(value);
@@ -1068,9 +1091,9 @@ public class Visualization {
      * @param value the interactivity value to set
      */
     public void setInteractive(String group, Predicate p, boolean value) {
-        Iterator items = items(group, p);
+        Iterator<VisualItem> items = items(group, p);
         while ( items.hasNext() ) {
-            VisualItem item = (VisualItem)items.next();
+            VisualItem item = items.next();
             item.setInteractive(value);
         }
     }
@@ -1242,11 +1265,13 @@ public class Visualization {
      * visualization to be repainted.
      */
     public synchronized void repaint() {
-        Iterator items = items(ValidatedPredicate.FALSE);
+    	log.debug("Repaint");
+        Iterator<VisualItem> items = items(ValidatedPredicate.FALSE);
         while ( items.hasNext() ) {
             ((VisualItem)items.next()).validateBounds();
         }
         for ( int i=0; i<m_displays.size(); ++i ) {
+        	log.debug("Repaint Display "+i);
             getDisplay(i).repaint();
         }
     }
@@ -1257,7 +1282,7 @@ public class Visualization {
      * @return the bounding box of the items
      */
     public Rectangle2D getBounds(String group) {
-        return getBounds(group, new Rectangle2D.Double());
+        return getBounds(group, Rectangle2D.EMPTY);
     }
     
     /**
@@ -1268,14 +1293,18 @@ public class Visualization {
      * bounding box
      */
     public Rectangle2D getBounds(String group, Rectangle2D r) {
-        Iterator iter = visibleItems(group);
+        Iterator<VisualItem> iter = visibleItems(group);
         if ( iter.hasNext() ) {
             VisualItem item = (VisualItem)iter.next();
-            r.setRect(item.getBounds());
+            r= item.getBounds();
         }
         while ( iter.hasNext() ) {
             VisualItem item = (VisualItem)iter.next();
-            Rectangle2D.union(item.getBounds(), r, r);
+            double x = Math.min(item.getBounds().getMinX(), r.getMinX());
+            double y = Math.min(item.getBounds().getMinY(), r.getMinY());
+            double x1 = Math.max(item.getBounds().getMaxX(), r.getMaxX());
+            double y1 = Math.max(item.getBounds().getMaxY(), r.getMaxY());
+            r= new Rectangle2D(x,y,x1-x,y1-y);
         }
         return r;
     }
@@ -1307,7 +1336,7 @@ public class Visualization {
      * @return the Display at the given index
      */
     public Display getDisplay(int idx) {
-        return (Display)m_displays.get(idx);
+        return m_displays.get(idx);
     }
     
     /**

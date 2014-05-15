@@ -1,9 +1,9 @@
 package prefuse.action.layout.graph;
 
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
+import prefuse.data.util.Point2D;
 import java.util.Iterator;
 
+import javafx.geometry.Rectangle2D;
 import prefuse.action.layout.Layout;
 import prefuse.data.Graph;
 import prefuse.data.Schema;
@@ -321,8 +321,8 @@ public class ForceDirectedLayout extends Layout {
             VisualItem item = (VisualItem)iter.next();
             ForceItem fitem = (ForceItem)item.get(FORCEITEM);
             if ( fitem != null ) {
-                fitem.location[0] = (float)item.getEndX();
-                fitem.location[1] = (float)item.getEndY();
+                fitem.location[0] = item.getEndX();
+                fitem.location[1] = item.getEndY();
                 fitem.force[0]    = fitem.force[1]    = 0;
                 fitem.velocity[0] = fitem.velocity[1] = 0;
             }
@@ -342,10 +342,10 @@ public class ForceDirectedLayout extends Layout {
             ts.addColumns(FORCEITEM_SCHEMA);
         } catch ( IllegalArgumentException iae ) { /* ignored */ }
         
-        float startX = (referrer == null ? 0f : (float)referrer.getX());
-        float startY = (referrer == null ? 0f : (float)referrer.getY());
-        startX = Float.isNaN(startX) ? 0f : startX;
-        startY = Float.isNaN(startY) ? 0f : startY;
+        double startX = (referrer == null ? 0f : referrer.getX());
+        double startY = (referrer == null ? 0f : referrer.getY());
+        startX = Double.isNaN(startX) ? 0f : startX;
+        startY = Double.isNaN(startY) ? 0f : startY;
        
         Iterator iter = m_vis.visibleItems(m_nodeGroup);
         while ( iter.hasNext() ) {
@@ -354,8 +354,8 @@ public class ForceDirectedLayout extends Layout {
             fitem.mass = getMassValue(item);
             double x = item.getEndX();
             double y = item.getEndY();
-            fitem.location[0] = (Double.isNaN(x) ? startX : (float)x);
-            fitem.location[1] = (Double.isNaN(y) ? startY : (float)y);
+            fitem.location[0] = (Double.isNaN(x) ? startX : x);
+            fitem.location[1] = (Double.isNaN(y) ? startY : y);
             fsim.addItem(fitem);
         }
         if ( m_edgeGroup != null ) {
@@ -366,9 +366,9 @@ public class ForceDirectedLayout extends Layout {
                 ForceItem f1 = (ForceItem)n1.get(FORCEITEM);
                 NodeItem  n2 = e.getTargetItem();
                 ForceItem f2 = (ForceItem)n2.get(FORCEITEM);
-                float coeff = getSpringCoefficient(e);
-                float slen = getSpringLength(e);
-                fsim.addSpring(f1, f2, (coeff>=0?coeff:-1.f), (slen>=0?slen:-1.f));
+                double coeff = getSpringCoefficient(e);
+                double slen = getSpringLength(e);
+                fsim.addSpring(f1, f2, (coeff>=0?coeff:-1.), (slen>=0?slen:-1.));
             }
         }
     }
@@ -380,7 +380,7 @@ public class ForceDirectedLayout extends Layout {
      * @return the mass value for the node. By default, all items are given
      * a mass value of 1.0.
      */
-    protected float getMassValue(VisualItem n) {
+    protected double getMassValue(VisualItem n) {
         return 1.0f;
     }
     
@@ -391,8 +391,8 @@ public class ForceDirectedLayout extends Layout {
      * @return the spring length for the edge. A return value of
      * -1 means to ignore this method and use the global default.
      */
-    protected float getSpringLength(EdgeItem e) {
-        return -1.f;
+    protected double getSpringLength(EdgeItem e) {
+        return -1.;
     }
 
     /**
@@ -403,8 +403,8 @@ public class ForceDirectedLayout extends Layout {
      * @return the spring coefficient for the edge. A return value of
      * -1 means to ignore this method and use the global default.
      */
-    protected float getSpringCoefficient(EdgeItem e) {
-        return -1.f;
+    protected double getSpringCoefficient(EdgeItem e) {
+        return -1.;
     }
     
     /**

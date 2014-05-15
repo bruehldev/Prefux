@@ -9,8 +9,8 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
+import prefuse.data.util.Point2D;
+import prefuse.data.util.Rectangle2D;
 import java.awt.geom.RectangularShape;
 import java.awt.geom.RoundRectangle2D;
 
@@ -76,7 +76,7 @@ public class GraphicsLib {
             double ub = ub_t / u_b;
 
             if ( 0 <= ua && ua <= 1 && 0 <= ub && ub <= 1 ) {
-                intersect.setLocation(a1x+ua*(a2x-a1x), a1y+ua*(a2y-a1y));
+                intersect= new Point2D(a1x+ua*(a2x-a1x), a1y+ua*(a2y-a1y));
                 return 1;
             } else {
                 return NO_INTERSECTION;
@@ -102,8 +102,8 @@ public class GraphicsLib {
         double mxx = r.getMaxX(), mxy = r.getMaxY();
         double mnx = r.getMinX(), mny = r.getMinY();
         
-        if ( pts[0] == null ) pts[0] = new Point2D.Double();
-        if ( pts[1] == null ) pts[1] = new Point2D.Double();
+        if ( pts[0] == null ) pts[0] = new Point2D();
+        if ( pts[1] == null ) pts[1] = new Point2D();
         
         int i = 0;
         if ( intersectLineLine(mnx,mny,mxx,mny,a1x,a1y,a2x,a2y,pts[i]) > 0 ) i++;
@@ -130,8 +130,8 @@ public class GraphicsLib {
         double mxx = r.getMaxX(), mxy = r.getMaxY();
         double mnx = r.getMinX(), mny = r.getMinY();
         
-        if ( pts[0] == null ) pts[0] = new Point2D.Double();
-        if ( pts[1] == null ) pts[1] = new Point2D.Double();
+        if ( pts[0] == null ) pts[0] = new Point2D();
+        if ( pts[1] == null ) pts[1] = new Point2D();
         
         int i = 0;
         if ( intersectLineLine(mnx,mny,mxx,mny,a1x,a1y,a2x,a2y,pts[i]) > 0 ) i++;
@@ -598,7 +598,7 @@ public class GraphicsLib {
      * @param amount the amount by which to expand the rectangle
      */
     public static void expand(Rectangle2D r, double amount) {
-        r.setRect(r.getX()-amount, r.getY()-amount,
+        r = new Rectangle2D(r.getX()-amount, r.getY()-amount,
                   r.getWidth()+2*amount, r.getHeight()+2*amount);
     }
     
@@ -650,7 +650,7 @@ public class GraphicsLib {
         } else {
             // this covers any other arbitrary shapes, but
             // takes a small object allocation / garbage collection hit
-            Rectangle2D r = shape.getBounds2D();
+            Rectangle2D r = Rectangle2D.get(shape.getBounds2D());
             x = r.getX();
             y = r.getY();
             w = r.getWidth();

@@ -1,9 +1,9 @@
 package prefuse.action.distortion;
 
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
+import prefuse.data.util.Point2D;
 import java.util.Iterator;
 
+import javafx.geometry.Rectangle2D;
 import prefuse.action.layout.Layout;
 import prefuse.visual.VisualItem;
 
@@ -16,7 +16,7 @@ import prefuse.visual.VisualItem;
  */
 public abstract class Distortion extends Layout {
 
-    private Point2D m_tmp = new Point2D.Double();
+    private Point2D m_tmp = new Point2D();
     protected boolean m_distortSize = true;
     protected boolean m_distortX = true;
     protected boolean m_distortY = true;
@@ -115,7 +115,7 @@ public abstract class Distortion extends Layout {
         x = (x < x1 ? x1 : (x > x2 ? x2 : x));
         y = (y < y1 ? y1 : (y > y2 ? y2 : y));
         
-        m_tmp.setLocation(x,y);
+        m_tmp = new Point2D(x,y);
         return m_tmp;
     }
     
