@@ -1,0 +1,15 @@
+<body>
+<p>Classes for representing and storing VisualItems. In addition to the top
+level {@link prefux.visual.VisualItem} interface, 
+{@link prefux.visual.NodeItem} and {@link prefux.visual.EdgeItem} provide
+access to an underlying graph structure, {@link prefux.visual.DecoratorItem}
+represents a VisualItem "attached to" or "decorating" another VisualItem,
+and {@link prefux.visual.AggregateItem} represents an aggregated collection
+of VisualItems.</p>
+
+<p>VisualItems descend from the {@link prefux.data.Tuple} interface, and
+as such are actually object proxies for a row of a data table. This package
+includes the corresponding table and graph implementations, which have been tuned
+to the needs of the visual abstraction. More implementational machinery for 
+these types is in the {@link prefux.visual.tuple} package.</p>
+</body>
