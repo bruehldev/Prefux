@@ -1,12 +1,17 @@
 package prefux;
 
+import java.net.URL;
 import java.util.Iterator;
 import java.util.LinkedList;
 
 import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.sun.javafx.css.StyleManager;
 
 import prefux.data.expression.AndPredicate;
 import prefux.data.expression.BooleanLiteral;
@@ -20,6 +25,8 @@ import prefux.visual.expression.VisiblePredicate;
 public class FxDisplay extends Group implements Display {
 
 	private static final Logger log = LoggerFactory.getLogger(FxDisplay.class);
+
+	public static final String DEFAULT_STYLESHEET = "prefux/prefux.css";
 
 	protected AndPredicate m_predicate = new AndPredicate();
 
@@ -111,6 +118,7 @@ public class FxDisplay extends Group implements Display {
 
 	public void setVisualization(Visualization vis) {
 		log.debug("setVisualization");
+		StyleManager.getInstance().addUserAgentStylesheet(DEFAULT_STYLESHEET);
 		vis.addDisplay(this);
 		this.vis = vis;
 		LinkedList<EdgeItem> edges = new LinkedList<>();
@@ -125,7 +133,7 @@ public class FxDisplay extends Group implements Display {
 			}
 		}
 		// Rendering edges after the nodes
-		for(EdgeItem item : edges) {
+		for (EdgeItem item : edges) {
 			item.getRenderer().render(this, item);
 			m_itemCount++;
 		}

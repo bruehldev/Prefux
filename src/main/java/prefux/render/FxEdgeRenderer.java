@@ -1,14 +1,13 @@
 package prefux.render;
 
-
-import javafx.scene.Parent;
+import javafx.application.Platform;
+import javafx.scene.Node;
 import javafx.scene.shape.Line;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import prefux.data.util.Point2D;
-import prefux.util.FxGraphicsLib;
 import prefux.visual.EdgeItem;
 import prefux.visual.VisualItem;
 
@@ -29,35 +28,12 @@ import prefux.visual.VisualItem;
  * @version 1.0
  * @author <a href="http://jheer.org">jeffrey heer</a>
  */
-public class FxEdgeRenderer implements Renderer {
+public class FxEdgeRenderer extends AbstractShapeRenderer implements Renderer {
 
 	private static final Logger log = LoggerFactory
 			.getLogger(FxEdgeRenderer.class);
 
-	/**
-	 * @see prefux.render.AbstractShapeRenderer#getRawShape(prefux.visual.VisualItem)
-	 */
-	public void render(Parent p, VisualItem item) {
-		log.debug("render "+item);
-		EdgeItem edge = (EdgeItem) item;
-		if (item.getNode() == null) {
-			VisualItem item1 = edge.getSourceItem();
-			if (item1.getNode() == null) {
-				item1.render(p);
-			}
-			VisualItem item2 = edge.getTargetItem();
-			if (item2.getNode() == null) {
-				item2.render(p);
-			}
-			Line li = new Line();
-			li.startXProperty().bind(item1.getNode().layoutXProperty());
-			li.startYProperty().bind(item1.getNode().layoutYProperty());
-			li.endXProperty().bind(item2.getNode().layoutXProperty());
-			li.endYProperty().bind(item2.getNode().layoutYProperty());
-			edge.setNode(li);
-			FxGraphicsLib.addToParent(p, li);
-		}
-	}
+	public static final String DEFAULT_STYLE_CLASS="prefux-edge";
 
 	@Override
 	public boolean locatePoint(Point2D p, VisualItem item) {
@@ -67,8 +43,26 @@ public class FxEdgeRenderer implements Renderer {
 
 	@Override
 	public void setBounds(VisualItem item) {
-		log.debug("setBounds " + item);
+		Line line = (Line) item.getNode();
+		EdgeItem edge = (EdgeItem) item;
+		log.debug("Setting bounds " + edge);
+		Platform.runLater(() -> {
+			line.setStartX(edge.getSourceItem().getX());
+			line.setStartY(edge.getSourceItem().getY());
+			line.setEndX(edge.getTargetItem().getX());
+			line.setEndY(edge.getTargetItem().getY());
+		});
 
+	}
+
+	@Override
+	protected Node getRawShape(VisualItem item) {
+		return new Line();
+	}
+	
+	@Override
+	public String getDefaultStyle() {
+		return DEFAULT_STYLE_CLASS;
 	}
 
 } // end of class EdgeRenderer

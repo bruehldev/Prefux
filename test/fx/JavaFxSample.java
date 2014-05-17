@@ -1,18 +1,18 @@
 package fx;
 
-import prefuse.FxDisplay;
-import prefuse.Visualization;
-import prefuse.action.ActionList;
-import prefuse.action.RepaintAction;
-import prefuse.action.layout.graph.ForceDirectedLayout;
-import prefuse.activity.Activity;
-import prefuse.data.Graph;
-import prefuse.data.io.DataIOException;
-import prefuse.data.io.GraphMLReader;
-import prefuse.render.DefaultRendererFactory;
-import prefuse.render.LabelRenderer;
-import prefuse.render.ShapeRenderer;
-import prefuse.render.StackPaneRenderer;
+import prefux.FxDisplay;
+import prefux.Visualization;
+import prefux.action.ActionList;
+import prefux.action.RepaintAction;
+import prefux.action.layout.graph.ForceDirectedLayout;
+import prefux.activity.Activity;
+import prefux.data.Graph;
+import prefux.data.io.DataIOException;
+import prefux.data.io.GraphMLReader;
+import prefux.render.DefaultRendererFactory;
+import prefux.render.LabelRenderer;
+import prefux.render.ShapeRenderer;
+import prefux.render.StackPaneRenderer;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -28,6 +28,7 @@ public class JavaFxSample extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
+
 		primaryStage.setTitle("Hello World!");
 		StackPane root = new StackPane();
 		primaryStage.setScene(new Scene(root, 300, 250));
@@ -39,10 +40,10 @@ public class JavaFxSample extends Application {
 		    Visualization vis = new Visualization();
 		    vis.add("graph", graph);
 		    
-		    //ShapeRenderer sr = new ShapeRenderer();
+		    ShapeRenderer sr = new ShapeRenderer();
 		    LabelRenderer lr = new LabelRenderer("name");
 		    StackPaneRenderer r = new StackPaneRenderer();
-		    //r.add(sr);
+		    r.add(sr);
 		    r.add(lr);
 
 		    // create a new default renderer factory

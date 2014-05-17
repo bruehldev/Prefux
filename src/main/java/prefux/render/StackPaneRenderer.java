@@ -6,16 +6,15 @@ import java.util.List;
 import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import prefux.data.util.Point2D;
 import prefux.util.FxGraphicsLib;
 import prefux.visual.VisualItem;
 
 public class StackPaneRenderer extends ArrayList<Renderer> implements Renderer,
 		List<Renderer> {
+	
+	//private static final Logger log = LoggerFactory.getLogger(StackPaneRenderer.class);
 
 	/**
 	 * 
@@ -33,7 +32,6 @@ public class StackPaneRenderer extends ArrayList<Renderer> implements Renderer,
 		for (Renderer renderer : this) {
 			renderer.render(pane, item);
 		}
-		// pane.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 		FxGraphicsLib.addToParent(g, pane);
 	}
 
@@ -51,14 +49,9 @@ public class StackPaneRenderer extends ArrayList<Renderer> implements Renderer,
 		Node node = item.getNode();
 		if (node != null) {
 			Platform.runLater(() -> {
-				node.setLayoutX(item.getX());
-				node.setLayoutY(item.getY());
+				FxGraphicsLib.setCenterCoord(item.getX(), item.getY(), node);
 			});
 		}
-
-		// for (Renderer renderer : this) {
-		// renderer.setBounds(item);
-		// }
 	}
 
 }

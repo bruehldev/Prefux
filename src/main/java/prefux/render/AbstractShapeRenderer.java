@@ -1,6 +1,7 @@
 package prefux.render;
 
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.transform.Transform;
@@ -73,16 +74,35 @@ public abstract class AbstractShapeRenderer implements Renderer {
 	 * can be called by subclasses in custom rendering routines.
 	 */
 	protected void drawShape(Parent g, VisualItem item, Node shape) {
-		String style = getStyle(item);
-		if (getStyle(item) != null) {
-			if (!shape.getStyleClass().contains(style))
-				shape.getStyleClass().add(style);
+		ObservableList<String> styleClazzes = shape.getStyleClass();
+		String style = getDefaultStyle();
+		if (style!=null && !styleClazzes.contains(style)) {
+			styleClazzes.add(style);
+		}
+		style = getStyle(item);
+		if (getStyle(item) != null && !styleClazzes.contains(style)) {
+			styleClazzes.add(style);
 		}
 		FxGraphicsLib.addToParent(g, shape);
 	}
 
+	
+	/**
+	 * Returns the style class for the given item.
+	 * 
+	 * @param item
+	 * @return
+	 */
 	public String getStyle(VisualItem item) {
 		return item.getStyle();
+	}
+
+	/**
+	 * Returns the default style class for the current rendering.
+	 * @return
+	 */
+	public String getDefaultStyle() {
+		return null;
 	}
 
 	/**

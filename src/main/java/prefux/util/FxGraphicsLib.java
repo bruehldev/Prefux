@@ -1,5 +1,8 @@
 package prefux.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
@@ -14,44 +17,44 @@ import prefux.visual.VisualItem;
 
 public class FxGraphicsLib {
 	
+	private static final Logger log = LoggerFactory.getLogger(FxGraphicsLib.class);
+
 	public static final String BORDER_CLASS = "itemBorder";
 
 	public static void paint(Parent g, VisualItem item, Node shape,
 			String style, int renderType) {
 		HBox myShape = new HBox();
 		myShape.getChildren().add(shape);
-		if (renderType == AbstractShapeRenderer.RENDER_TYPE_DRAW ||
-				renderType == AbstractShapeRenderer.RENDER_TYPE_DRAW_AND_FILL) {
+		if (renderType == AbstractShapeRenderer.RENDER_TYPE_DRAW
+				|| renderType == AbstractShapeRenderer.RENDER_TYPE_DRAW_AND_FILL) {
 			myShape.getStyleClass().add(BORDER_CLASS);
 		}
-		
-		addToParent(g,shape);
+
+		addToParent(g, shape);
 		shape.getStyleClass().add(style);
-		if (renderType == AbstractShapeRenderer.RENDER_TYPE_DRAW_AND_FILL ||
-				renderType == AbstractShapeRenderer.RENDER_TYPE_FILL)
+		if (renderType == AbstractShapeRenderer.RENDER_TYPE_DRAW_AND_FILL
+				|| renderType == AbstractShapeRenderer.RENDER_TYPE_FILL)
 			shape.setVisible(true);
 	}
-	
+
 	public static void addToParent(Parent g, Node child) {
 		if (g instanceof Pane) {
 			Pane p = (Pane) g;
-			if (!find(p,child)) {
+			if (!find(p, child)) {
 				p.getChildren().add(child);
 			}
 		} else if (g instanceof Group) {
 			Group gr = (Group) g;
-			if (!find(gr,child)) {
+			if (!find(gr, child)) {
 				gr.getChildren().add(child);
 			}
 		}
-		
+
 	}
 
-	
 	public static boolean find(Parent p, Node node) {
-		return p.lookupAll("#"+node.getId()).stream().anyMatch(n -> 
-			n.equals(node)
-		);
+		return p.lookupAll("#" + node.getId()).stream()
+				.anyMatch(n -> n.equals(node));
 	}
 
 	public static int intersectLineRectangle(Point2D a1, Point2D a2,
@@ -105,18 +108,36 @@ public class FxGraphicsLib {
 					: GraphicsLib.PARALLEL);
 		}
 	}
-	
+
 	public static final double getCenterX(Rectangle2D rect) {
-		return rect.getMinX()+rect.getWidth()/2;
+		return rect.getMinX() + rect.getWidth() / 2;
 	}
 
 	public static final double getCenterY(Rectangle2D rect) {
-		return rect.getMinY()+rect.getHeight()/2;
+		return rect.getMinY() + rect.getHeight() / 2;
 	}
-	
+
 	public static final void setBounds(VisualItem item, Shape shape) {
 		Bounds bounds = shape.getBoundsInLocal();
-		item.setBounds(bounds.getMinX(), bounds.getMinY(), bounds.getWidth(), bounds.getHeight());
+		item.setBounds(bounds.getMinX(), bounds.getMinY(), bounds.getWidth(),
+				bounds.getHeight());
+	}
+
+	public static final double getCenterX(Bounds bounds) {
+		return bounds.getMinX() + bounds.getWidth() / 2;
+	}
+
+	public static final double getCenterY(Bounds bounds) {
+		return bounds.getMinY() + bounds.getHeight() / 2;
+	}
+	
+	public static final void setCenterCoord(double x, double y, Node node) {
+		double x1 = x-node.getBoundsInParent().getWidth()/2.0;
+		double y1 = y-node.getBoundsInParent().getHeight()/2.0;
+		// log.debug("Relocate: "+x+" / "+y);
+		// log.debug("Center: "+x1+" / "+y1);
+		node.relocate(x1,y1);
+		// log.debug("Real: "+node.getLayoutX()+" / "+node.getLayoutY());
 	}
 
 }

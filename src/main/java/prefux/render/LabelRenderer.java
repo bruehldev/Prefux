@@ -6,7 +6,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.text.Text;
 import prefux.Constants;
 import prefux.visual.VisualItem;
 
@@ -75,6 +74,8 @@ public class LabelRenderer extends AbstractShapeRenderer {
 	protected Label txt;
 	protected ImageView img;
 	protected Pane pane;
+	
+	public static final String DEFAULT_STYLE_CLASS="prefux-label";
 
 	/**
 	 * Create a new LabelRenderer. By default the field "label" is used as the
@@ -516,6 +517,11 @@ public class LabelRenderer extends AbstractShapeRenderer {
 	 */
 	public void setImageTextPadding(int pad) {
 		m_imageMargin = pad;
+	}
+	
+	@Override
+	public String getDefaultStyle() {
+		return DEFAULT_STYLE_CLASS;
 	}
 
 
