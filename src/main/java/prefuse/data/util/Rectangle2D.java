@@ -2,6 +2,8 @@ package prefuse.data.util;
 
 public class Rectangle2D extends javafx.geometry.Rectangle2D {
 
+	public static final Rectangle2D EMPTY = new Rectangle2D(0, 0, 0, 0);
+	
 	public Rectangle2D(double minX, double minY, double width, double height) {
 		super(minX, minY, width, height);
 	}

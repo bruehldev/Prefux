@@ -1,10 +1,8 @@
 package prefuse.render;
 
-//import java.awt.Graphics2D;
-//import prefuse.data.util.Point2D;
-import javafx.geometry.Point2D;
-import javafx.scene.Node;
+
 import javafx.scene.Parent;
+import prefuse.data.util.Point2D;
 import prefuse.visual.VisualItem;
 
 

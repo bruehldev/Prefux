@@ -11,7 +11,6 @@ import java.util.Map.Entry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javafx.geometry.Rectangle2D;
 import prefuse.action.Action;
 import prefuse.activity.Activity;
 import prefuse.activity.ActivityMap;
@@ -28,6 +27,7 @@ import prefuse.data.tuple.CompositeTupleSet;
 import prefuse.data.tuple.DefaultTupleSet;
 import prefuse.data.tuple.TupleManager;
 import prefuse.data.tuple.TupleSet;
+import prefuse.data.util.Rectangle2D;
 import prefuse.render.DefaultRendererFactory;
 import prefuse.render.Renderer;
 import prefuse.render.RendererFactory;

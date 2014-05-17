@@ -2,6 +2,7 @@ package prefuse.render;
 
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import prefuse.data.util.Point2D;
 import prefuse.visual.VisualItem;
 
 
@@ -31,7 +32,7 @@ public class NullRenderer implements Renderer {
 	}
 
 	@Override
-	public boolean locatePoint(javafx.geometry.Point2D p, VisualItem item) {
+	public boolean locatePoint(Point2D p, VisualItem item) {
 		return false;
 	}
 

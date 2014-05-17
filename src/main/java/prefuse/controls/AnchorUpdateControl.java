@@ -1,9 +1,10 @@
 package prefuse.controls;
 
 import java.awt.event.MouseEvent;
-import prefuse.data.util.Point2D;
 
+import prefuse.data.util.Point2D;
 import prefuse.Display;
+import prefuse.SwingDisplay;
 import prefuse.action.layout.Layout;
 import prefuse.visual.VisualItem;
 
@@ -119,7 +120,7 @@ public class AnchorUpdateControl extends ControlAdapter {
      * @param e the MouseEvent
      */
     public void moveEvent(MouseEvent e) {
-        Display d = (Display)e.getSource();
+        SwingDisplay d = (SwingDisplay)e.getSource();
         d.getAbsoluteCoordinate(e.getPoint(), m_tmp);
         for ( int i=0; i<m_layouts.length; i++ ) 
             m_layouts[i].setLayoutAnchor(m_tmp);

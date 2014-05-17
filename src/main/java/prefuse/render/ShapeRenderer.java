@@ -1,19 +1,14 @@
 package prefuse.render;
 
-//import java.awt.Shape;
-//import java.awt.geom.Ellipse2D;
-//import java.awt.geom.GeneralPath;
-import javafx.geometry.Point2D;
+
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Shape;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.sun.media.jfxmediaimpl.platform.Platform;
-
+import prefuse.data.util.Point2D;
 import prefuse.util.FxGraphicsLib;
 import prefuse.visual.VisualItem;
 

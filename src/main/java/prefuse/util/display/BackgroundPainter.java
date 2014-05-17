@@ -12,6 +12,7 @@ import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 
 import prefuse.Display;
+import prefuse.SwingDisplay;
 import prefuse.util.io.IOLib;
 
 /**
@@ -83,7 +84,8 @@ public class BackgroundPainter implements PaintListener {
      * Paint the background.
      * @see prefuse.util.display.PaintListener#prePaint(prefuse.Display, java.awt.Graphics2D)
      */
-    public void prePaint(Display d, Graphics2D g) {
+    public void prePaint(Display di, Graphics2D g) {
+    	SwingDisplay d = (SwingDisplay) di;
         AffineTransform at = g.getTransform();
         boolean translate = isTranslation(at);
         

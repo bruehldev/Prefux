@@ -1,11 +1,8 @@
 package prefuse;
 
-import java.awt.Point;
-import java.awt.geom.AffineTransform;
-
-import javafx.geometry.Rectangle2D;
 import prefuse.data.expression.Predicate;
 import prefuse.data.util.Point2D;
+import prefuse.data.util.Rectangle2D;
 
 public interface Display {
 
@@ -58,10 +55,6 @@ public interface Display {
 	public abstract void zoomAbs(Point2D p, double zoom);
 
 	public abstract void zoom(Point2D p, double zoom);
-
-	public abstract void getAbsoluteCoordinate(Point point, Point2D m_tmp);
-
-	public abstract AffineTransform getInverseTransform();
 
 	public abstract void animatePanAndZoomToAbs(Point2D center, double scale,
 			long duration);

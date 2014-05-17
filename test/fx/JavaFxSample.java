@@ -12,6 +12,7 @@ import prefuse.data.io.GraphMLReader;
 import prefuse.render.DefaultRendererFactory;
 import prefuse.render.LabelRenderer;
 import prefuse.render.ShapeRenderer;
+import prefuse.render.StackPaneRenderer;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -38,7 +39,11 @@ public class JavaFxSample extends Application {
 		    Visualization vis = new Visualization();
 		    vis.add("graph", graph);
 		    
-		    ShapeRenderer r = new ShapeRenderer();
+		    //ShapeRenderer sr = new ShapeRenderer();
+		    LabelRenderer lr = new LabelRenderer("name");
+		    StackPaneRenderer r = new StackPaneRenderer();
+		    //r.add(sr);
+		    r.add(lr);
 
 		    // create a new default renderer factory
 		    // return our name label renderer as the default for all non-EdgeItems

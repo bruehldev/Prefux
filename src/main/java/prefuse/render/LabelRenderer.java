@@ -1,14 +1,13 @@
 package prefuse.render;
 
 import javafx.scene.Node;
-import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import prefuse.Constants;
-import prefuse.util.FxGraphicsLib;
 import prefuse.visual.VisualItem;
 
 /**
@@ -73,7 +72,7 @@ public class LabelRenderer extends AbstractShapeRenderer {
 	protected int m_maxTextWidth = -1;
 
 	protected String m_text; // label text
-	protected Text txt;
+	protected Label txt;
 	protected ImageView img;
 	protected Pane pane;
 
@@ -232,93 +231,18 @@ public class LabelRenderer extends AbstractShapeRenderer {
 		return (imageLoc == null ? null : m_images.getImage(imageLoc));
 	}
 
-	// ------------------------------------------------------------------------
-	// Rendering
-
-	// private String computeTextDimensions(VisualItem item, String text,
-	// double size)
-	// {
-	// // put item font in temp member variable
-	// Font m_font = item.getFont();
-	// // scale the font as needed
-	// if ( size != 1 ) {
-	// m_font = FontLib.getFont(m_font.getName(),
-	// size*m_font.getSize());
-	// }
-	//
-	// FontMetrics fm = DEFAULT_GRAPHICS.getFontMetrics(m_font);
-	// StringBuffer str = null;
-	//
-	// // compute the number of lines and the maximum width
-	// int nlines = 1, w = 0, start = 0, end = text.indexOf(m_delim);
-	// m_textDim.width = 0;
-	// String line;
-	// for ( ; end >= 0; ++nlines ) {
-	// w = fm.stringWidth(line=text.substring(start,end));
-	// // abbreviate line as needed
-	// if ( m_maxTextWidth > -1 && w > m_maxTextWidth ) {
-	// if ( str == null )
-	// str = new StringBuffer(text.substring(0,start));
-	// str.append(StringLib.abbreviate(line, fm, m_maxTextWidth));
-	// str.append(m_delim);
-	// w = m_maxTextWidth;
-	// } else if ( str != null ) {
-	// str.append(line).append(m_delim);
-	// }
-	// // update maximum width and substring indices
-	// m_textDim.width = Math.max(m_textDim.width, w);
-	// start = end+1;
-	// end = text.indexOf(m_delim, start);
-	// }
-	// w = fm.stringWidth(line=text.substring(start));
-	// // abbreviate line as needed
-	// if ( m_maxTextWidth > -1 && w > m_maxTextWidth ) {
-	// if ( str == null )
-	// str = new StringBuffer(text.substring(0,start));
-	// str.append(StringLib.abbreviate(line, fm, m_maxTextWidth));
-	// w = m_maxTextWidth;
-	// } else if ( str != null ) {
-	// str.append(line);
-	// }
-	// // update maximum width
-	// m_textDim.width = Math.max(m_textDim.width, w);
-	//
-	// // compute the text height
-	// m_textDim.height = fm.getHeight() * nlines;
-	//
-	// return str==null ? text : str.toString();
-	// }
-
 	/**
 	 * @see prefuse.render.AbstractShapeRenderer#getRawShape(prefuse.visual.VisualItem)
 	 */
 	protected Node getRawShape(VisualItem item) {
 		pane = new StackPane();
 		m_text = getText(item);
-		txt = new Text(m_text);
+		txt = new Label(m_text);
 		img = new ImageView(getImage(item));
 		pane.getChildren().add(img);
 		pane.getChildren().add(txt);
 		return pane;
 	}
-
-	/**
-	 * @see prefuse.render.Renderer#render(java.awt.Graphics2D,
-	 *      prefuse.visual.VisualItem)
-	 */
-	public void render(Parent g, VisualItem item) {
-		Node shape = getShape(item);
-		if (shape == null)
-			return;
-
-		// fill the shape, if requested
-		int type = getRenderType(item);
-		if (type != RENDER_TYPE_NONE ) {
-			FxGraphicsLib.paint(g, item, shape, getStyle(item), type);
-		} 
-
-	}
-
 
 	/**
 	 * Returns the image factory used by this renderer.

@@ -1,20 +1,13 @@
 package prefuse.render;
 
-//import java.awt.BasicStroke;
-//import java.awt.Graphics2D;
-//import java.awt.Polygon;
-//import java.awt.Shape;
-//import java.awt.geom.AffineTransform;
-//import java.awt.geom.CubicCurve2D;
-//import java.awt.geom.Line2D;
-//import prefuse.data.util.Point2D;
-import javafx.geometry.Point2D;
+
 import javafx.scene.Parent;
 import javafx.scene.shape.Line;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import prefuse.data.util.Point2D;
 import prefuse.util.FxGraphicsLib;
 import prefuse.visual.EdgeItem;
 import prefuse.visual.VisualItem;
@@ -45,7 +38,7 @@ public class FxEdgeRenderer implements Renderer {
 	 * @see prefuse.render.AbstractShapeRenderer#getRawShape(prefuse.visual.VisualItem)
 	 */
 	public void render(Parent p, VisualItem item) {
-		log.debug("render");
+		log.debug("render "+item);
 		EdgeItem edge = (EdgeItem) item;
 		if (item.getNode() == null) {
 			VisualItem item1 = edge.getSourceItem();
