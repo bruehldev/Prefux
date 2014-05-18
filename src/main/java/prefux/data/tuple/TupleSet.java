@@ -90,7 +90,7 @@ public interface TupleSet {
      * @param name the name of the data field
      * @param type the type of the data field
      */
-    public void addColumn(String name, Class type);
+    public void addColumn(String name, Class<?> type);
     
     /**
      * Add a data field / column to this TupleSet's members.
@@ -98,7 +98,7 @@ public interface TupleSet {
      * @param type the type of the data field
      * @param defaultValue the defaultValue of the data field
      */
-    public void addColumn(String name, Class type, Object defaultValue);
+    public void addColumn(String name, Class<?> type, Object defaultValue);
     
     /**
      * Add a data field / column to this TupleSet's members.
@@ -126,7 +126,7 @@ public interface TupleSet {
      * Return an iterator over the tuples in this tuple set.
      * @return an iterator over this set's tuples
      */
-    public Iterator tuples();
+    public Iterator<Tuple> tuples();
     
     /**
      * Return an iterator over the tuples in this tuple set, filtered by
@@ -135,7 +135,7 @@ public interface TupleSet {
      * for which the predicate evaluates to true are included in the iteration
      * @return a filtered iterator over this set's tuples
      */
-    public Iterator tuples(Predicate filter);
+    public Iterator<Tuple> tuples(Predicate filter);
     
     /**
      * Return an iterator over the tuples in this tuple set, filtered by
@@ -146,7 +146,7 @@ public interface TupleSet {
      * @param sort the sorting criteria by which to order the returned tuples
      * @return a filtered, sorted iterator over this set's tuples
      */
-    public Iterator tuples(Predicate filter, Sort sort);
+    public Iterator<Tuple> tuples(Predicate filter, Sort sort);
     
     
     // -- Listeners -----------------------------------------------------------

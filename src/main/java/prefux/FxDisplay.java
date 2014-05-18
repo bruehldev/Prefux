@@ -1,17 +1,12 @@
 package prefux;
 
-import java.net.URL;
 import java.util.Iterator;
 import java.util.LinkedList;
 
 import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.sun.javafx.css.StyleManager;
 
 import prefux.data.expression.AndPredicate;
 import prefux.data.expression.BooleanLiteral;
@@ -21,6 +16,8 @@ import prefux.data.util.Rectangle2D;
 import prefux.visual.EdgeItem;
 import prefux.visual.VisualItem;
 import prefux.visual.expression.VisiblePredicate;
+
+import com.sun.javafx.css.StyleManager;
 
 public class FxDisplay extends Group implements Display {
 

@@ -63,7 +63,7 @@ public class DefaultRendererFactory implements RendererFactory {
      * @see EdgeRenderer
      */
     public DefaultRendererFactory(Renderer itemRenderer) {
-        this(itemRenderer, new FxEdgeRenderer());
+        this(itemRenderer, new EdgeRenderer());
     }
     
     /**

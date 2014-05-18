@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -32,8 +33,8 @@ public class CompositeTupleSet extends AbstractTupleSet {
     private static final Logger s_logger
         = Logger.getLogger(CompositeTupleSet.class.getName());
     
-    private Map m_map;   // map names to tuple sets
-    private Set m_sets;  // support quick reverse lookup
+    private Map<String, TupleSet> m_map;   // map names to tuple sets
+    private Set<TupleSet> m_sets;  // support quick reverse lookup
     private int m_count; // count of total tuples
     private Listener m_lstnr;
     
@@ -45,8 +46,8 @@ public class CompositeTupleSet extends AbstractTupleSet {
     }
     
     protected CompositeTupleSet(boolean listen) {
-        m_map = new LinkedHashMap();
-        m_sets = new HashSet();
+        m_map = new LinkedHashMap<>();
+        m_sets = new HashSet<>();
         m_count = 0;
         m_lstnr = listen ? new Listener() : null;
     }
@@ -99,7 +100,7 @@ public class CompositeTupleSet extends AbstractTupleSet {
      * Get an iterator over the names of all the TupleSets in this composite.
      * @return the iterator over contained set names.
      */
-    public Iterator setNames() {
+    public Iterator<String> setNames() {
         return m_map.keySet().iterator();
     }
 
@@ -107,7 +108,7 @@ public class CompositeTupleSet extends AbstractTupleSet {
      * Get an iterator over all the TupleSets in this composite.
      * @return the iterator contained sets.
      */
-    public Iterator sets() {
+    public Iterator<TupleSet> sets() {
         return m_map.values().iterator();
     }
     
@@ -130,10 +131,10 @@ public class CompositeTupleSet extends AbstractTupleSet {
      * Remove all contained TupleSets from this composite.
      */
     public void removeAllSets() {
-        Iterator sets = m_map.entrySet().iterator();
+        Iterator<Entry<String, TupleSet>> sets = m_map.entrySet().iterator();
         while ( sets.hasNext() ) {
-            Map.Entry entry = (Map.Entry)sets.next();
-            TupleSet ts = (TupleSet)entry.getValue();
+			Entry<String, TupleSet> entry = sets.next();
+            TupleSet ts = entry.getValue();
             sets.remove();
             m_sets.remove(ts);
             if ( m_lstnr != null )
@@ -149,10 +150,10 @@ public class CompositeTupleSet extends AbstractTupleSet {
      * @see prefux.data.tuple.TupleSet#clear()
      */
     public void clear() {
-        Iterator sets = m_map.entrySet().iterator();
+        Iterator<Entry<String,TupleSet>> sets = m_map.entrySet().iterator();
         while ( sets.hasNext() ) {
-            Map.Entry entry = (Map.Entry)sets.next();
-            ((TupleSet)entry.getValue()).clear();
+            Entry<String, TupleSet> entry = sets.next();
+            entry.getValue().clear();
         }
         m_count = 0;
     }
@@ -194,10 +195,10 @@ public class CompositeTupleSet extends AbstractTupleSet {
      * @see prefux.data.tuple.TupleSet#containsTuple(prefux.data.Tuple)
      */
     public boolean containsTuple(Tuple t) {
-        Iterator it = m_map.entrySet().iterator();
+        Iterator<Entry<String, TupleSet>> it = m_map.entrySet().iterator();
         while ( it.hasNext() )  {
-            Map.Entry entry = (Map.Entry)it.next();
-            TupleSet ts = (TupleSet)entry.getValue();
+			Entry<String, TupleSet> entry = it.next();
+            TupleSet ts = entry.getValue();
             if ( ts.containsTuple(t) )
                 return true;
         }
@@ -212,10 +213,10 @@ public class CompositeTupleSet extends AbstractTupleSet {
             return m_count;
         } else {
             int count = 0;
-            Iterator it = m_map.entrySet().iterator();
-            for ( int i=0; it.hasNext(); ++i )  {
-                Map.Entry entry = (Map.Entry)it.next();
-                TupleSet ts = (TupleSet)entry.getValue();
+            Iterator<Entry<String,TupleSet>> it = m_map.entrySet().iterator();
+            while ( it.hasNext())  {
+                Entry<String, TupleSet> entry = it.next();
+                TupleSet ts = entry.getValue();
                 count += ts.getTupleCount();
             }
             return count;
@@ -227,10 +228,10 @@ public class CompositeTupleSet extends AbstractTupleSet {
      */
     public Iterator tuples() {
         CompositeIterator ci = new CompositeIterator(m_map.size());
-        Iterator it = m_map.entrySet().iterator();
+        Iterator<Entry<String, TupleSet>> it = m_map.entrySet().iterator();
         for ( int i=0; it.hasNext(); ++i )  {
-            Map.Entry entry = (Map.Entry)it.next();
-            TupleSet ts = (TupleSet)entry.getValue();
+            Entry<String, TupleSet> entry = it.next();
+            TupleSet ts = entry.getValue();
             ci.setIterator(i, ts.tuples());
         }
         return ci;
