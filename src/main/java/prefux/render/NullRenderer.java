@@ -36,6 +36,12 @@ public class NullRenderer implements Renderer {
 		return false;
 	}
 
+	@Override
+	public void addStyle(String style) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 
 } // end of class NullRenderer

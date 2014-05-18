@@ -1,5 +1,10 @@
 package fx;
 
+import javafx.application.Application;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 import prefux.FxDisplay;
 import prefux.Visualization;
 import prefux.action.ActionList;
@@ -9,17 +14,11 @@ import prefux.activity.Activity;
 import prefux.data.Graph;
 import prefux.data.io.DataIOException;
 import prefux.data.io.GraphMLReader;
+import prefux.render.BorderPaneRenderer;
+import prefux.render.BorderPaneRenderer.BorderPanePos;
 import prefux.render.DefaultRendererFactory;
 import prefux.render.LabelRenderer;
 import prefux.render.ShapeRenderer;
-import prefux.render.StackPaneRenderer;
-import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
 
 public class JavaFxSample extends Application {
 	public static void main(String[] args) {
@@ -42,9 +41,12 @@ public class JavaFxSample extends Application {
 		    
 		    ShapeRenderer sr = new ShapeRenderer();
 		    LabelRenderer lr = new LabelRenderer("name");
-		    StackPaneRenderer r = new StackPaneRenderer();
-		    r.add(sr);
-		    r.add(lr);
+		    LabelRenderer lr2 = new LabelRenderer("name");
+		    lr2.addStyle("invisible");
+		    BorderPaneRenderer r = new BorderPaneRenderer();
+		    r.add(sr, BorderPanePos.CENTER, Pos.CENTER);
+		    r.add(lr, BorderPanePos.TOP);
+		    r.add(lr2, BorderPanePos.BOTTOM);
 
 		    // create a new default renderer factory
 		    // return our name label renderer as the default for all non-EdgeItems

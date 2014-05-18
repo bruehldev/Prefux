@@ -54,4 +54,10 @@ public class StackPaneRenderer extends ArrayList<Renderer> implements Renderer,
 		}
 	}
 
+	@Override
+	public void addStyle(String style) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

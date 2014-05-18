@@ -1,8 +1,5 @@
 package prefux.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
@@ -11,13 +8,19 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import prefux.render.AbstractShapeRenderer;
 import prefux.visual.VisualItem;
 
 public class FxGraphicsLib {
-	
-	private static final Logger log = LoggerFactory.getLogger(FxGraphicsLib.class);
+
+	private static final Logger log = LoggerFactory
+			.getLogger(FxGraphicsLib.class);
 
 	public static final String BORDER_CLASS = "itemBorder";
 
@@ -130,14 +133,19 @@ public class FxGraphicsLib {
 	public static final double getCenterY(Bounds bounds) {
 		return bounds.getMinY() + bounds.getHeight() / 2;
 	}
-	
+
 	public static final void setCenterCoord(double x, double y, Node node) {
-		double x1 = x-node.getBoundsInParent().getWidth()/2.0;
-		double y1 = y-node.getBoundsInParent().getHeight()/2.0;
-		// log.debug("Relocate: "+x+" / "+y);
-		// log.debug("Center: "+x1+" / "+y1);
-		node.relocate(x1,y1);
-		// log.debug("Real: "+node.getLayoutX()+" / "+node.getLayoutY());
+		if (node instanceof Circle) {
+			((Circle) node).setCenterX(x);
+			((Circle) node).setCenterY(y);
+		} else {
+			double x1 = x - node.getBoundsInParent().getWidth() / 2.0;
+			double y1 = y - node.getBoundsInParent().getHeight() / 2.0;
+			// log.debug("Relocate: "+x+" / "+y);
+			// log.debug("Center: "+x1+" / "+y1);
+			node.relocate(x1, y1);
+			// log.debug("Real: "+node.getLayoutX()+" / "+node.getLayoutY());
+		}
 	}
 
 }

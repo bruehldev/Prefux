@@ -1,5 +1,8 @@
 package prefux.render;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -50,6 +53,14 @@ public abstract class AbstractShapeRenderer implements Renderer {
 	protected Transform m_transform;
 	protected boolean m_manageBounds = true;
 
+	private List<String> rendererStyles = new ArrayList<>();
+
+	public AbstractShapeRenderer() {
+		if (getDefaultStyle() != null) {
+			rendererStyles.add(getDefaultStyle());
+		}
+	}
+
 	public void setManageBounds(boolean b) {
 		m_manageBounds = b;
 	}
@@ -75,18 +86,18 @@ public abstract class AbstractShapeRenderer implements Renderer {
 	 */
 	protected void drawShape(Parent g, VisualItem item, Node shape) {
 		ObservableList<String> styleClazzes = shape.getStyleClass();
-		String style = getDefaultStyle();
-		if (style!=null && !styleClazzes.contains(style)) {
-			styleClazzes.add(style);
+		for (String style : rendererStyles) {
+			if (style != null && !styleClazzes.contains(style)) {
+				styleClazzes.add(style);
+			}
 		}
-		style = getStyle(item);
+		String style = getStyle(item);
 		if (getStyle(item) != null && !styleClazzes.contains(style)) {
 			styleClazzes.add(style);
 		}
 		FxGraphicsLib.addToParent(g, shape);
 	}
 
-	
 	/**
 	 * Returns the style class for the given item.
 	 * 
@@ -99,6 +110,7 @@ public abstract class AbstractShapeRenderer implements Renderer {
 
 	/**
 	 * Returns the default style class for the current rendering.
+	 * 
 	 * @return
 	 */
 	public String getDefaultStyle() {
@@ -197,6 +209,10 @@ public abstract class AbstractShapeRenderer implements Renderer {
 			node.setLayoutX(item.getX());
 			node.setLayoutY(item.getY());
 		});
+	}
+
+	public void addStyle(String style) {
+		rendererStyles.add(style);
 	}
 
 } // end of abstract class AbstractShapeRenderer

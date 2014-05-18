@@ -16,3 +16,7 @@
 	-fx-text-fill: red;
 	-fx-text-alignment: center;
 }
+
+.invisible {
+	visibility: hidden;
+}

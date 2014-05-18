@@ -47,5 +47,12 @@ public interface Renderer {
      */
     public void setBounds(VisualItem item);
     
+    /**
+     * Adds an additional style class to each rendered element.
+     * 
+     * @param style
+     */
+    public void addStyle(String style);
+    
 
 } // end of interface Renderer
