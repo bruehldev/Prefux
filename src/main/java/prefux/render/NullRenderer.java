@@ -1,6 +1,5 @@
 package prefux.render;
 
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import prefux.data.util.Point2D;
 import prefux.visual.VisualItem;

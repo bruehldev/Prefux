@@ -1,3 +1,7 @@
+/**
+ * Copyright (c) 2014 Martin Stockhammer
+ * See "LICENSE.txt" for licensing terms.
+ */
 package prefux.render;
 
 import java.util.ArrayList;

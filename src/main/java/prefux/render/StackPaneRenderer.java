@@ -1,7 +1,14 @@
+/**
+ * Copyright (c) 2014 Martin Stockhammer
+ * See "LICENSE.txt" for licensing terms.
+ */
 package prefux.render;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javafx.application.Platform;
 import javafx.scene.Node;
@@ -13,8 +20,9 @@ import prefux.visual.VisualItem;
 
 public class StackPaneRenderer extends ArrayList<Renderer> implements Renderer,
 		List<Renderer> {
-	
-	//private static final Logger log = LoggerFactory.getLogger(StackPaneRenderer.class);
+
+	private static final Logger log = LoggerFactory
+			.getLogger(StackPaneRenderer.class);
 
 	/**
 	 * 
@@ -26,6 +34,8 @@ public class StackPaneRenderer extends ArrayList<Renderer> implements Renderer,
 
 	@Override
 	public void render(Parent g, VisualItem item) {
+		if (log.isTraceEnabled())
+			log.trace("Rendering " + item + " on " + g);
 		StackPane pane = new StackPane();
 		if (item.getNode() == null)
 			item.setNode(pane);
@@ -57,7 +67,7 @@ public class StackPaneRenderer extends ArrayList<Renderer> implements Renderer,
 	@Override
 	public void addStyle(String style) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

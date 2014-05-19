@@ -27,17 +27,15 @@ import prefux.visual.VisualItem;
  * </p>
  * 
  * <p>
- * <b>NOTE:</b> For more efficient rendering, subclasses should use a single
- * shape instance in memory, and update its parameters on each call to
- * getRawShape, rather than allocating a new Shape object each time. Otherwise,
- * a new object will be allocated every time something needs to be drawn, and
- * then subsequently be arbage collected. This can significantly reduce
- * performance, especially when there are many things to draw.
+ * <b>NOTE:</b> The intention of drawShape ist that it is called only once.
+ * It registers the JavaFX nodes on the parent nodes. The same for getRawShape().
  * </p>
  * 
- * @version 1.0
+ * @version 2.0
+ * @author Martin Stockhammer
  * @author alan newberger
  * @author <a href="http://jheer.org">jeffrey heer</a>
+ * 
  */
 public abstract class AbstractShapeRenderer implements Renderer {
 

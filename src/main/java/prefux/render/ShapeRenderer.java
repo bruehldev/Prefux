@@ -1,3 +1,7 @@
+/**
+ * Copyright (c) 2014 Martin Stockhammer
+ * See "LICENSE.txt" for licensing terms.
+ */
 package prefux.render;
 
 
@@ -10,10 +14,9 @@ import org.slf4j.LoggerFactory;
 import prefux.visual.VisualItem;
 
 /**
- * Renderer for drawing simple shapes. This class provides a number of built-in
- * shapes, selected by an integer value retrieved from a VisualItem.
+ * Renderer for drawing simple shapes. 
  * 
- * @author <a href="http://jheer.org">jeffrey heer</a>
+ * @author Martin Stockhammer
  */
 public class ShapeRenderer extends AbstractShapeRenderer implements Renderer {
 
