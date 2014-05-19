@@ -158,6 +158,7 @@ import prefux.visual.tuple.TableNodeItem;
  * {@link prefux.action.Action} class.</p>
  * 
  * @author <a href="http://jheer.org">jeffrey heer</a>
+ * @
  */
 public class Visualization {
 	

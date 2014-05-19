@@ -1,7 +1,7 @@
 MySQL Connector/J is released under the GNU General Public License (GPL),
 contained within this document. The MySQL Connector/J is not part of, nor
-affiliated with, the prefuse project. It is provided here as a convenience
-to prefuse developers. Incorporating the MySQL Connector/J in your project
+affiliated with, the prefux project. It is provided here as a convenience
+to prefux developers. Incorporating the MySQL Connector/J in your project
 subjects you to the terms of this license.
 
 For more information, access to the MySQL Connector/J source code, etc,
