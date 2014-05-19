@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2004-2006 Regents of the University of California.
- * See "license-prefux.txt" for licensing terms.
+ * See "LICENSE.txt" for licensing terms.
  */
 package prefux.util;
 
