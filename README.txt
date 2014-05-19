@@ -3,7 +3,8 @@ Prefux README
 --INTRO--
 
 
-Prefux is an attempt to implement or migrate the Prefuse library  (http://prefuse.org) in JavaFX. 
+Prefux is an attempt to implement or migrate the Prefuse library  (http://prefuse.org) to 
+JavaFX technology. 
 
 Prefuse is a great Java-based toolkit for building interactive information
 visualization applications. Prefuse supports a rich set of features for data
@@ -13,17 +14,16 @@ techniques, and support for animation, dynamic queries, integrated search, and
 database connectivity.
 
 The Prefuse library is licensed under the BSD license. All modifications and contributions
-to this fork are licensed under the BSD license. 
+to this fork are licensed under the BSD license too. 
 
-Currently the main goal is to implement force based graph layout visualization in JavaFX. 
+The main goal of this fork is to implement force based graph layout visualization in JavaFX. 
 If there is time, further functionality will follow. This library is not compatible
-to the prefuse library. The technologies Swing and JavaFx are so different,
+to the Prefuse library. The technologies Swing and JavaFx are so different,
 that it makes no sense to map the prefuse API one to one to JavaFX technology and
-there is no real UI visualization interface that is independent of the Swing libraries.
+there is no real UI visualization interface in Prefuse that is independent of the Swing libraries.
 But the main concepts should be the same (actions, renderers, layouts) so that
 it should be possible to convert code that is more or less Swing independent (e.g. graph
 layouts, data model) to this library.
-
 
 
 
