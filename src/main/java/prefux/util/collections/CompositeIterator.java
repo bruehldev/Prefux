@@ -1,6 +1,8 @@
 package prefux.util.collections;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
@@ -8,26 +10,33 @@ import java.util.NoSuchElementException;
  * 
  * @author <a href="http://jheer.org">jeffrey heer</a>
  */
-public class CompositeIterator implements Iterator {
+public class CompositeIterator<T> implements Iterator<T> {
 
-    private Iterator[] m_iters;
+    private List<Iterator<T>> m_iters;
     private int m_cur;
     
     public CompositeIterator(int size) {
-        m_iters = new Iterator[size];
+        m_iters = new ArrayList<>();
     }
     
-    public CompositeIterator(Iterator iter1, Iterator iter2) {
-        this(new Iterator[] {iter1, iter2});
-    }
-    
-    public CompositeIterator(Iterator[] iters) {
-        m_iters = iters;
-        m_cur = 0;
+    public CompositeIterator(Iterator<T> iter1, Iterator<T> iter2) {
+    	ArrayList<Iterator<T>> myl = new ArrayList<>();
+    	myl.add(iter1);
+    	myl.add(iter2);
+    	init(myl);
     }
 
-    public void setIterator(int idx, Iterator iter) {
-        m_iters[idx] = iter;
+    public CompositeIterator(List<Iterator<T>> iters ) {
+        init(iters);
+    }
+    
+    private final void init(List<Iterator<T>> iters) {
+    	m_iters = iters;
+    	m_cur = 0;
+    }
+
+    public void setIterator(int idx, Iterator<T> iter) {
+        m_iters.set(idx, iter);
     }
     
     /**
@@ -41,9 +50,9 @@ public class CompositeIterator implements Iterator {
     /**
      * @see java.util.Iterator#next()
      */
-    public Object next() {
+    public T next() {
         if ( hasNext() ) {
-            return m_iters[m_cur].next();
+            return m_iters.get(m_cur).next();
         } else {
             throw new NoSuchElementException();
         }
@@ -57,12 +66,12 @@ public class CompositeIterator implements Iterator {
             return false;
         
         while ( true ) {
-            if ( m_cur >= m_iters.length ) {
+            if ( m_cur >= m_iters.size() ) {
                 m_iters = null;
                 return false;
-            } if ( m_iters[m_cur] == null ) {
+            } if ( m_iters.get(m_cur) == null ) {
                 ++m_cur;
-            } else if ( m_iters[m_cur].hasNext() ) {
+            } else if ( m_iters.get(m_cur).hasNext() ) {
                 return true;
             } else {
                 ++m_cur;

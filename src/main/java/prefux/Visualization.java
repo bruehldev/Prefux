@@ -978,7 +978,7 @@ public class Visualization {
             Iterator<String> it = m_visual.keySet().iterator();
             return items(it.next(), filter);
         } else {
-            CompositeIterator iter = new CompositeIterator(m_visual.size());
+            CompositeIterator<VisualItem> iter = new CompositeIterator<>(m_visual.size());
             Iterator<String> it = m_visual.keySet().iterator();
             for ( int i=0; it.hasNext(); ) {
                 String group = it.next();
