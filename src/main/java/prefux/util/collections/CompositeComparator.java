@@ -8,10 +8,10 @@ import java.util.Comparator;
  * 
  * @author <a href="http://jheer.org">jeffrey heer</a>
  */
-public class CompositeComparator implements Comparator {
+public class CompositeComparator<T> implements Comparator<T> {
 
     private static final int INCREMENT = 2;
-    private Comparator[] m_cmp;
+    private Comparator<T>[] m_cmp;
     private int m_rev = 1;
     private int m_size = 0;
 
@@ -29,7 +29,8 @@ public class CompositeComparator implements Comparator {
      * @param reverse when true, reverses the sort order of the included
      * comparators, when false, objects are sorted as usual
      */
-    public CompositeComparator(int size, boolean reverse) {
+    @SuppressWarnings("unchecked")
+	public CompositeComparator(int size, boolean reverse) {
         m_cmp = new Comparator[size];
         m_rev = reverse ? -1 : 1;
     }
@@ -38,7 +39,7 @@ public class CompositeComparator implements Comparator {
      * Creates a new CompositeComparator.
      * @param cmp the constituent comparators of this composite
      */
-    public CompositeComparator(Comparator[] cmp) {
+    public CompositeComparator(Comparator<T>[] cmp) {
         this(cmp, false);
     }
     
@@ -48,7 +49,7 @@ public class CompositeComparator implements Comparator {
      * @param reverse when true, reverses the sort order of the included
      * comparators, when false, objects are sorted as usual
      */
-    public CompositeComparator(Comparator[] cmp, boolean reverse) {
+    public CompositeComparator(Comparator<T>[] cmp, boolean reverse) {
         this(cmp.length, reverse);
         System.arraycopy(cmp, 0, m_cmp, 0, cmp.length);
         m_size = cmp.length;
@@ -58,10 +59,11 @@ public class CompositeComparator implements Comparator {
      * Adds an additional comparator to this composite.
      * @param c the Comparator to add
      */
-    public void add(Comparator c) {
+    public void add(Comparator<T> c) {
         if ( c == null ) return;
         if ( m_cmp.length == m_size ) {
-            Comparator[] cmp = new Comparator[m_size+INCREMENT];
+            @SuppressWarnings("unchecked")
+			Comparator<T>[] cmp = new Comparator[m_size+INCREMENT];
             System.arraycopy(m_cmp, 0, cmp, 0, m_size);
             m_cmp = cmp;
         }
@@ -74,7 +76,7 @@ public class CompositeComparator implements Comparator {
      * @return true if the comparator was successfully removed,
      * false otherwise
      */
-    public boolean remove(Comparator c) {
+    public boolean remove(Comparator<T> c) {
         for ( int i=0; i<m_size; ++i ) {
             if ( m_cmp[i].equals(c) ) {
                 System.arraycopy(m_cmp, i+1, m_cmp, i, m_size-i);
@@ -90,7 +92,7 @@ public class CompositeComparator implements Comparator {
     /**
      * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
      */
-    public int compare(Object o1, Object o2) {
+    public int compare(T o1, T o2) {
         for ( int i=0; i<m_cmp.length; ++i ) {
             int c = m_cmp[i].compare(o1, o2);
             if ( c != 0 ) {

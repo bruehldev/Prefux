@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 
 import prefux.data.Table;
+import prefux.data.Tuple;
 import prefux.data.expression.AndPredicate;
 import prefux.data.expression.ColumnExpression;
 import prefux.data.expression.ComparisonPredicate;
@@ -41,13 +42,13 @@ public class FilterIteratorFactory {
      * @param p the filter predicate
      * @return a filtered iterator over the tuples
      */
-    public static Iterator tuples(TupleSet ts, Predicate p) {
+    public static Iterator<Tuple> tuples(TupleSet ts, Predicate p) {
         // no predicate means no filtering
         if ( p == null )
             return ts.tuples();
         
         // attempt to generate an optimized query plan
-        Iterator iter = null;
+        Iterator<Tuple> iter = null;
         if ( ts instanceof Table ) {
             Table t = (Table)ts;
             IntIterator ii = getOptimizedIterator(t,p);

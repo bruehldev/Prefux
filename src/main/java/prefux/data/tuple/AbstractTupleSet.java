@@ -31,7 +31,7 @@ public abstract class AbstractTupleSet implements TupleSet {
     /**
      * @see prefux.data.tuple.TupleSet#tuples(prefux.data.expression.Predicate)
      */
-    public Iterator tuples(Predicate filter) {
+    public Iterator<Tuple> tuples(Predicate filter) {
         if ( filter == null ) {
             return tuples();
         } else {
@@ -42,11 +42,11 @@ public abstract class AbstractTupleSet implements TupleSet {
     /**
      * @see prefux.data.tuple.TupleSet#tuples(prefux.data.expression.Predicate, prefux.data.util.Sort)
      */
-    public Iterator tuples(Predicate filter, Sort sort) {
+    public Iterator<Tuple> tuples(Predicate filter, Sort sort) {
         if ( sort == null ) {
             return tuples(filter);
         } else {
-            Comparator c = sort.getComparator(this);
+            Comparator<Tuple> c = sort.getComparator(this);
             return new SortedTupleIterator(tuples(filter),getTupleCount(),c);
         }
     }

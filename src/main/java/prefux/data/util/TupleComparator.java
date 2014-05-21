@@ -14,7 +14,7 @@ import prefux.util.collections.LiteralComparator;
  * 
  * @author <a href="http://jheer.org">jeffrey heer</a>
  */
-public class TupleComparator implements Comparator {
+public class TupleComparator implements Comparator<Tuple> {
 
     private String m_field;
     private int m_col;
@@ -80,7 +80,7 @@ public class TupleComparator implements Comparator {
      * a ClassCastException will be thrown.
      * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
      */
-    public int compare(Object o1, Object o2) {
+    public int compare(Tuple o1, Tuple o2) {
         Tuple t1 = (Tuple)o1, t2 = (Tuple)o2;
         int c = 0;
         

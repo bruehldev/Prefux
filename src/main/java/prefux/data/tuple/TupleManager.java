@@ -22,7 +22,7 @@ public class TupleManager {
 
     protected Graph        m_graph;
     protected Table        m_table;
-    protected Class        m_tupleType;
+    protected Class<? extends Tuple>        m_tupleType;
     
     private   TableTuple[] m_tuples;
     
@@ -30,7 +30,7 @@ public class TupleManager {
      * Create a new TupleManager for the given Table.
      * @param t the data Table to generate Tuples for
      */
-    public TupleManager(Table t, Graph g, Class tupleType) {
+    public TupleManager(Table t, Graph g, Class<? extends Tuple> tupleType) {
         init(t, g, tupleType);
     }
     
@@ -38,7 +38,7 @@ public class TupleManager {
      * Initialize this TupleManager for use with a given Table.
      * @param t the data Table to generate Tuples for
      */
-    public void init(Table t, Graph g, Class tupleType) {
+    public void init(Table t, Graph g, Class<? extends Tuple> tupleType) {
         if ( m_table != null ) {
             throw new IllegalStateException(
                 "This TupleManager has already been initialized");
@@ -53,7 +53,7 @@ public class TupleManager {
      * Get the type of Tuple instances to generate.
      * @return the tuple type, as a Class instance
      */
-    public Class getTupleType() {
+    public Class<? extends Tuple> getTupleType() {
         return m_tupleType;
     }
     
@@ -135,7 +135,7 @@ public class TupleManager {
      * @param rows an iterator over table rows
      * @return an iterator over the tuples indicated by the input row iterator
      */
-    public Iterator iterator(IntIterator rows) {
+    public Iterator<Tuple> iterator(IntIterator rows) {
         return new TupleManagerIterator(this, rows);
     }
     
@@ -145,7 +145,7 @@ public class TupleManager {
     /**
      * Iterator instance for iterating over tuples managed in a TupleManager.
      */
-    public class TupleManagerIterator implements Iterator {
+    public class TupleManagerIterator implements Iterator<Tuple> {
 
         private TupleManager m_tuples;
         private IntIterator  m_rows;
@@ -170,7 +170,7 @@ public class TupleManager {
         /**
          * @see java.util.Iterator#next()
          */
-        public Object next() {
+        public Tuple next() {
             return m_tuples.getTuple(m_rows.nextInt());
         }
 
