@@ -45,9 +45,9 @@ public class VisibilityAnimator extends GroupAction {
     
     private void setup() {
         // handle fade-in nodes
-        Iterator items = m_vis.visibleItems(m_group);
+        Iterator<VisualItem> items = m_vis.visibleItems(m_group);
         while ( items.hasNext() ) {
-            VisualItem item = (VisualItem) items.next();
+            VisualItem item = items.next();
             if ( !item.isStartVisible() ) {
                 item.setStartFillColor(
                         ColorLib.setAlpha(item.getEndFillColor(),0));
@@ -61,7 +61,7 @@ public class VisibilityAnimator extends GroupAction {
         // handle fade-out nodes
         items = m_vis.items(m_group, StartVisiblePredicate.TRUE);
         while ( items.hasNext() ) {
-            VisualItem item = (VisualItem) items.next();
+            VisualItem item = items.next();
             if ( !item.isEndVisible() ) {
                 // fade-out case
                 item.setVisible(true);
@@ -77,9 +77,9 @@ public class VisibilityAnimator extends GroupAction {
     
     private void finish() {
         // set faded-out nodes to permanently invisible
-        Iterator items = m_vis.items(m_group, StartVisiblePredicate.TRUE);
+        Iterator<VisualItem> items = m_vis.items(m_group, StartVisiblePredicate.TRUE);
         while ( items.hasNext() ) {
-            VisualItem item = (VisualItem) items.next();
+            VisualItem item = items.next();
             if ( !item.isEndVisible() ) {
                 item.setVisible(false);
                 item.setStartVisible(false);
@@ -89,7 +89,7 @@ public class VisibilityAnimator extends GroupAction {
         // set faded-in nodes to permanently visible
         items = m_vis.visibleItems(m_group);
         while ( items.hasNext() ) {
-            VisualItem item = (VisualItem) items.next();
+            VisualItem item = items.next();
             if ( !item.isStartVisible() ) {
                 item.setStartVisible(true);
                 item.setStartFillColor(item.getEndFillColor());

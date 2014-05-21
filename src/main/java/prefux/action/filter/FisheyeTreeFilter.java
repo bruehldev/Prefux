@@ -6,6 +6,7 @@ import prefux.Constants;
 import prefux.Visualization;
 import prefux.action.GroupAction;
 import prefux.data.Graph;
+import prefux.data.Node;
 import prefux.data.Tree;
 import prefux.data.expression.Predicate;
 import prefux.util.PrefuseLib;
@@ -134,15 +135,15 @@ public class FisheyeTreeFilter extends GroupAction {
         m_root = (NodeItem)tree.getRoot();
         
         // mark the items
-        Iterator items = m_vis.visibleItems(m_group);
+        Iterator<VisualItem> items = m_vis.visibleItems(m_group);
         while ( items.hasNext() ) {
-            VisualItem item = (VisualItem)items.next();
+            VisualItem item = items.next();
             item.setDOI(Constants.MINIMUM_DOI);
             item.setExpanded(false);
         }
         
         // compute the fisheye over nodes
-        Iterator iter = m_vis.items(m_sources, m_groupP);
+        Iterator<VisualItem> iter = m_vis.items(m_sources, m_groupP);
         while ( iter.hasNext() )
             visitFocus((NodeItem)iter.next(), null);
         visitFocus(m_root, null);
@@ -150,7 +151,7 @@ public class FisheyeTreeFilter extends GroupAction {
         // mark unreached items
         items = m_vis.visibleItems(m_group);
         while ( items.hasNext() ) {
-            VisualItem item = (VisualItem)items.next();
+            VisualItem item = items.next();
             if ( item.getDOI() == Constants.MINIMUM_DOI )
                 PrefuseLib.updateVisible(item, false);
         }
@@ -197,7 +198,7 @@ public class FisheyeTreeFilter extends GroupAction {
     private void visitDescendants(NodeItem p, NodeItem skip) {
         int lidx = ( skip == null ? 0 : p.getChildIndex(skip) );
         
-        Iterator children = p.children();
+        Iterator<Node> children = p.children();
         
         p.setExpanded(children.hasNext());
         

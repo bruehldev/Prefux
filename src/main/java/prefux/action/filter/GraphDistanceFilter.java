@@ -6,6 +6,7 @@ import prefux.Constants;
 import prefux.Visualization;
 import prefux.action.GroupAction;
 import prefux.data.Graph;
+import prefux.data.Tuple;
 import prefux.data.expression.Predicate;
 import prefux.data.tuple.TupleSet;
 import prefux.data.util.BreadthFirstIterator;
@@ -117,15 +118,15 @@ public class GraphDistanceFilter extends GroupAction {
      */
     public void run(double frac) {
         // mark the items
-        Iterator items = m_vis.visibleItems(m_group);
+        Iterator<VisualItem> items = m_vis.visibleItems(m_group);
         while ( items.hasNext() ) {
-            VisualItem item = (VisualItem)items.next();
+            VisualItem item = items.next();
             item.setDOI(Constants.MINIMUM_DOI);
         }
         
         // set up the graph traversal
         TupleSet src = m_vis.getGroup(m_sources);
-        Iterator srcs = new FilterIterator(src.tuples(), m_groupP);
+        Iterator<Tuple> srcs = new FilterIterator(src.tuples(), m_groupP);
         m_bfs.init(srcs, m_distance, Constants.NODE_AND_EDGE_TRAVERSAL);
         
         // traverse the graph
@@ -140,7 +141,7 @@ public class GraphDistanceFilter extends GroupAction {
         // mark unreached items
         items = m_vis.visibleItems(m_group);
         while ( items.hasNext() ) {
-            VisualItem item = (VisualItem)items.next();
+            VisualItem item = items.next();
             if ( item.getDOI() == Constants.MINIMUM_DOI ) {
                 PrefuseLib.updateVisible(item, false);
                 item.setExpanded(false);

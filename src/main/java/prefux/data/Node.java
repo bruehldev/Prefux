@@ -48,41 +48,41 @@ public interface Node extends Tuple {
      * is the target.
      * @return an Iterator over all incoming edges
      */
-    public Iterator inEdges();
+    public Iterator<Edge> inEdges();
     
     /**
      * Get an iterator over all outgoing edges, those for which this node
      * is the source.
      * @return an Iterator over all outgoing edges
      */
-    public Iterator outEdges();
+    public Iterator<Edge> outEdges();
     
     /**
      * Get an iterator over all incident edges, those for which this node
      * is either the source or the target.
      * @return an Iterator over all incident edges
      */
-    public Iterator edges();
+    public Iterator<Edge> edges();
     
     /**
      * Get an iterator over all adjacent nodes connected to this node by an
      * incoming edge (i.e., all nodes that "point" at this one).
      * @return an Iterator over all neighbors with in-links on this node
      */
-    public Iterator inNeighbors();
+    public Iterator<Node> inNeighbors();
     
     /**
      * Get an iterator over all adjacent nodes connected to this node by an
      * outgoing edge (i.e., all nodes "pointed" to by this one).
      * @return an Iterator over all neighbors with out-links from this node
      */
-    public Iterator outNeighbors();
+    public Iterator<Node> outNeighbors();
     
     /**
      * Get an iterator over all nodes connected to this node.
      * @return an Iterator over all neighbors of this node
      */
-    public Iterator neighbors();
+    public Iterator<Node> neighbors();
     
     // ------------------------------------------------------------------------
     // Tree Methods
@@ -160,12 +160,12 @@ public interface Node extends Tuple {
      * Get an iterator over this node's tree children.
      * @return an iterator over this node's children
      */
-    public Iterator children();
+    public Iterator<Node> children();
     
     /**
      * Get an iterator over the edges from this node to its tree children.
      * @return an iterator over the edges to the child nodes
      */
-    public Iterator childEdges();
+    public Iterator<Edge> childEdges();
     
 } // end of interface Node

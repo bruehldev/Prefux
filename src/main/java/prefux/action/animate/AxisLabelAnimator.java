@@ -51,9 +51,9 @@ public class AxisLabelAnimator extends ItemAction {
     
     private void setup() {
         // handle fade-in nodes
-        Iterator items = m_vis.visibleItems(m_group);
+        Iterator<VisualItem> items = m_vis.visibleItems(m_group);
         while ( items.hasNext() ) {
-            VisualItem item = (VisualItem) items.next();
+            VisualItem item = items.next();
             if ( !item.isStartVisible() ) {
                 int efc = item.getEndFillColor();
                 int esc = item.getEndStrokeColor();
@@ -69,7 +69,7 @@ public class AxisLabelAnimator extends ItemAction {
         // handle fade-out nodes
         items = m_vis.items(m_group, StartVisiblePredicate.TRUE);
         while ( items.hasNext() ) {
-            VisualItem item = (VisualItem) items.next();
+            VisualItem item = items.next();
             if ( !item.isEndVisible() ) {
                 int sfc = item.getStartFillColor();
                 int ssc = item.getStartStrokeColor();
@@ -85,9 +85,9 @@ public class AxisLabelAnimator extends ItemAction {
     
     private void finish() {
         // set faded-out nodes to permanently invisible
-        Iterator items = m_vis.items(m_group, StartVisiblePredicate.TRUE);
+        Iterator<VisualItem> items = m_vis.items(m_group, StartVisiblePredicate.TRUE);
         while ( items.hasNext() ) {
-            VisualItem item = (VisualItem) items.next();
+            VisualItem item = items.next();
             if ( !item.isEndVisible() ) {
                 item.setVisible(false);
                 item.setStartVisible(false);
@@ -97,7 +97,7 @@ public class AxisLabelAnimator extends ItemAction {
         // set faded-in nodes to permanently visible
         items = m_vis.visibleItems(m_group);
         while ( items.hasNext() ) {
-            VisualItem item = (VisualItem) items.next();
+            VisualItem item = items.next();
             process(item, 1.0);
             item.setStartFillColor(item.getEndFillColor());
             item.setStartTextColor(item.getEndTextColor());

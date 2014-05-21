@@ -66,10 +66,10 @@ public abstract class Distortion extends Layout {
         Rectangle2D bounds = getLayoutBounds();
         Point2D anchor = correct(m_anchor, bounds);
         
-        final Iterator iter = getVisualization().visibleItems(m_group);
+        final Iterator<VisualItem> iter = getVisualization().visibleItems(m_group);
         
         while ( iter.hasNext() ) {
-            VisualItem item = (VisualItem)iter.next();
+            VisualItem item = iter.next();
             if ( item.isFixed() ) continue;
             
             // reset distorted values
