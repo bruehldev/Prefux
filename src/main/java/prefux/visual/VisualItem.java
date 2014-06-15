@@ -3,6 +3,7 @@ package prefux.visual;
 //import java.awt.BasicStroke;
 //import java.awt.Font;
 //import java.awt.Graphics2D;
+import javafx.beans.property.DoubleProperty;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.text.Font;
@@ -265,6 +266,14 @@ public interface VisualItem extends Tuple {
      * @see #X
      */
     public double getX();
+    
+    /**
+     * Returns the JavaFX-property for the x coordinate.
+     * This allows to bind the nodes directly to the x coordinate.
+     * 
+     * @return
+     */
+    public DoubleProperty getXProperty();
 
     /**
      * Set the current x-coordinate of this item.
@@ -273,13 +282,23 @@ public interface VisualItem extends Tuple {
      */
     public void setX(double x);
     
+    
     /**
      * Get the current y-coordinate of this item.
      * @return the current y-coordinate
      * @see #Y
      */
     public double getY();
-    
+
+    /**
+     * Returns the JavaFX-property for the y coordinate.
+     * This allows to bind the nodes directly to the y coordinate.
+     * 
+     * @return
+     */
+    public DoubleProperty getYProperty();
+
+
     /**
      * Set the current y-coordinate of this item.
      * @param y the new current y-coordinate
@@ -293,6 +312,12 @@ public interface VisualItem extends Tuple {
      * @see #STARTX
      */
     public double getStartX();
+    
+    /**
+     * Return the JavaFx-Property for the starting x-coordinate
+     * @return
+     */
+    public DoubleProperty getStartXProperty();
     
     /**
      * Set the starting x-coordinate of this item.
@@ -309,6 +334,12 @@ public interface VisualItem extends Tuple {
     public double getStartY();
     
     /**
+     * Return the JavaFx-Property for the starting y-coordinate
+     * @return
+     */
+    public DoubleProperty getStartYProperty();
+
+    /**
      * Set the starting y-coordinate of this item.
      * @param y the new starting y-coordinate
      * @see #STARTY
@@ -323,6 +354,12 @@ public interface VisualItem extends Tuple {
     public double getEndX();
     
     /**
+     * Return the JavaFx-Property for the ending x-coordinate
+     * @return
+     */
+    public DoubleProperty getEndXProperty();
+
+    /**
      * Set the ending x-coordinate of this item.
      * @param x the new ending x-coordinate
      * @see #ENDX
@@ -336,6 +373,12 @@ public interface VisualItem extends Tuple {
      */
     public double getEndY();
     
+    /**
+     * Return the JavaFx-Property for the ending y-coordinate
+     * @return
+     */
+    public DoubleProperty getEndYProperty();
+
     /**
      * Set the ending y-coordinate of this item.
      * @param y the new ending y-coordinate

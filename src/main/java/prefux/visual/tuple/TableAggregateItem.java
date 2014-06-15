@@ -7,12 +7,12 @@ package prefux.visual.tuple;
 import java.util.Iterator;
 
 import prefux.data.Graph;
-import prefux.data.Table;
 import prefux.data.expression.Predicate;
 import prefux.data.util.FilterIterator;
 import prefux.visual.AggregateItem;
 import prefux.visual.AggregateTable;
 import prefux.visual.VisualItem;
+import prefux.visual.VisualTable;
 
 /**
  * AggregateItem implementation that uses data values from a backing
@@ -32,7 +32,7 @@ public class TableAggregateItem extends TableVisualItem
      * @param graph ignored by this class
      * @param row the table row index
      */
-    protected void init(Table table, Graph graph, int row) {
+    protected void init(VisualTable table, Graph graph, int row) {
         m_table = table;
         m_row = m_table.isValidRow(row) ? row : -1;
     }

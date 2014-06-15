@@ -1,7 +1,6 @@
 package prefux.visual.tuple;
 
 import prefux.data.Graph;
-import prefux.data.Table;
 import prefux.visual.DecoratorItem;
 import prefux.visual.VisualItem;
 import prefux.visual.VisualTable;
@@ -24,7 +23,7 @@ public class TableDecoratorItem extends TableVisualItem
      * @param graph ignored by this class
      * @param row the table row index
      */
-    protected void init(Table table, Graph graph, int row) {
+    protected void init(VisualTable table, Graph graph, int row) {
         m_table = table;
         m_row = m_table.isValidRow(row) ? row : -1;
     }

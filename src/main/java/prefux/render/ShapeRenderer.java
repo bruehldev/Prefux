@@ -4,7 +4,7 @@
  */
 package prefux.render;
 
-
+import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.shape.Circle;
 
@@ -14,38 +14,41 @@ import org.slf4j.LoggerFactory;
 import prefux.visual.VisualItem;
 
 /**
- * Renderer for drawing simple shapes. 
+ * Renderer for drawing simple shapes.
  * 
  * @author Martin Stockhammer
  */
 public class ShapeRenderer extends AbstractShapeRenderer implements Renderer {
 
-	private static final Logger log = LoggerFactory.getLogger(ShapeRenderer.class);
+    private static final Logger log = LoggerFactory
+            .getLogger(ShapeRenderer.class);
 
-	public double DEFAULT_RADIUS = 5.0;
-	public static final String DEFAULT_STYLE_CLASS = "prefux-shape";
+    public double DEFAULT_RADIUS = 5.0;
+    public static final String DEFAULT_STYLE_CLASS = "prefux-shape";
 
-	@Override
-	public void setBounds(VisualItem item) {
-		log.debug("setBounds " + item);
-		Node node = item.getNode();
-		javafx.application.Platform.runLater(() -> {
-			node.setLayoutX(item.getX());
-			node.setLayoutY(item.getY());
-		});
+    @Override
+    public void setBounds(VisualItem item) {
+        log.debug("setBounds " + item);
+        log.debug("setBounds " + item.getXProperty().get()+"/"+item.getYProperty().get());
+        log.debug("setBounds " + item.getX()+"/"+item.getY());
+        
+        // Direct binding
 
-	}
-	
-	@Override
-	public String getDefaultStyle() {
-		return DEFAULT_STYLE_CLASS;
-	}
+    }
 
-	@Override
-	protected Node getRawShape(VisualItem item) {
-		 return new Circle(DEFAULT_RADIUS);
-	}
-	
-	
+    @Override
+    public String getDefaultStyle() {
+        return DEFAULT_STYLE_CLASS;
+    }
+
+    @Override
+    protected Node getRawShape(VisualItem item) {
+        Circle circle = new Circle(DEFAULT_RADIUS);
+        Platform.runLater(() -> {
+            circle.centerXProperty().bind(item.getXProperty());
+            circle.centerYProperty().bind(item.getYProperty());
+        });
+        return circle;
+    }
 
 } // end of class ShapeRenderer

@@ -30,40 +30,38 @@ import prefux.visual.VisualItem;
  */
 public class EdgeRenderer extends AbstractShapeRenderer implements Renderer {
 
-	private static final Logger log = LoggerFactory
-			.getLogger(EdgeRenderer.class);
+    private static final Logger log = LoggerFactory
+            .getLogger(EdgeRenderer.class);
 
-	public static final String DEFAULT_STYLE_CLASS="prefux-edge";
+    public static final String DEFAULT_STYLE_CLASS = "prefux-edge";
 
-	@Override
-	public boolean locatePoint(Point2D p, VisualItem item) {
-		log.debug("locatePoint " + p + " " + item);
-		return false;
-	}
+    @Override
+    public boolean locatePoint(Point2D p, VisualItem item) {
+        log.debug("locatePoint " + p + " " + item);
+        return false;
+    }
 
-	@Override
-	public void setBounds(VisualItem item) {
-		Line line = (Line) item.getNode();
-		EdgeItem edge = (EdgeItem) item;
-		
-		log.trace("Setting bounds " + edge);
-		Platform.runLater(() -> {
-			line.setStartX(edge.getSourceItem().getX());
-			line.setStartY(edge.getSourceItem().getY());
-			line.setEndX(edge.getTargetItem().getX());
-			line.setEndY(edge.getTargetItem().getY());
-		});
+    @Override
+    public void setBounds(VisualItem item) {
+        log.trace("Setting bounds " + item);
+    }
 
-	}
+    @Override
+    protected Node getRawShape(VisualItem item) {
+        EdgeItem edge = (EdgeItem) item;
+        Line line = new Line();
+        Platform.runLater(() -> {
+            line.startXProperty().bind(edge.getSourceItem().getXProperty());
+            line.startYProperty().bind(edge.getSourceItem().getYProperty());
+            line.endXProperty().bind(edge.getTargetItem().getXProperty());
+            line.endYProperty().bind(edge.getTargetItem().getYProperty());
+        });
+        return line;
+    }
 
-	@Override
-	protected Node getRawShape(VisualItem item) {
-		return new Line();
-	}
-	
-	@Override
-	public String getDefaultStyle() {
-		return DEFAULT_STYLE_CLASS;
-	}
+    @Override
+    public String getDefaultStyle() {
+        return DEFAULT_STYLE_CLASS;
+    }
 
 } // end of class EdgeRenderer

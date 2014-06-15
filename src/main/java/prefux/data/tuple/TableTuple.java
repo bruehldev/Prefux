@@ -12,9 +12,9 @@ import prefux.data.Tuple;
  * 
  * @author <a href="http://jheer.org">jeffrey heer</a>
  */
-public class TableTuple implements Tuple {
+public class TableTuple <T extends Table> implements Tuple {
 
-    protected Table m_table;
+    protected T m_table;
     protected int m_row;
     
     /**
@@ -25,7 +25,7 @@ public class TableTuple implements Tuple {
      * @param graph ignored by this class
      * @param row the table row index
      */
-    protected void init(Table table, Graph graph, int row) {
+    protected void init(T table, Graph graph, int row) {
         m_table = table;
         m_row = m_table.isValidRow(row) ? row : -1;
     }

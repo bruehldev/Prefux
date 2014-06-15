@@ -2,9 +2,9 @@ package prefux.visual.tuple;
 
 import prefux.data.Graph;
 import prefux.data.Node;
-import prefux.data.Table;
 import prefux.visual.EdgeItem;
 import prefux.visual.NodeItem;
+import prefux.visual.VisualTable;
 
 /**
  * EdgeItem implementation that used data values from a backing
@@ -26,10 +26,9 @@ public class TableEdgeItem extends TableVisualItem implements EdgeItem {
      * @param row the row in the node table to which this Edge instance
      *  corresponds.
      */
-    protected void init(Table table, Graph graph, int row) {
-        m_table = table;
+    protected void init(VisualTable table, Graph graph, int row) {
+        super.init(table, graph, row);
         m_graph = graph;
-        m_row = m_table.isValidRow(row) ? row : -1;
     }
     
     /**

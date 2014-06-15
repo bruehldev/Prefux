@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.transform.Translate;
 import prefux.Constants;
 import prefux.visual.VisualItem;
 
@@ -74,6 +75,7 @@ public class LabelRenderer extends AbstractShapeRenderer {
 	protected Label txt;
 	protected ImageView img;
 	protected Pane pane;
+	
 	
 	public static final String DEFAULT_STYLE_CLASS="prefux-label";
 
@@ -522,6 +524,11 @@ public class LabelRenderer extends AbstractShapeRenderer {
 	@Override
 	public String getDefaultStyle() {
 		return DEFAULT_STYLE_CLASS;
+	}
+	
+	public void translate(double x, double y) {
+		addTransform(new Translate(x, y));
+		
 	}
 
 

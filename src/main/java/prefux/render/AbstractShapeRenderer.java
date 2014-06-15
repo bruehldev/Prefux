@@ -52,6 +52,8 @@ public abstract class AbstractShapeRenderer implements Renderer {
 	protected boolean m_manageBounds = true;
 
 	private List<String> rendererStyles = new ArrayList<>();
+	private List<Transform> transforms = null;
+
 
 	public AbstractShapeRenderer() {
 		if (getDefaultStyle() != null) {
@@ -76,6 +78,7 @@ public abstract class AbstractShapeRenderer implements Renderer {
 			item.setNode(shape);
 		}
 	}
+	
 
 	/**
 	 * Draws the specified shape into the provided Graphics context, using
@@ -123,10 +126,14 @@ public abstract class AbstractShapeRenderer implements Renderer {
 	 *            the item for which to get the Shape
 	 */
 	public Node getShape(VisualItem item) {
-		Transform at = getTransform(item);
+		List<Transform> at = getTransform(item);
 		Node rawShape = getRawShape(item);
-		if (at != null)
-			rawShape.getTransforms().add(at);
+		if (at != null && at.size()>0){
+			ObservableList<Transform> ts = rawShape.getTransforms();
+			for (Transform transform : at) {
+				ts.add(transform);
+			}
+		}
 		return rawShape;
 	}
 
@@ -139,6 +146,7 @@ public abstract class AbstractShapeRenderer implements Renderer {
 	 * @return the "raw", untransformed shape.
 	 */
 	protected abstract Node getRawShape(VisualItem item);
+	
 
 	/**
 	 * Return the graphics space transform applied to this item's shape, if any.
@@ -149,8 +157,15 @@ public abstract class AbstractShapeRenderer implements Renderer {
 	 *            the VisualItem
 	 * @return the graphics space transform, or null if none
 	 */
-	protected Transform getTransform(VisualItem item) {
-		return null;
+	protected List<Transform> getTransform(VisualItem item) {
+		return transforms;
+	}
+	
+	protected void addTransform(Transform transform) {
+		if (this.transforms==null) {
+			this.transforms = new ArrayList<>(2);
+		}
+		this.transforms.add(transform);
 	}
 
 	/**

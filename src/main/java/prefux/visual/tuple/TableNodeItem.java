@@ -5,8 +5,8 @@ import java.util.Iterator;
 import prefux.data.Edge;
 import prefux.data.Graph;
 import prefux.data.Node;
-import prefux.data.Table;
 import prefux.visual.NodeItem;
+import prefux.visual.VisualTable;
 
 /**
  * NodeItem implementation that used data values from a backing
@@ -28,10 +28,9 @@ public class TableNodeItem extends TableVisualItem implements NodeItem {
      * @param row the row in the node table to which this Node instance
      *  corresponds.
      */
-    protected void init(Table table, Graph graph, int row) {
-        m_table = table;
+    protected void init(VisualTable table, Graph graph, int row) {
+        super.init(table, graph, row);
         m_graph = graph;
-        m_row = m_table.isValidRow(row) ? row : -1;
     }
     
     /**
@@ -69,43 +68,43 @@ public class TableNodeItem extends TableVisualItem implements NodeItem {
     /**
      * @see prefux.data.Node#inEdges()
      */
-    public Iterator inEdges() {
-        return m_graph.inEdges(this);
+    public Iterator<Edge> inEdges() {
+        return (Iterator<Edge>) m_graph.inEdges(this);
     }
 
     /**
      * @see prefux.data.Node#outEdges()
      */
-    public Iterator outEdges() {
-        return m_graph.outEdges(this);
+    public Iterator<Edge> outEdges() {
+        return (Iterator<Edge>) m_graph.outEdges(this);
     }
     
     /**
      * @see prefux.data.Node#edges()
      */
-    public Iterator edges() {
-        return m_graph.edges(this);
+    public Iterator<Edge> edges() {
+        return (Iterator<Edge>) m_graph.edges(this);
     }
     
     /**
      * @see prefux.data.Node#inNeighbors()
      */
-    public Iterator inNeighbors() {
-        return m_graph.inNeighbors(this);
+    public Iterator<Node> inNeighbors() {
+        return (Iterator<Node>) m_graph.inNeighbors(this);
     }
     
     /**
      * @see prefux.data.Node#outNeighbors()
      */
-    public Iterator outNeighbors() {
-        return m_graph.outNeighbors(this);
+    public Iterator<Node> outNeighbors() {
+        return (Iterator<Node>) m_graph.outNeighbors(this);
     }
     
     /**
      * @see prefux.data.Node#neighbors()
      */
-    public Iterator neighbors() {
-        return m_graph.neighbors(this);
+    public Iterator<Node> neighbors() {
+        return (Iterator<Node>) m_graph.neighbors(this);
     }
 
     // ------------------------------------------------------------------------
@@ -176,14 +175,14 @@ public class TableNodeItem extends TableVisualItem implements NodeItem {
     /**
      * @see prefux.data.Node#children()
      */
-    public Iterator children() {
+    public Iterator<Node> children() {
         return m_graph.getSpanningTree().children(this);
     }
 
     /**
      * @see prefux.data.Node#childEdges()
      */
-    public Iterator childEdges() {
+    public Iterator<Edge> childEdges() {
         return m_graph.getSpanningTree().childEdges(this);
     }
 
