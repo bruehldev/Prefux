@@ -3,6 +3,7 @@ package prefux.action.layout.graph;
 import java.util.Iterator;
 
 import prefux.data.Graph;
+import prefux.data.Node;
 import prefux.data.Schema;
 import prefux.data.tuple.TupleSet;
 import prefux.data.util.Point2D;
@@ -81,7 +82,7 @@ public class BalloonTreeLayout extends TreeLayout {
         Params np = getParams(n);
         np.d = 0;
         double s = 0;
-        Iterator childIter = n.children();
+        Iterator<Node> childIter = n.children();
         while ( childIter.hasNext() ) {
             NodeItem c = (NodeItem)childIter.next();
             if ( !c.isVisible() ) continue;
@@ -188,7 +189,7 @@ public class BalloonTreeLayout extends TreeLayout {
         
         Params np = getParams(n);
         int numChildren = 0;
-        Iterator childIter = n.children();
+        Iterator<Node> childIter = n.children();
         while ( childIter.hasNext() ) {
             NodeItem c = (NodeItem)childIter.next();
             if ( c.isVisible() ) ++numChildren;

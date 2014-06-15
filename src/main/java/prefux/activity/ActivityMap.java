@@ -19,7 +19,7 @@ import java.util.HashMap;
  */
 public class ActivityMap {
 
-    private HashMap     m_map;
+    private HashMap<String,Activity>     m_map;
     private ActivityMap m_parent;
     
     /**
@@ -35,7 +35,7 @@ public class ActivityMap {
      * keys that are not found within this, the child map.
      */
     public ActivityMap(ActivityMap parent) {
-        m_map = new HashMap();
+        m_map = new HashMap<>();
         m_parent = parent;
     }
     

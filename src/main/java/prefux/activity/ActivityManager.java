@@ -39,8 +39,8 @@ public class ActivityManager extends Thread {
     
     private static ActivityManager s_instance;
     
-    private ArrayList m_activities;
-    private ArrayList m_tmp;
+    private ArrayList<Activity> m_activities;
+    private ArrayList<Activity> m_tmp;
     private long      m_nextTime;
     private boolean   m_run;
     
@@ -60,8 +60,8 @@ public class ActivityManager extends Thread {
      */
     private ActivityManager() {
         super("prefuse_ActivityManager");
-        m_activities = new ArrayList();
-        m_tmp = new ArrayList();
+        m_activities = new ArrayList<>();
+        m_tmp = new ArrayList<>();
         m_nextTime = Long.MAX_VALUE;
         
         int priority = PrefuseConfig.getInt("activity.threadPriority");

@@ -5,7 +5,9 @@ import java.util.Random;
 
 import javafx.geometry.Rectangle2D;
 import prefux.action.layout.Layout;
+import prefux.data.Edge;
 import prefux.data.Graph;
+import prefux.data.Node;
 import prefux.data.Schema;
 import prefux.data.tuple.TupleSet;
 import prefux.util.PrefuseLib;
@@ -87,19 +89,19 @@ public class FruchtermanReingoldLayout extends Layout {
         for (int curIter=0; curIter < maxIter; curIter++ ) {
 
             // Calculate repulsion
-            for (Iterator iter = g.nodes(); iter.hasNext();) {
+            for (Iterator<? extends Node> iter = g.nodes(); iter.hasNext();) {
                 NodeItem n = (NodeItem)iter.next();
                 if (n.isFixed()) continue;
                 calcRepulsion(g, n);
             }
 
             // Calculate attraction
-            for (Iterator iter = g.edges(); iter.hasNext();) {
+            for (Iterator<? extends Edge> iter = g.edges(); iter.hasNext();) {
                 EdgeItem e = (EdgeItem) iter.next();
                 calcAttraction(e);
             }
 
-            for (Iterator iter = g.nodes(); iter.hasNext();) {
+            for (Iterator<? extends Node> iter = g.nodes(); iter.hasNext();) {
                 NodeItem n = (NodeItem)iter.next();
                 if (n.isFixed()) continue;
                 calcPositions(n,bounds);
@@ -119,7 +121,7 @@ public class FruchtermanReingoldLayout extends Layout {
             Math.sqrt(b.getHeight()*b.getWidth()/g.getNodeCount());
         
         // initialize node positions
-        Iterator nodeIter = g.nodes();
+        Iterator<? extends Node> nodeIter = g.nodes();
         Random rand = new Random(42); // get a deterministic layout result
         double scaleW = ALPHA*b.getWidth()/2;
         double scaleH = ALPHA*b.getHeight()/2;
@@ -132,7 +134,7 @@ public class FruchtermanReingoldLayout extends Layout {
     }
     
     private void finish(Graph g) {
-        Iterator nodeIter = g.nodes();
+        Iterator<? extends Node> nodeIter = g.nodes();
         while ( nodeIter.hasNext() ) {
             NodeItem n = (NodeItem)nodeIter.next();
             Params np = getParams(n);
@@ -205,7 +207,7 @@ public class FruchtermanReingoldLayout extends Layout {
         Params np = getParams(n1);
         np.disp[0] = 0.0; np.disp[1] = 0.0;
 
-        for (Iterator iter2 = g.nodes(); iter2.hasNext();) {
+        for (Iterator<? extends Node> iter2 = g.nodes(); iter2.hasNext();) {
             NodeItem n2 = (NodeItem) iter2.next();
             Params n2p = getParams(n2);
             if (n2.isFixed()) continue;

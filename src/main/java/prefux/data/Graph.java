@@ -1037,8 +1037,8 @@ public class Graph extends CompositeTupleSet {
      * Get an iterator over all nodes in the graph.
      * @return an iterator over Node instances
      */
-    public Iterator<?> nodes() {
-        return m_nodeTuples.iterator(nodeRows());
+    public Iterator<? extends Node> nodes() {
+        return (Iterator<? extends Node>) m_nodeTuples.iterator(nodeRows());
     }
 
     /**
@@ -1046,7 +1046,7 @@ public class Graph extends CompositeTupleSet {
      * @param n a Node in the graph
      * @return an iterator over all Nodes connected to the input node
      */
-    public Iterator<?> neighbors(Node n) {
+    public Iterator<? extends Node> neighbors(Node n) {
         return new NeighborIterator(n, edges(n));
     }
 
@@ -1055,7 +1055,7 @@ public class Graph extends CompositeTupleSet {
      * @param n a Node in the graph
      * @return an iterator over all Nodes that point to the input target node
      */
-    public Iterator<?> inNeighbors(Node n) {
+    public Iterator<? extends Node> inNeighbors(Node n) {
         return new NeighborIterator(n, inEdges(n));
     }
 
@@ -1064,7 +1064,7 @@ public class Graph extends CompositeTupleSet {
      * @param n a Node in the graph
      * @return an iterator over all Nodes pointed to by the input source node
      */
-    public Iterator<?> outNeighbors(Node n) {
+    public Iterator<? extends Node> outNeighbors(Node n) {
         return new NeighborIterator(n, outEdges(n));
     }
     
@@ -1072,8 +1072,8 @@ public class Graph extends CompositeTupleSet {
      * Get an iterator over all edges in the graph.
      * @return an iterator over Edge instances
      */
-    public Iterator<?> edges() {
-        return m_edgeTuples.iterator(edgeRows());
+    public Iterator<? extends Edge> edges() {
+        return (Iterator<? extends Edge>) m_edgeTuples.iterator(edgeRows());
     }
     
     /**
@@ -1081,9 +1081,9 @@ public class Graph extends CompositeTupleSet {
      * @param node a Node in the graph
      * @return an iterator over all Edges connected to the input node
      */
-    public Iterator<?> edges(Node node) {
+    public Iterator<? extends Edge> edges(Node node) {
         nodeCheck(node, true);
-        return m_edgeTuples.iterator(edgeRows(node.getRow(), UNDIRECTED)); 
+        return (Iterator<? extends Edge>) m_edgeTuples.iterator(edgeRows(node.getRow(), UNDIRECTED)); 
     }
     
     /**
@@ -1091,9 +1091,9 @@ public class Graph extends CompositeTupleSet {
      * @param node a Node in the graph
      * @return an iterator over all in-linking edges to the input target node
      */
-    public Iterator<?> inEdges(Node node) {
+    public Iterator<? extends Edge> inEdges(Node node) {
         nodeCheck(node, true);
-        return m_edgeTuples.iterator(inEdgeRows(node.getRow()));
+        return (Iterator<? extends Edge>) m_edgeTuples.iterator(inEdgeRows(node.getRow()));
     }
 
     /**

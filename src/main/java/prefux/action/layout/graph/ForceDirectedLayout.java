@@ -224,9 +224,9 @@ public class ForceDirectedLayout extends Layout {
         // run-continuously layout
         if ( m_runonce ) {
             Point2D anchor = getLayoutAnchor();
-            Iterator iter = m_vis.visibleItems(m_nodeGroup);
+            Iterator<VisualItem> iter = m_vis.visibleItems(m_nodeGroup);
             while ( iter.hasNext() ) {
-                VisualItem  item = (NodeItem)iter.next();
+                VisualItem  item = iter.next();
                 item.setX(anchor.getX());
                 item.setY(anchor.getY());
             }
@@ -273,9 +273,9 @@ public class ForceDirectedLayout extends Layout {
         }
         
         // update positions
-        Iterator iter = m_vis.visibleItems(m_nodeGroup);
+        Iterator<VisualItem> iter = m_vis.visibleItems(m_nodeGroup);
         while ( iter.hasNext() ) {
-            VisualItem item = (VisualItem)iter.next();
+            VisualItem item = iter.next();
             ForceItem fitem = (ForceItem)item.get(FORCEITEM);
             
             if ( item.isFixed() ) {
@@ -316,9 +316,9 @@ public class ForceDirectedLayout extends Layout {
      * by this layout.
      */
     public void reset() {
-        Iterator iter = m_vis.visibleItems(m_nodeGroup);
+        Iterator<VisualItem> iter = m_vis.visibleItems(m_nodeGroup);
         while ( iter.hasNext() ) {
-            VisualItem item = (VisualItem)iter.next();
+            VisualItem item = iter.next();
             ForceItem fitem = (ForceItem)item.get(FORCEITEM);
             if ( fitem != null ) {
                 fitem.location[0] = item.getEndX();
@@ -347,7 +347,7 @@ public class ForceDirectedLayout extends Layout {
         startX = Double.isNaN(startX) ? 0f : startX;
         startY = Double.isNaN(startY) ? 0f : startY;
        
-        Iterator iter = m_vis.visibleItems(m_nodeGroup);
+        Iterator<VisualItem> iter = m_vis.visibleItems(m_nodeGroup);
         while ( iter.hasNext() ) {
             VisualItem item = (VisualItem)iter.next();
             ForceItem fitem = (ForceItem)item.get(FORCEITEM);
