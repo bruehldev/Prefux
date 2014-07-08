@@ -29,7 +29,7 @@ public class ShapeRenderer extends AbstractShapeRenderer implements Renderer {
     @Override
     public void setBounds(VisualItem item) {
         log.debug("setBounds " + item);
-        log.debug("setBounds " + item.getXProperty().get()+"/"+item.getYProperty().get());
+        log.debug("setBounds " + item.xProperty().get()+"/"+item.yProperty().get());
         log.debug("setBounds " + item.getX()+"/"+item.getY());
         
         // Direct binding
@@ -45,8 +45,8 @@ public class ShapeRenderer extends AbstractShapeRenderer implements Renderer {
     protected Node getRawShape(VisualItem item) {
         Circle circle = new Circle(DEFAULT_RADIUS);
         Platform.runLater(() -> {
-            circle.centerXProperty().bind(item.getXProperty());
-            circle.centerYProperty().bind(item.getYProperty());
+            circle.centerXProperty().bind(item.xProperty());
+            circle.centerYProperty().bind(item.yProperty());
         });
         return circle;
     }

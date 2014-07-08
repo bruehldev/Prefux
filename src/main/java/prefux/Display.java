@@ -4,6 +4,7 @@
  */
 package prefux;
 
+import prefux.controls.Control;
 import prefux.data.expression.Predicate;
 import prefux.data.util.Point2D;
 import prefux.data.util.Rectangle2D;
@@ -65,7 +66,19 @@ public interface Display {
 
 	public abstract void panToAbs(Point2D center);
 
-	
+	/**
+	 * Registers a control listener
+	 * @param cl
+	 */
+	public void addControlListener(Control cl);
+
+    /**
+     * Removes a registered ControlListener.
+     * 
+     * @param cl
+     *            the listener to remove.
+     */
+    public void removeControlListener(Control cl);
 
 
 }

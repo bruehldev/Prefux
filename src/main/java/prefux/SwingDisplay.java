@@ -3,6 +3,7 @@ package prefux;
 import java.awt.Point;
 import java.awt.geom.AffineTransform;
 
+import prefux.controls.Control;
 import prefux.data.expression.Predicate;
 import prefux.data.util.Point2D;
 import prefux.data.util.Rectangle2D;
@@ -2209,6 +2210,18 @@ public class SwingDisplay implements Display {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	@Override
+    public void addControlListener(Control cl) {
+	    // TODO Auto-generated method stub
+	    
+    }
+
+	@Override
+    public void removeControlListener(Control cl) {
+	    // TODO Auto-generated method stub
+	    
+    }
     
     
 } // end of class Display

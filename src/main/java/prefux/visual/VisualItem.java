@@ -273,7 +273,7 @@ public interface VisualItem extends Tuple {
      * 
      * @return
      */
-    public DoubleProperty getXProperty();
+    public DoubleProperty xProperty();
 
     /**
      * Set the current x-coordinate of this item.
@@ -296,7 +296,7 @@ public interface VisualItem extends Tuple {
      * 
      * @return
      */
-    public DoubleProperty getYProperty();
+    public DoubleProperty yProperty();
 
 
     /**
@@ -317,7 +317,7 @@ public interface VisualItem extends Tuple {
      * Return the JavaFx-Property for the starting x-coordinate
      * @return
      */
-    public DoubleProperty getStartXProperty();
+    public DoubleProperty startXProperty();
     
     /**
      * Set the starting x-coordinate of this item.
@@ -337,7 +337,7 @@ public interface VisualItem extends Tuple {
      * Return the JavaFx-Property for the starting y-coordinate
      * @return
      */
-    public DoubleProperty getStartYProperty();
+    public DoubleProperty startYProperty();
 
     /**
      * Set the starting y-coordinate of this item.
@@ -357,7 +357,7 @@ public interface VisualItem extends Tuple {
      * Return the JavaFx-Property for the ending x-coordinate
      * @return
      */
-    public DoubleProperty getEndXProperty();
+    public DoubleProperty endXProperty();
 
     /**
      * Set the ending x-coordinate of this item.
@@ -377,7 +377,7 @@ public interface VisualItem extends Tuple {
      * Return the JavaFx-Property for the ending y-coordinate
      * @return
      */
-    public DoubleProperty getEndYProperty();
+    public DoubleProperty endYProperty();
 
     /**
      * Set the ending y-coordinate of this item.

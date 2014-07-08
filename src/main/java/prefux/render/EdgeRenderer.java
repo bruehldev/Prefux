@@ -51,10 +51,10 @@ public class EdgeRenderer extends AbstractShapeRenderer implements Renderer {
         EdgeItem edge = (EdgeItem) item;
         Line line = new Line();
         Platform.runLater(() -> {
-            line.startXProperty().bind(edge.getSourceItem().getXProperty());
-            line.startYProperty().bind(edge.getSourceItem().getYProperty());
-            line.endXProperty().bind(edge.getTargetItem().getXProperty());
-            line.endYProperty().bind(edge.getTargetItem().getYProperty());
+            line.startXProperty().bind(edge.getSourceItem().xProperty());
+            line.startYProperty().bind(edge.getSourceItem().yProperty());
+            line.endXProperty().bind(edge.getTargetItem().xProperty());
+            line.endYProperty().bind(edge.getTargetItem().yProperty());
         });
         return line;
     }

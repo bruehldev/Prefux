@@ -57,11 +57,11 @@ public class TableVisualItemTest extends Specification {
          */
         
         when:
-        item."set${prop}"(a)
+        item."set${prop.capitalize()}"(a)
 
         then:
         synchronized(item) {
-            item."get${prop}Property"().get()==a
+            item."${prop}Property"().get()==a
         }
 
         when:
@@ -69,35 +69,35 @@ public class TableVisualItemTest extends Specification {
 
         then:
         synchronized(item) {
-            item."get${prop}Property"().get()==b
+            item."${prop}Property"().get()==b
         }
 
         when:
         Double newV=-1.0
-        item."get${prop}Property"().addListener({ ObservableValue o,Object oldVal, Object newVal ->
+        item."${prop}Property"().addListener({ ObservableValue o,Object oldVal, Object newVal ->
             newV=newVal
         } as ChangeListener<Double>)
-        item."set${prop}"(c)
+        item."set${prop.capitalize()}"(c)
 
         then:
         synchronized(item) {
-            item."get${prop}Property"().get()==c
+            item."${prop}Property"().get()==c
             newV==c
         }
 
         where:
         a      |    b    |     c     |   prop
-        255.75 |  315.77 |  8885.25  |   "X"
-        255.75 |  315.77 |  8885.25  |   "Y"
-        255.75 |  315.77 |  8885.25  |   "StartX"
-        255.75 |  315.77 |  8885.25  |   "StartY"
-        255.75 |  315.77 |  8885.25  |   "EndX"
-        255.75 |  315.77 |  8885.25  |   "EndY"
-        15.01 |   44.44 |    84.124 |   "X"
-        15.01 |   44.44 |    84.124 |   "Y"
-        15.01 |   44.44 |    84.124 |   "StartX"
-        15.01 |   44.44 |    84.124 |   "StartY"
-        15.01 |   44.44 |    84.124 |   "EndX"
-        15.01 |   44.44 |    84.124 |   "EndY"
+        255.75 |  315.77 |  8885.25  |   "x"
+        255.75 |  315.77 |  8885.25  |   "y"
+        255.75 |  315.77 |  8885.25  |   "startX"
+        255.75 |  315.77 |  8885.25  |   "startY"
+        255.75 |  315.77 |  8885.25  |   "endX"
+        255.75 |  315.77 |  8885.25  |   "endY"
+        15.01 |   44.44 |    84.124 |   "x"
+        15.01 |   44.44 |    84.124 |   "y"
+        15.01 |   44.44 |    84.124 |   "startX"
+        15.01 |   44.44 |    84.124 |   "startY"
+        15.01 |   44.44 |    84.124 |   "endX"
+        15.01 |   44.44 |    84.124 |   "endY"
     }
 }

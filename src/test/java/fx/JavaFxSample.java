@@ -10,6 +10,7 @@ import prefux.action.ActionList;
 import prefux.action.RepaintAction;
 import prefux.action.layout.graph.ForceDirectedLayout;
 import prefux.activity.Activity;
+import prefux.controls.DragControl;
 import prefux.data.Graph;
 import prefux.data.io.DataIOException;
 import prefux.data.io.GraphMLReader;
@@ -33,7 +34,8 @@ public class JavaFxSample extends Application {
 		
 		Graph graph = null;
 		try {
-		    graph = new GraphMLReader().readGraph("data/socialnet.xml");
+//		    graph = new GraphMLReader().readGraph("data/graphml-sample.xml");
+    	    graph = new GraphMLReader().readGraph("data/socialnet.xml");
 		    Visualization vis = new Visualization();
 		    vis.add("graph", graph);
 		    
@@ -57,6 +59,7 @@ public class JavaFxSample extends Application {
 		    layout.add(new RepaintAction());
 		    vis.putAction("layout", layout);
 		    FxDisplay display = new FxDisplay(vis);
+		    display.addControlListener(new DragControl());
 		    root.getChildren().add(display);
 		    
 		    vis.run("layout");
