@@ -109,7 +109,7 @@ public interface VisualItem extends Tuple {
      * VisualItem is updated, it's bounds are invalidated, as the data change
      * may have changed to appearance of the item. Revalidating the bounds
      * causes the bounds of the item to be recomputed and made current.
-     * @return the validated boundig box of this item
+     * @return the validated bounding box of this item
      */
     public Rectangle2D validateBounds();
     
@@ -150,7 +150,7 @@ public interface VisualItem extends Tuple {
     
     /**
      * Indicates if the start visible flag is set to true. This is the
-     * visibility value consulted for the staring value of the visibility
+     * visibility value consulted for the starting value of the visibility
      * field at the beginning of an animated transition.
      * @return true if this item starts out visible, false otherwise.
      * @see #STARTVISIBLE
@@ -165,7 +165,7 @@ public interface VisualItem extends Tuple {
     public void setStartVisible(boolean value);
 
     /**
-     * Indictes if the end visible flag is set to true. This is the
+     * Indicates if the end visible flag is set to true. This is the
      * visibility value consulted for the ending value of the visibility
      * field at the end of an animated transition.
      * @return true if this items ends visible, false otherwise.
@@ -180,20 +180,7 @@ public interface VisualItem extends Tuple {
      */
     public void setEndVisible(boolean value);
     
-    /**
-     * Indicates if this item is interactive, meaning it can potentially
-     * respond to mouse and keyboard input events.
-     * @return true if the item is interactive, false otherwise
-     * @see #INTERACTIVE
-     */
-    public boolean isInteractive();
-
-    /**
-     * Set the interactive status of this VisualItem.
-     * @param value true for interactive, false for non-interactive
-     * @see #INTERACTIVE
-     */
-    public void setInteractive(boolean value);
+    
     
     /**
      * Indicates this item is expanded. Only used for items that are

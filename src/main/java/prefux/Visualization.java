@@ -1084,20 +1084,7 @@ public class Visualization {
         }
     }
 
-    /**
-     * Sets the interactivity status for all items in a given data group
-     * matching a given filter predicate.
-     * @param group the visual data group name
-     * @param p the filter predicate determining which items to modify
-     * @param value the interactivity value to set
-     */
-    public void setInteractive(String group, Predicate p, boolean value) {
-        Iterator<VisualItem> items = items(group, p);
-        while ( items.hasNext() ) {
-            VisualItem item = items.next();
-            item.setInteractive(value);
-        }
-    }
+    
     
     // ------------------------------------------------------------------------
     // Action Methods
@@ -1249,7 +1236,7 @@ public class Visualization {
     /**
      * Get the renderer for the given item. Consults this visualization's
      * {@link prefux.render.RendererFactory} and returns the result.
-     * @param item the item to retreive the renderer for
+     * @param item the item to retrieve the renderer for
      * @return the {@link prefux.render.Renderer} for drawing the
      * given item
      */

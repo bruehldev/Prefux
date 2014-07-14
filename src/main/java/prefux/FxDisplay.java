@@ -22,7 +22,6 @@ import org.slf4j.LoggerFactory;
 import prefux.controls.Control;
 import prefux.data.expression.AndPredicate;
 import prefux.data.expression.BooleanLiteral;
-import prefux.data.expression.CompositePredicate;
 import prefux.data.expression.Predicate;
 import prefux.data.util.Point2D;
 import prefux.data.util.Rectangle2D;
@@ -135,21 +134,22 @@ public class FxDisplay extends Group implements Display, EventHandler<Event> {
         StyleManager.getInstance().addUserAgentStylesheet(DEFAULT_STYLESHEET);
         vis.addDisplay(this);
         this.vis = vis;
-        LinkedList<EdgeItem> edges = new LinkedList<>();
+        LinkedList<VisualItem> nodes = new LinkedList<>();
         Iterator<VisualItem> it = vis.items();
+        // We render nodes after edges for better stacking
         while (it.hasNext()) {
             VisualItem item = it.next();
             if (item instanceof EdgeItem) {
-                edges.offer((EdgeItem) item);
-            } else {
                 item.getRenderer().render(this, item);
                 item.getNode().addEventHandler(Event.ANY, this);
                 m_registeredNodes.put(item.getNode(), item);
                 m_itemCount++;
+            } else {
+                nodes.offer(item);
             }
         }
         // Rendering edges after the nodes
-        for (EdgeItem item : edges) {
+        for (VisualItem item : nodes) {
             item.getRenderer().render(this, item);
             item.getNode().addEventHandler(Event.ANY, this);
             m_registeredNodes.put(item.getNode(), item);
