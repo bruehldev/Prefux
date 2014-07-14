@@ -58,7 +58,7 @@ public class PolarLocationAnimator extends ItemAction {
     private void setAnchor() {
         Display d = getVisualization().getDisplay(0);
         m_anchor = new Point2D(d.getWidth()/2,d.getHeight()/2);
-        d.getAbsoluteCoordinate(m_anchor, m_anchor);
+        m_anchor = d.getAbsoluteCoordinate(m_anchor);
         ax = m_anchor.getX();
         ay = m_anchor.getY();
     }

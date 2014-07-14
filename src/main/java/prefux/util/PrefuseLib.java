@@ -73,7 +73,6 @@ public class PrefuseLib {
      * @return the debug string
      */
     public static String getDisplayStats(Display d) {
-        float fr = Math.round(d.getFrameRate()*100f)/100f;
         
         Runtime rt = Runtime.getRuntime();
         long tm = rt.totalMemory() / (2<<20);
@@ -81,7 +80,6 @@ public class PrefuseLib {
         long mm = rt.maxMemory() / (2<<20);
         
         StringBuffer sb = new StringBuffer();
-        sb.append("frame rate: ").append(fr).append("fps - ");
         sb.append(d.getVisibleItemCount()).append(" items - ");
         sb.append("fonts(").append(FontLib.getCacheMissCount());
         sb.append(") colors(");

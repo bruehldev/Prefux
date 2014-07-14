@@ -11,10 +11,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.transform.Scale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +50,11 @@ public class FxDisplay extends Group implements Display, EventHandler<Event> {
     private List<Control> m_controls = new ArrayList<>();
 
     private Map<Node, VisualItem> m_registeredNodes = new HashMap<>();
+    
+    private Scale zoomScale = new Scale();
+    private DoubleProperty zoomFactor = new SimpleDoubleProperty(1.0);
+    private DoubleProperty zoomPivotX = new SimpleDoubleProperty(0.0);
+    private DoubleProperty zoomPivotY = new SimpleDoubleProperty(0.0);
 
     public FxDisplay(Visualization vis) {
         setVisualization(vis);
@@ -108,20 +117,8 @@ public class FxDisplay extends Group implements Display, EventHandler<Event> {
     }
 
     @Override
-    public double getFrameRate() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
     public int getVisibleItemCount() {
         return m_itemCount;
-    }
-
-    @Override
-    public void setHighQuality(boolean quality) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -131,6 +128,7 @@ public class FxDisplay extends Group implements Display, EventHandler<Event> {
 
     public void setVisualization(Visualization vis) {
         log.debug("setVisualization");
+        initializeZoom();
         StyleManager.getInstance().addUserAgentStylesheet(DEFAULT_STYLESHEET);
         vis.addDisplay(this);
         this.vis = vis;
@@ -156,6 +154,16 @@ public class FxDisplay extends Group implements Display, EventHandler<Event> {
             m_itemCount++;
         }
     }
+    
+    private void initializeZoom() {
+        this.getTransforms().add(zoomScale);
+        zoomScale.xProperty().bind(zoomFactor);
+        zoomScale.yProperty().bind(zoomFactor);
+        zoomPivotX.set(this.getBoundsInLocal().getWidth()/2.0);
+        zoomPivotX.set(this.getBoundsInLocal().getHeight()/2.0);
+        zoomScale.pivotXProperty().bind(zoomPivotX);
+        zoomScale.pivotYProperty().bind(zoomPivotY);
+    }
 
     @Override
     public void repaint() {
@@ -174,15 +182,9 @@ public class FxDisplay extends Group implements Display, EventHandler<Event> {
     }
 
     @Override
-    public void getAbsoluteCoordinate(Point2D m_anchor, Point2D m_anchor2) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public boolean isTranformInProgress() {
-        // TODO Auto-generated method stub
-        return false;
+    public Point2D getAbsoluteCoordinate(Point2D m_anchor) {
+        // TODO Transformations?
+    	return null;
     }
 
     @Override
@@ -193,16 +195,25 @@ public class FxDisplay extends Group implements Display, EventHandler<Event> {
 
     @Override
     public void zoom(Point2D p, double zoom) {
-        // TODO Auto-generated method stub
-
+    	zoomFactor.set(zoom);
+    	zoomPivotX.set(p.getX());
+    	zoomPivotY.set(p.getY());
+    }
+    
+    public DoubleProperty zoomFactorProperty() {
+    	return zoomFactor;
     }
 
-    @Override
-    public void animatePanAndZoomToAbs(Point2D center, double scale,
-            long duration) {
-        // TODO Auto-generated method stub
-
+    
+    public DoubleProperty zoomPivotXProperty() {
+    	return zoomPivotX;
     }
+
+    public DoubleProperty zoomPivotYProperty() {
+    	return zoomPivotY;
+    }
+
+
 
     @Override
     public void panToAbs(Point2D center) {
@@ -225,10 +236,20 @@ public class FxDisplay extends Group implements Display, EventHandler<Event> {
 
     }
 
+    /*
+     * This handler is registered for each node that is available.
+     * 
+     * @see javafx.event.EventHandler#handle(javafx.event.Event)
+     */
     @Override
     public void handle(Event event) {
         VisualItem item = findItem(event.getSource());
         if (item != null) {
+        	if (event.getEventType() == MouseEvent.MOUSE_ENTERED) {
+        		item.setHover(true);
+        	} else if (event.getEventType() == MouseEvent.MOUSE_EXITED) {
+        		item.setHover(false);
+        	}
             for (Control cl : m_controls) {
                 if (cl.isItemEventEnabled()
                         && cl.getEventType()

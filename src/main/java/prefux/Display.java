@@ -31,9 +31,6 @@ public interface Display {
 	 */
 	public abstract void damageReport();
 
-	
-	public abstract double getFrameRate();
-
 	public abstract int getVisibleItemCount();
 
 	public abstract double getDisplayX();
@@ -41,8 +38,6 @@ public interface Display {
 	public abstract double getDisplayY();
 
 	public abstract double getScale();
-
-	public abstract void setHighQuality(boolean quality);
 
 	public abstract Visualization getVisualization();
 
@@ -52,17 +47,13 @@ public interface Display {
 	
 	public double getHeight();
 
-	public abstract void getAbsoluteCoordinate(Point2D m_anchor,
-			Point2D m_anchor2);
-
-	public abstract boolean isTranformInProgress();
+	public abstract Point2D getAbsoluteCoordinate(Point2D m_anchor);
 
 	public abstract void zoomAbs(Point2D p, double zoom);
 
 	public abstract void zoom(Point2D p, double zoom);
 
-	public abstract void animatePanAndZoomToAbs(Point2D center, double scale,
-			long duration);
+
 
 	public abstract void panToAbs(Point2D center);
 

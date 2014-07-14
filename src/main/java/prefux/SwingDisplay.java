@@ -72,12 +72,6 @@ public class SwingDisplay implements Display {
 	}
 
 	@Override
-	public double getFrameRate() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public int getVisibleItemCount() {
 		// TODO Auto-generated method stub
 		return 0;
@@ -102,12 +96,6 @@ public class SwingDisplay implements Display {
 	}
 
 	@Override
-	public void setHighQuality(boolean quality) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public Visualization getVisualization() {
 		// TODO Auto-generated method stub
 		return null;
@@ -116,15 +104,9 @@ public class SwingDisplay implements Display {
 	
 
 	@Override
-	public void getAbsoluteCoordinate(Point2D m_anchor, Point2D m_anchor2) {
+	public Point2D getAbsoluteCoordinate(Point2D m_anchor) {
 		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public boolean isTranformInProgress() {
-		// TODO Auto-generated method stub
-		return false;
+		return null;
 	}
 
 	@Override
@@ -147,13 +129,6 @@ public class SwingDisplay implements Display {
 	public AffineTransform getInverseTransform() {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public void animatePanAndZoomToAbs(Point2D center, double scale,
-			long duration) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

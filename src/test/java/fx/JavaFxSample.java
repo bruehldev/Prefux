@@ -1,8 +1,12 @@
 package fx;
 
 import javafx.application.Application;
+import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import prefux.FxDisplay;
 import prefux.Visualization;
@@ -23,13 +27,15 @@ public class JavaFxSample extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
+	private static final double WIDTH = 300;
+	private static final double HEIGHT = 250;
 
 	@Override
 	public void start(Stage primaryStage) {
 
 		primaryStage.setTitle("Hello World!");
-		StackPane root = new StackPane();
-		primaryStage.setScene(new Scene(root, 300, 250));
+		BorderPane root = new BorderPane();
+		primaryStage.setScene(new Scene(root, WIDTH, HEIGHT));
 		primaryStage.show();
 		
 		Graph graph = null;
@@ -60,8 +66,8 @@ public class JavaFxSample extends Application {
 		    vis.putAction("layout", layout);
 		    FxDisplay display = new FxDisplay(vis);
 		    display.addControlListener(new DragControl());
-		    root.getChildren().add(display);
-		    
+		    root.setCenter(display);
+		    root.setBottom(buildControlPanel(display));
 		    vis.run("layout");
 
 		} catch ( DataIOException e ) {
@@ -69,6 +75,18 @@ public class JavaFxSample extends Application {
 		    System.err.println("Error loading graph. Exiting...");
 		    System.exit(1);
 		}
+	}
+	
+	private Node buildControlPanel(FxDisplay display) {
+		VBox vbox = new VBox();
+		Label txt = new Label("Zoom Factor");
+		Slider slider = new Slider(0.0,10.0,1.0);
+		Label txt2 = new Label("");
+		display.zoomFactorProperty().bind(slider.valueProperty());
+		vbox.getChildren().addAll(txt, slider, txt2);
+		return vbox;
+		
+		
 	}
 
 }

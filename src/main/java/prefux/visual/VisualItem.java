@@ -220,7 +220,7 @@ public interface VisualItem extends Tuple {
     public boolean isHighlighted();
     
     /**
-     * Set the highlighted status of this item. How higlighting values are
+     * Set the highlighted status of this item. How highlighting values are
      * interpreted by the system depends on the various processing actions
      * set up for an application (e.g., how a
      * {@link prefux.action.assignment.ColorAction} might assign colors
