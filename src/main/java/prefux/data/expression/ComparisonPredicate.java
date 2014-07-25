@@ -82,6 +82,9 @@ public class ComparisonPredicate extends BinaryExpression implements Predicate {
     public boolean getBoolean(Tuple t) {
         Class lType = m_left.getType(t.getSchema());
         Class rType = m_right.getType(t.getSchema());
+        if (lType==null || rType==null) {
+        	return false;
+        }
         
         int c = 0;
         if ( TypeLib.isNumericType(lType) && TypeLib.isNumericType(rType) ) {

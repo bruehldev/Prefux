@@ -30,38 +30,35 @@ import prefux.visual.VisualItem;
  */
 public class EdgeRenderer extends AbstractShapeRenderer implements Renderer {
 
-    private static final Logger log = LoggerFactory
-            .getLogger(EdgeRenderer.class);
+	private static final Logger log = LoggerFactory
+	        .getLogger(EdgeRenderer.class);
 
-    public static final String DEFAULT_STYLE_CLASS = "prefux-edge";
+	public static final String DEFAULT_STYLE_CLASS = "prefux-edge";
 
-    @Override
-    public boolean locatePoint(Point2D p, VisualItem item) {
-        log.debug("locatePoint " + p + " " + item);
-        return false;
-    }
+	@Override
+	public boolean locatePoint(Point2D p, VisualItem item) {
+		log.debug("locatePoint " + p + " " + item);
+		return false;
+	}
 
-    @Override
-    public void setBounds(VisualItem item) {
-        log.trace("Setting bounds " + item);
-    }
+	@Override
+	protected Node getRawShape(VisualItem item, boolean bind) {
+		EdgeItem edge = (EdgeItem) item;
+		Line line = new Line();
+		if (bind) {
+			Platform.runLater(() -> {
+				line.startXProperty().bind(edge.getSourceItem().xProperty());
+				line.startYProperty().bind(edge.getSourceItem().yProperty());
+				line.endXProperty().bind(edge.getTargetItem().xProperty());
+				line.endYProperty().bind(edge.getTargetItem().yProperty());
+			});
+		}
+		return line;
+	}
 
-    @Override
-    protected Node getRawShape(VisualItem item) {
-        EdgeItem edge = (EdgeItem) item;
-        Line line = new Line();
-        Platform.runLater(() -> {
-            line.startXProperty().bind(edge.getSourceItem().xProperty());
-            line.startYProperty().bind(edge.getSourceItem().yProperty());
-            line.endXProperty().bind(edge.getTargetItem().xProperty());
-            line.endYProperty().bind(edge.getTargetItem().yProperty());
-        });
-        return line;
-    }
-
-    @Override
-    public String getDefaultStyle() {
-        return DEFAULT_STYLE_CLASS;
-    }
+	@Override
+	public String getDefaultStyle() {
+		return DEFAULT_STYLE_CLASS;
+	}
 
 } // end of class EdgeRenderer

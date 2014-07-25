@@ -84,7 +84,7 @@ public class BorderPaneRenderer implements Renderer {
 	}
 
 	@Override
-	public void render(Parent g, VisualItem item) {
+	public void render(Parent g, VisualItem item, boolean bind) {
 		BorderPane pane = new BorderPane();
 		if (item.getNode() == null)
 			item.setNode(pane);
@@ -134,16 +134,6 @@ public class BorderPaneRenderer implements Renderer {
 		return locate;
 	}
 
-	@Override
-	public void setBounds(VisualItem item) {
-		Node node = item.getNode();
-		if (node != null) {
-			Platform.runLater(() -> {
-				FxGraphicsLib.setCenterCoord(item.getX(), item.getY(), node);
-			});
-		}
-	}
-
 	public void add(Renderer renderer, BorderPanePos position) {
 		renderers.add(new BorderRenderer(renderer, position));
 	}
@@ -161,5 +151,11 @@ public class BorderPaneRenderer implements Renderer {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+    public void render(Parent g, VisualItem item) {
+	    render(g, item, true);
+	    
+    }
 
 }

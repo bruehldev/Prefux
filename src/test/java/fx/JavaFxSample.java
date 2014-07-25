@@ -12,16 +12,21 @@ import prefux.FxDisplay;
 import prefux.Visualization;
 import prefux.action.ActionList;
 import prefux.action.RepaintAction;
+import prefux.action.assignment.DataSizeAction;
 import prefux.action.layout.graph.ForceDirectedLayout;
 import prefux.activity.Activity;
 import prefux.controls.DragControl;
 import prefux.data.Graph;
+import prefux.data.expression.Expression;
+import prefux.data.expression.Predicate;
+import prefux.data.expression.parser.ExpressionParser;
 import prefux.data.io.DataIOException;
 import prefux.data.io.GraphMLReader;
 import prefux.render.CombinedRenderer;
 import prefux.render.DefaultRendererFactory;
 import prefux.render.LabelRenderer;
 import prefux.render.ShapeRenderer;
+import prefux.util.PrefuseLib;
 
 public class JavaFxSample extends Application {
 	public static void main(String[] args) {
@@ -29,6 +34,7 @@ public class JavaFxSample extends Application {
 	}
 	private static final double WIDTH = 300;
 	private static final double HEIGHT = 250;
+	private static final String GROUP = "graph";
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -41,13 +47,15 @@ public class JavaFxSample extends Application {
 		Graph graph = null;
 		try {
 //		    graph = new GraphMLReader().readGraph("data/graphml-sample.xml");
-    	    graph = new GraphMLReader().readGraph("data/socialnet.xml");
+    	    graph = new GraphMLReader().readGraph("data/socialnet2.xml");
 		    Visualization vis = new Visualization();
-		    vis.add("graph", graph);
+		    vis.add(GROUP, graph);
 		    
 		    ShapeRenderer sr = new ShapeRenderer();
 		    LabelRenderer lr = new LabelRenderer("name");
-		    lr.translate(5.0, 5.0);
+		    ShapeRenderer male = new ShapeRenderer();
+		    male.addStyle("prefux-shape-highlight");
+		    //lr.translate(5.0, 5.0);
 		    // LabelRenderer lr2 = new LabelRenderer("name");
 		    // lr2.addStyle("invisible");
 		    // BorderPaneRenderer r = new BorderPaneRenderer();
@@ -58,16 +66,24 @@ public class JavaFxSample extends Application {
 		    // create a new default renderer factory
 		    // return our name label renderer as the default for all non-EdgeItems
 		    // includes straight line edges for EdgeItems by default
-		    vis.setRendererFactory(new DefaultRendererFactory(sr));
+		    DefaultRendererFactory rfa = new DefaultRendererFactory(r);
+		    Predicate exp = ExpressionParser.predicate("gender='M'");
+		    rfa.add(exp, male);
+		    vis.setRendererFactory(rfa);
 		    
 		    ActionList layout = new ActionList(Activity.INFINITY);
 		    layout.add(new ForceDirectedLayout("graph"));
 		    layout.add(new RepaintAction());
 		    vis.putAction("layout", layout);
+		    
+		    DataSizeAction size = new DataSizeAction(PrefuseLib.getGroupName(GROUP, Graph.NODES), "age");
+		    vis.putAction("size", size);
+		    
 		    FxDisplay display = new FxDisplay(vis);
 		    display.addControlListener(new DragControl());
 		    root.setCenter(display);
 		    root.setBottom(buildControlPanel(display));
+		    vis.run("size");
 		    vis.run("layout");
 
 		} catch ( DataIOException e ) {

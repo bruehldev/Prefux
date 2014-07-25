@@ -623,6 +623,8 @@ public interface VisualItem extends Tuple {
      */
     public double getSize();
     
+	DoubleProperty sizeProperty();
+	
     /**
      * Set the current size value of the item. Size values are typically used
      * to scale an item, either in one-dimension (e.g., a bar chart length) or
@@ -954,5 +956,7 @@ public interface VisualItem extends Tuple {
 	public Node getNode();
 	
 	public void setNode(Node node);
+
+
     
 } // end of interface VisualItem

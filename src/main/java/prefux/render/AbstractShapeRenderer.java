@@ -27,8 +27,8 @@ import prefux.visual.VisualItem;
  * </p>
  * 
  * <p>
- * <b>NOTE:</b> The intention of drawShape ist that it is called only once.
- * It registers the JavaFX nodes on the parent nodes. The same for getRawShape().
+ * <b>NOTE:</b> The intention of drawShape ist that it is called only once. It
+ * registers the JavaFX nodes on the parent nodes. The same for getRawShape().
  * </p>
  * 
  * @version 2.0
@@ -40,7 +40,7 @@ import prefux.visual.VisualItem;
 public abstract class AbstractShapeRenderer implements Renderer {
 
 	private static final Logger log = LoggerFactory
-			.getLogger(AbstractShapeRenderer.class);
+	        .getLogger(AbstractShapeRenderer.class);
 
 	public static final int RENDER_TYPE_NONE = 0;
 	public static final int RENDER_TYPE_DRAW = 1;
@@ -53,7 +53,6 @@ public abstract class AbstractShapeRenderer implements Renderer {
 
 	private List<String> rendererStyles = new ArrayList<>();
 	private List<Transform> transforms = null;
-
 
 	public AbstractShapeRenderer() {
 		if (getDefaultStyle() != null) {
@@ -69,16 +68,19 @@ public abstract class AbstractShapeRenderer implements Renderer {
 	 * @see prefux.render.Renderer#render(java.awt.Graphics2D,
 	 *      prefux.visual.VisualItem)
 	 */
-	public void render(Parent g, VisualItem item) {
+	public void render(Parent g, VisualItem item, boolean bind) {
 		log.debug("Rendering item " + item);
-		Node shape = getShape(item);
+		Node shape = getShape(item, bind);
 		if (shape != null)
 			drawShape(g, item, shape);
 		if (getNode(item) == null) {
 			item.setNode(shape);
 		}
 	}
-	
+
+	public void render(Parent g, VisualItem item) {
+		render(g,item,true);
+	}
 
 	/**
 	 * Draws the specified shape into the provided Graphics context, using
@@ -125,10 +127,10 @@ public abstract class AbstractShapeRenderer implements Renderer {
 	 * @param item
 	 *            the item for which to get the Shape
 	 */
-	public Node getShape(VisualItem item) {
+	public Node getShape(VisualItem item, boolean bind) {
 		List<Transform> at = getTransform(item);
-		Node rawShape = getRawShape(item);
-		if (at != null && at.size()>0){
+		Node rawShape = getRawShape(item, bind);
+		if (at != null && at.size() > 0) {
 			ObservableList<Transform> ts = rawShape.getTransforms();
 			for (Transform transform : at) {
 				ts.add(transform);
@@ -145,7 +147,8 @@ public abstract class AbstractShapeRenderer implements Renderer {
 	 *            the VisualItem being drawn
 	 * @return the "raw", untransformed shape.
 	 */
-	protected abstract Node getRawShape(VisualItem item);
+	protected abstract Node getRawShape(VisualItem item, boolean bind);
+	
 	
 
 	/**
@@ -160,9 +163,9 @@ public abstract class AbstractShapeRenderer implements Renderer {
 	protected List<Transform> getTransform(VisualItem item) {
 		return transforms;
 	}
-	
+
 	protected void addTransform(Transform transform) {
-		if (this.transforms==null) {
+		if (this.transforms == null) {
 			this.transforms = new ArrayList<>(2);
 		}
 		this.transforms.add(transform);
@@ -213,19 +216,11 @@ public abstract class AbstractShapeRenderer implements Renderer {
 		return item.getNode();
 	}
 
-	/**
-	 * @see prefux.render.Renderer#setBounds(prefux.visual.VisualItem)
-	 */
-	public void setBounds(VisualItem item) {
-		Node node = item.getNode();
-		Platform.runLater(() -> {
-			node.setLayoutX(item.getX());
-			node.setLayoutY(item.getY());
-		});
-	}
+
 
 	public void addStyle(String style) {
-		rendererStyles.add(style);
+		if (!rendererStyles.contains(style))
+			rendererStyles.add(style);
 	}
 
 } // end of abstract class AbstractShapeRenderer

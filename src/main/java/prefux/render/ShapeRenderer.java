@@ -20,35 +20,54 @@ import prefux.visual.VisualItem;
  */
 public class ShapeRenderer extends AbstractShapeRenderer implements Renderer {
 
-    private static final Logger log = LoggerFactory
-            .getLogger(ShapeRenderer.class);
+	private static final Logger log = LoggerFactory
+	        .getLogger(ShapeRenderer.class);
 
-    public double DEFAULT_RADIUS = 5.0;
-    public static final String DEFAULT_STYLE_CLASS = "prefux-shape";
+	public static final double DEFAULT_SIZE = 5.0;
+	public static final String DEFAULT_STYLE_CLASS = "prefux-shape";
 
-    @Override
-    public void setBounds(VisualItem item) {
-        log.debug("setBounds " + item);
-        log.debug("setBounds " + item.xProperty().get()+"/"+item.yProperty().get());
-        log.debug("setBounds " + item.getX()+"/"+item.getY());
-        
-        // Direct binding
+	
+	private double baseSize = DEFAULT_SIZE;
+	private boolean useItemSize=true;
 
+
+
+	@Override
+	public String getDefaultStyle() {
+		return DEFAULT_STYLE_CLASS;
+	}
+
+	@Override
+	protected Node getRawShape(VisualItem item, boolean bind) {
+		double radius = useItemSize ? item.getSize()*getBaseSize() : getBaseSize();
+		Circle circle = new Circle(radius);
+		if (bind) {
+			Platform.runLater(() -> {
+				circle.centerXProperty().bind(item.xProperty());
+				circle.centerYProperty().bind(item.yProperty());
+				if (useItemSize) {
+					circle.radiusProperty().bind(item.sizeProperty());
+				}
+				
+			});
+		}
+		return circle;
+	}
+	
+	public void setUseItemSize(boolean value) {
+		this.useItemSize=value;
+	}
+	
+	public boolean isUseItemSize() {
+		return useItemSize;
+	}
+
+	public double getBaseSize() {
+	    return baseSize;
     }
 
-    @Override
-    public String getDefaultStyle() {
-        return DEFAULT_STYLE_CLASS;
-    }
-
-    @Override
-    protected Node getRawShape(VisualItem item) {
-        Circle circle = new Circle(DEFAULT_RADIUS);
-        Platform.runLater(() -> {
-            circle.centerXProperty().bind(item.xProperty());
-            circle.centerYProperty().bind(item.yProperty());
-        });
-        return circle;
+	public void setBaseSize(double baseSize) {
+	    this.baseSize = baseSize;
     }
 
 } // end of class ShapeRenderer

@@ -171,7 +171,7 @@ public class AggregateTable extends VisualTable {
      * @param row the table row of the aggregate
      * @return an iterator over the items in the aggregate
      */
-    public Iterator aggregatedTuples(int row) {
+    public Iterator<? extends Tuple> aggregatedTuples(int row) {
         return new AggregatedIterator(row);
     }
     
@@ -180,10 +180,10 @@ public class AggregateTable extends VisualTable {
      * @param t the input tuple
      * @return an iterator over all AggregateItems that contain the input Tuple
      */
-    public Iterator getAggregates(Tuple t) {
+    public Iterator<? extends Tuple> getAggregates(Tuple t) {
         int hash = getHashCode(t);
         IntIterator iit = m_aggregated.getIndex(MEMBER_HASH).rows(hash);
-        HashSet set = new HashSet();
+        HashSet<Tuple> set = new HashSet<>();
         while ( iit.hasNext() ) {
             int r = iit.nextInt();
             set.add(getTuple(m_aggregated.getInt(r, AGGREGATE)));
@@ -241,7 +241,7 @@ public class AggregateTable extends VisualTable {
     /**
      * Iterator instance that iterates over the items contained in an aggregate.
      */
-    protected class AggregatedIterator implements Iterator {
+    protected class AggregatedIterator implements Iterator<Tuple> {
         private IntIterator m_rows;
         private Tuple m_next = null;
 
@@ -253,7 +253,7 @@ public class AggregateTable extends VisualTable {
         public boolean hasNext() {
             return m_next != null;
         }
-        public Object next() {
+        public Tuple next() {
             Tuple retval = m_next;
             advance();
             return retval;

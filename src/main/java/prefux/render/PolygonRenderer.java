@@ -34,7 +34,7 @@ public class PolygonRenderer extends AbstractShapeRenderer {
 
 
 	@Override
-	protected Node getRawShape(VisualItem item) {
+	protected Node getRawShape(VisualItem item, boolean bind) {
 		// TODO Auto-generated method stub
 		return null;
 	}

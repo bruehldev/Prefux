@@ -53,13 +53,13 @@ public interface AggregateItem extends VisualItem {
      * Get an iterator over all the items contained in this aggregate.
      * @return an iterator over the items in this aggregate
      */
-    public Iterator items();
+    public Iterator<? extends VisualItem> items();
     
     /**
      * Get a filtered iterator over all the items contained in this aggregate.
      * @param filter a Predicate instance indicating the filter criteria
      * @return an iterator over the items in this aggregate
      */
-    public Iterator items(Predicate filter);
+    public Iterator<? extends VisualItem> items(Predicate filter);
     
 } // end of interface AggregateItem

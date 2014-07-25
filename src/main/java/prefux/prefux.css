@@ -3,6 +3,11 @@
 	-fx-alignment: center;
 }
 
+.prefux-shape-highlight {
+	-fx-fill: blue;
+	-fx-alignment: center;
+}
+
 .prefux-label {
 	-fx-alignment: center;
 	-fx-border-style: solid;

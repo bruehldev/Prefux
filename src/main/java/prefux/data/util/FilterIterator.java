@@ -11,26 +11,26 @@ import prefux.data.expression.Predicate;
  * 
  * @author <a href="http://jheer.org">jeffrey heer</a>
  */
-public class FilterIterator implements Iterator<Tuple> {
+public class FilterIterator<T extends Tuple> implements Iterator<T> {
     
     private Predicate predicate;
-    private Iterator<Tuple> tuples;
-    private Tuple next;
+    private Iterator<T> tuples;
+    private T next;
     
     /**
      * Create a new FilterIterator.
      * @param tuples an iterator over tuples
      * @param p the filter predicate to use
      */
-    public FilterIterator(Iterator<Tuple> tuples, Predicate p) {
+    public FilterIterator(Iterator<T> tuples, Predicate p) {
         this.predicate = p;
         this.tuples = tuples;
         next = advance();
     }
     
-    private Tuple advance() {
+    private T advance() {
         while ( tuples.hasNext() ) {
-            Tuple t = (Tuple)tuples.next();
+            T t = tuples.next();
             if ( predicate.getBoolean(t) ) {
                 return t;
             }
@@ -43,11 +43,11 @@ public class FilterIterator implements Iterator<Tuple> {
     /**
      * @see java.util.Iterator#next()
      */
-    public Tuple next() {
+    public T next() {
         if ( !hasNext() ) {
             throw new NoSuchElementException("No more elements");
         }
-        Tuple retval = next;
+        T retval = next;
         next = advance();
         return retval;
     }

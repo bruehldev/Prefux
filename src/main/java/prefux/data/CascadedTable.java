@@ -143,7 +143,7 @@ public class CascadedTable extends Table {
      * Create a CascadedTable without a backing parent table.
      * @param tupleType the class type of the Tuple instances to use
      */
-    protected CascadedTable(Class tupleType) {
+    protected CascadedTable(Class<? extends Tuple> tupleType) {
         super(0, 0, tupleType);
         m_pnames = new ArrayList();
     }

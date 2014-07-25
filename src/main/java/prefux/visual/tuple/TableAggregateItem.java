@@ -75,16 +75,16 @@ public class TableAggregateItem extends TableVisualItem
     /**
      * @see prefux.visual.AggregateItem#items()
      */
-    public Iterator items() {
-        return ((AggregateTable)m_table).aggregatedTuples(m_row);
+    public Iterator<VisualItem> items() {
+        return (Iterator<VisualItem>) ((AggregateTable)m_table).aggregatedTuples(m_row);
     }
     
     /**
      * @see prefux.visual.AggregateItem#items()
      */
-    public Iterator items(Predicate filter) {
-        return new FilterIterator(
-            ((AggregateTable)m_table).aggregatedTuples(m_row), filter);
+    public Iterator<VisualItem> items(Predicate filter) {
+        return new FilterIterator<VisualItem>(
+            (Iterator<VisualItem>) ((AggregateTable)m_table).aggregatedTuples(m_row), filter);
     }
 
 } // end of class TableAggregateItem

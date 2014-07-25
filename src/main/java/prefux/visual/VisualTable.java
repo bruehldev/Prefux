@@ -7,6 +7,7 @@ import prefux.Visualization;
 import prefux.data.CascadedTable;
 import prefux.data.Schema;
 import prefux.data.Table;
+import prefux.data.Tuple;
 import prefux.data.event.EventConstants;
 import prefux.data.expression.Predicate;
 import prefux.data.util.Rectangle2D;
@@ -129,7 +130,7 @@ public class VisualTable extends CascadedTable implements VisualTupleSet {
      *            the type of Tuple instances to use
      */
     public VisualTable(Visualization vis, String group, Schema schema,
-            Class tupleType) {
+            Class<? extends Tuple> tupleType) {
         super(tupleType);
         init(vis, group, schema);
     }

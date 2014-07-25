@@ -1,5 +1,6 @@
 package prefux.render;
 
+import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -75,9 +76,8 @@ public class LabelRenderer extends AbstractShapeRenderer {
 	protected Label txt;
 	protected ImageView img;
 	protected Pane pane;
-	
-	
-	public static final String DEFAULT_STYLE_CLASS="prefux-label";
+
+	public static final String DEFAULT_STYLE_CLASS = "prefux-label";
 
 	/**
 	 * Create a new LabelRenderer. By default the field "label" is used as the
@@ -219,7 +219,7 @@ public class LabelRenderer extends AbstractShapeRenderer {
 	 */
 	protected String getImageLocation(VisualItem item) {
 		return item.canGetString(m_imageName) ? item.getString(m_imageName)
-				: null;
+		        : null;
 	}
 
 	/**
@@ -237,13 +237,19 @@ public class LabelRenderer extends AbstractShapeRenderer {
 	/**
 	 * @see prefux.render.AbstractShapeRenderer#getRawShape(prefux.visual.VisualItem)
 	 */
-	protected Node getRawShape(VisualItem item) {
+	protected Node getRawShape(VisualItem item, boolean bind) {
 		pane = new StackPane();
 		m_text = getText(item);
 		txt = new Label(m_text);
 		img = new ImageView(getImage(item));
 		pane.getChildren().add(img);
 		pane.getChildren().add(txt);
+		if (bind) {
+			Platform.runLater(() -> {
+				pane.layoutXProperty().bind(item.xProperty());
+				pane.layoutYProperty().bind(item.yProperty());
+			});
+		}
 		return pane;
 	}
 
@@ -291,9 +297,9 @@ public class LabelRenderer extends AbstractShapeRenderer {
 	 */
 	public void setHorizontalTextAlignment(int halign) {
 		if (halign != Constants.LEFT && halign != Constants.RIGHT
-				&& halign != Constants.CENTER)
+		        && halign != Constants.CENTER)
 			throw new IllegalArgumentException(
-					"Illegal horizontal text alignment value.");
+			        "Illegal horizontal text alignment value.");
 		m_hTextAlign = halign;
 	}
 
@@ -318,9 +324,9 @@ public class LabelRenderer extends AbstractShapeRenderer {
 	 */
 	public void setVerticalTextAlignment(int valign) {
 		if (valign != Constants.TOP && valign != Constants.BOTTOM
-				&& valign != Constants.CENTER)
+		        && valign != Constants.CENTER)
 			throw new IllegalArgumentException(
-					"Illegal vertical text alignment value.");
+			        "Illegal vertical text alignment value.");
 		m_vTextAlign = valign;
 	}
 
@@ -345,9 +351,9 @@ public class LabelRenderer extends AbstractShapeRenderer {
 	 */
 	public void setHorizontalImageAlignment(int halign) {
 		if (halign != Constants.LEFT && halign != Constants.RIGHT
-				&& halign != Constants.CENTER)
+		        && halign != Constants.CENTER)
 			throw new IllegalArgumentException(
-					"Illegal horizontal text alignment value.");
+			        "Illegal horizontal text alignment value.");
 		m_hImageAlign = halign;
 	}
 
@@ -372,9 +378,9 @@ public class LabelRenderer extends AbstractShapeRenderer {
 	 */
 	public void setVerticalImageAlignment(int valign) {
 		if (valign != Constants.TOP && valign != Constants.BOTTOM
-				&& valign != Constants.CENTER)
+		        && valign != Constants.CENTER)
 			throw new IllegalArgumentException(
-					"Illegal vertical text alignment value.");
+			        "Illegal vertical text alignment value.");
 		m_vImageAlign = valign;
 	}
 
@@ -401,8 +407,8 @@ public class LabelRenderer extends AbstractShapeRenderer {
 	 */
 	public void setImagePosition(int pos) {
 		if (pos != Constants.TOP && pos != Constants.BOTTOM
-				&& pos != Constants.LEFT && pos != Constants.RIGHT
-				&& pos != Constants.CENTER)
+		        && pos != Constants.LEFT && pos != Constants.RIGHT
+		        && pos != Constants.CENTER)
 			throw new IllegalArgumentException("Illegal image position value.");
 		m_imagePos = pos;
 	}
@@ -438,9 +444,8 @@ public class LabelRenderer extends AbstractShapeRenderer {
 	 * coordinates.
 	 * 
 	 * @param align
-	 *            the horizontal alignment, one of
-	 *            {@link prefux.Constants#LEFT},
-	 *            {@link prefux.Constants#RIGHT}, or
+	 *            the horizontal alignment, one of {@link prefux.Constants#LEFT}
+	 *            , {@link prefux.Constants#RIGHT}, or
 	 *            {@link prefux.Constants#CENTER}.
 	 */
 	public void setHorizontalAlignment(int align) {
@@ -520,16 +525,15 @@ public class LabelRenderer extends AbstractShapeRenderer {
 	public void setImageTextPadding(int pad) {
 		m_imageMargin = pad;
 	}
-	
+
 	@Override
 	public String getDefaultStyle() {
 		return DEFAULT_STYLE_CLASS;
 	}
-	
+
 	public void translate(double x, double y) {
 		addTransform(new Translate(x, y));
-		
-	}
 
+	}
 
 } // end of class LabelRenderer

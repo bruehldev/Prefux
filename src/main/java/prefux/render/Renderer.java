@@ -24,11 +24,19 @@ public interface Renderer {
 //        new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB).getGraphics();
 
     /**
-     * Render item into a Graphics2D context.
-     * @param g the Graphics2D context
+     * Render item into a Parent context.
+     * @param g the Parent node
      * @param item the visual item to draw
      */
     public void render(Parent g, VisualItem item);
+    
+    /**
+     * Render item into a Parent context.
+     * @param g the Parent node
+     * @param item the visual item to draw
+     * @param bind if false the binding to the visual item should be omitted
+     */
+    public void render(Parent g, VisualItem item, boolean bind);
 
     /**
      * Returns true if the Point is located inside the extents of the item.
@@ -40,13 +48,6 @@ public interface Renderer {
      */
     public boolean locatePoint(Point2D p, VisualItem item);
 
-    /**
-     * Calculates and sets the bounding rectangle for an item. This is called
-     * by a VisualItem when it validates its bounds.
-     * @param item the item to compute the bounding box for
-     */
-    public void setBounds(VisualItem item);
-    
     /**
      * Adds an additional style class to each rendered element.
      * 

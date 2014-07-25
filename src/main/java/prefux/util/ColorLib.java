@@ -1,7 +1,7 @@
 package prefux.util;
 
-import java.awt.Color;
 
+import javafx.scene.paint.Color;
 import prefux.util.collections.IntObjectHashMap;
 
 /**
@@ -110,8 +110,8 @@ public class ColorLib {
      * how dark or light the color is.
      * @return the integer color code
      */
-    public static int hsb(float h, float s, float b) {
-        return Color.HSBtoRGB(h,s,b);
+    public static int hsb(double h, double s, double b) {
+        return color(Color.hsb(h, s, b));
     }
     
     /**
@@ -128,8 +128,8 @@ public class ColorLib {
      * transparency of the color.
      * @return the integer color code
      */
-    public static int hsba(float h, float s, float b, float a) {
-        return setAlpha(Color.HSBtoRGB(h,s,b), (int)(a*255+0.5) & 0xFF);
+    public static int hsba(double h, double s, double b, double a) {
+        return color(Color.hsb(h, s, b, a));
     }
     
     /**
@@ -145,16 +145,18 @@ public class ColorLib {
                ((g & 0xFF) << 8)  | ((b & 0xFF) << 0);
     }
     
+    
+    
     /**
      * Get the color code for the given red, green, blue, and alpha values as
-     * floating point numbers in the range 0-1.0.
+     * doubleing point numbers in the range 0-1.0.
      * @param r the red color component (in the range 0-1.0)
      * @param g the green color component (in the range 0-1.0)
      * @param b the blue color component (in the range 0-1.0)
      * @param a the alpha (transparency) component (in the range 0-1.0)
      * @return the integer color code
      */
-    public static int rgba(float r, float g, float b, float a) {
+    public static int rgba(double r, double g, double b, double a) {
         return ((((int)(a*255+0.5)) & 0xFF) << 24) |
                ((((int)(r*255+0.5)) & 0xFF) << 16) | 
                ((((int)(g*255+0.5)) & 0xFF) <<  8) |
@@ -167,7 +169,7 @@ public class ColorLib {
      * @return the integer color code
      */
     public static int color(Color c) {
-        return c.getRGB();
+        return rgba(c.getRed(), c.getGreen(), c.getBlue(), c.getOpacity());
     }
     
     /**
@@ -221,26 +223,26 @@ public class ColorLib {
     
     /**
      * Get a Java Color object for the given red, green, blue, and alpha values
-     * as floating point numbers in the range 0-1.0.
+     * as doubleing point numbers in the range 0-1.0.
      * @param r the red color component (in the range 0-1.0)
      * @param g the green color component (in the range 0-1.0)
      * @param b the blue color component (in the range 0-1.0)
      * @param a the alpha (transparency) component (in the range 0-1.0)
      * @return a Java Color object
      */
-    public static Color getColor(float r, float g, float b, float a) {
+    public static Color getColor(double r, double g, double b, double a) {
         return getColor(rgba(r,g,b,a));
     }
 
     /**
      * Get a Java Color object for the given red, green, and blue values
-     * as floating point numbers in the range 0-1.0.
+     * as doubleing point numbers in the range 0-1.0.
      * @param r the red color component (in the range 0-1.0)
      * @param g the green color component (in the range 0-1.0)
      * @param b the blue color component (in the range 0-1.0)
      * @return a Java Color object
      */
-    public static Color getColor(float r, float g, float b) {
+    public static Color getColor(double r, double g, double b) {
         return getColor(r,g,b,1.0f);
     }
     
@@ -286,7 +288,7 @@ public class ColorLib {
     public static Color getColor(int rgba) {
         Color c = null;
         if ( (c=(Color)colorMap.get(rgba)) == null ) {
-            c = new Color(rgba,true);
+            c = Color.rgb(red(rgba), green(rgba), blue(rgba), alpha(rgba));
             colorMap.put(rgba,c);
             misses++;
         }
@@ -324,7 +326,7 @@ public class ColorLib {
     // ------------------------------------------------------------------------
     // Color Calculations
     
-    private static final float scale = 0.7f;
+    private static final double scale = 0.7f;
     
     /**
      * Interpolate between two color values by the given mixing proportion.
@@ -386,9 +388,9 @@ public class ColorLib {
      */
     public static int desaturate(int c) {
         int a = c & 0xff000000;
-        float r = ((c & 0xff0000) >> 16);
-        float g = ((c & 0x00ff00) >> 8);
-        float b = (c & 0x0000ff);
+        double r = ((c & 0xff0000) >> 16);
+        double g = ((c & 0x00ff00) >> 8);
+        double b = (c & 0x0000ff);
 
         r *= 0.2125f; // red band weight
         g *= 0.7154f; // green band weight
@@ -404,9 +406,9 @@ public class ColorLib {
      * @param saturation the new sautration value
      * @return a saturated color code
      */
-    public static int saturate(int c, float saturation) {
-        float[] hsb = Color.RGBtoHSB(red(c), green(c), blue(c), null);
-        return ColorLib.hsb(hsb[0], saturation, hsb[2]);
+    public static int saturate(int c, double saturation) {
+        Color color = getColor(red(c), green(c), blue(c), 0);
+        return ColorLib.hsb(color.getHue(), saturation, color.getBrightness());
     }
     
     // ------------------------------------------------------------------------
@@ -415,7 +417,7 @@ public class ColorLib {
     /**
      * Default palette of category hues.
      */
-    public static final float[] CATEGORY_HUES = {
+    public static final double[] CATEGORY_HUES = {
         0f, 1f/12f, 1f/6f, 1f/3f, 1f/2f, 7f/12f, 2f/3f, /*3f/4f,*/ 5f/6f, 11f/12f
     };
     
@@ -433,7 +435,7 @@ public class ColorLib {
     public static int[] getCoolPalette(int size) {
         int[] cm = new int[size];
         for( int i=0; i<size; i++ ) {
-            float r = i / Math.max(size-1,1.f);
+            double r = i / Math.max(size-1,1.f);
             cm[i] = rgba(r,1-r,1.f,1.f);
         }
         return cm;
@@ -458,9 +460,9 @@ public class ColorLib {
         int[] cm = new int[size];
         for ( int i=0; i<size; i++ ) {
             int n = (3*size)/8;
-            float r = ( i<n ? ((float)(i+1))/n : 1.f );
-            float g = ( i<n ? 0.f : ( i<2*n ? ((float)(i-n))/n : 1.f ));
-            float b = ( i<2*n ? 0.f : ((float)(i-2*n))/(size-2*n) );
+            double r = ( i<n ? ((double)(i+1))/n : 1.f );
+            double g = ( i<n ? 0.f : ( i<2*n ? ((double)(i-n))/n : 1.f ));
+            double b = ( i<2*n ? 0.f : ((double)(i-2*n))/(size-2*n) );
             cm[i] = rgba(r,g,b,1.0f);
         }
         return cm;
@@ -488,14 +490,14 @@ public class ColorLib {
      * @param a the alpha value to use
      */
     public static int[] getCategoryPalette(int size, 
-            float s1, float s2, float b, float a)
+            double s1, double s2, double b, double a)
     {
         int[] cm = new int[size];
-        float s = s1;
+        double s = s1;
         for ( int i=0; i<size; i++ ) {
             int j = i % CATEGORY_HUES.length;
             if ( j == 0 )
-                s = s1 + (((float)i)/size)*(s2-s1);
+                s = s1 + (((double)i)/size)*(s2-s1);
             cm[i] = hsba(CATEGORY_HUES[j],s,b,a);
         }
         return cm;
@@ -521,10 +523,10 @@ public class ColorLib {
      * @param b the brightness value to use
      * @return the color palette
      */
-    public static int[] getHSBPalette(int size, float s, float b) {
+    public static int[] getHSBPalette(int size, double s, double b) {
         int[] cm = new int[size];
         for ( int i=0; i<size; i++ ) {
-            float h = ((float)i)/(size-1);
+            double h = ((double)i)/(size-1);
             cm[i] = hsb(h,s,b);
         }
         return cm;
@@ -552,7 +554,7 @@ public class ColorLib {
     {
         int[] cm = new int[size];
         for ( int i=0; i<size; i++ ) {
-            float f = ((float)i)/(size-1);
+            double f = ((double)i)/(size-1);
             cm[i] = interp(c1,c2,f);
         }
         return cm;
@@ -578,7 +580,7 @@ public class ColorLib {
     public static int[] getGrayscalePalette(int size) {
         int[] cm = new int[size];
         for ( int i=0, g; i<size; i++ ) {
-            g = (int)Math.round(255*(0.2f + 0.6f*((float)i)/(size-1)));
+            g = (int)Math.round(255*(0.2f + 0.6f*((double)i)/(size-1)));
             cm[size-i-1] = gray(g);
         }
         return cm;

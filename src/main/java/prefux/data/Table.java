@@ -897,6 +897,9 @@ public class Table extends AbstractTupleSet implements ColumnListener {
      */
     public Object get(int row, String field) {
         int col = getColumnNumber(field);
+        if (col<0) {
+        	return null;
+        }
         row = getColumnRow(row, col);
         return getColumn(col).get(row);
     }

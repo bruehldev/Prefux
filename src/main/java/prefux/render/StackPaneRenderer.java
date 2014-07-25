@@ -33,16 +33,27 @@ public class StackPaneRenderer extends ArrayList<Renderer> implements Renderer,
 	}
 
 	@Override
-	public void render(Parent g, VisualItem item) {
+	public void render(Parent g, VisualItem item, boolean bind) {
 		if (log.isTraceEnabled())
 			log.trace("Rendering " + item + " on " + g);
 		StackPane pane = new StackPane();
 		if (item.getNode() == null)
 			item.setNode(pane);
 		for (Renderer renderer : this) {
-			renderer.render(pane, item);
+			renderer.render(pane, item, false);
+		}
+		if (bind) {
+			Platform.runLater(()-> {
+				pane.layoutXProperty().bind(item.xProperty());
+				pane.layoutYProperty().bind(item.yProperty());
+			});
 		}
 		FxGraphicsLib.addToParent(g, pane);
+	}
+
+	@Override
+	public void render(Parent g, VisualItem item) { 
+		render(g,item,true);
 	}
 
 	@Override
@@ -52,16 +63,6 @@ public class StackPaneRenderer extends ArrayList<Renderer> implements Renderer,
 			locate |= renderer.locatePoint(p, item);
 		}
 		return locate;
-	}
-
-	@Override
-	public void setBounds(VisualItem item) {
-		Node node = item.getNode();
-		if (node != null) {
-			Platform.runLater(() -> {
-				FxGraphicsLib.setCenterCoord(item.getX(), item.getY(), node);
-			});
-		}
 	}
 
 	@Override

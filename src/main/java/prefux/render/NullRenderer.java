@@ -31,6 +31,12 @@ public class NullRenderer implements Renderer {
 	}
 
 	@Override
+	public void render(Parent g, VisualItem item, boolean bind) {
+		// Do nothing
+		
+	}
+
+	@Override
 	public boolean locatePoint(Point2D p, VisualItem item) {
 		return false;
 	}

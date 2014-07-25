@@ -52,6 +52,7 @@ public class TableVisualItem extends TableTuple<VisualTable> implements
 	private final DoubleProperty startYProp = new SimpleDoubleProperty();
 	private final DoubleProperty endXProp = new SimpleDoubleProperty();
 	private final DoubleProperty endYProp = new SimpleDoubleProperty();
+	private final DoubleProperty sizeProp = new SimpleDoubleProperty();
 	private final Map<String, DoubleProperty> PROPERTIES = new HashMap<String, DoubleProperty>() {
 		private static final long serialVersionUID = -2801283956649359986L;
 		{
@@ -61,6 +62,7 @@ public class TableVisualItem extends TableTuple<VisualTable> implements
 			put(VisualItem.ENDX, endXProp);
 			put(VisualItem.STARTY, startYProp);
 			put(VisualItem.ENDY, endYProp);
+			put(VisualItem.SIZE, sizeProp);
 		}
 	};
 
@@ -178,8 +180,7 @@ public class TableVisualItem extends TableTuple<VisualTable> implements
 
 		Visualization v = getVisualization();
 
-		// set the new bounds from the renderer and validate
-		getRenderer().setBounds(this);
+
 		setValidated(true);
 
 		// report damage from the new bounds and return
@@ -718,19 +719,21 @@ public class TableVisualItem extends TableTuple<VisualTable> implements
 	public DoubleProperty endYProperty() {
 		return endYProp;
 	}
+	
+	@Override
+	public DoubleProperty sizeProperty() {
+		return sizeProp;
+	}
 
 	@Override
 	public void tableChanged(Table t, int start, int end, int col, int type) {
 		if (!ignoreTableUpdate && type == EventConstants.UPDATE
 		        && (start == m_row) && (start == end)) {
 			String colName = getColumnName(col);
-			for (Entry<String, DoubleProperty> entry : PROPERTIES.entrySet()) {
-				if (entry.getKey().equals(colName)) {
-					Platform.runLater(() -> {
-						entry.getValue().set(t.getDouble(m_row, col));
-					});
-					break;
-				}
+			if (PROPERTIES.containsKey(colName)) {
+				Platform.runLater(() -> {
+					PROPERTIES.get(colName).set(t.getDouble(m_row, col));
+				});
 			}
 		}
 
