@@ -4,6 +4,7 @@ package prefux.visual;
 //import java.awt.Font;
 //import java.awt.Graphics2D;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.text.Font;
@@ -479,6 +480,8 @@ public interface VisualItem extends Tuple {
      * @see #FILLCOLOR
      */
     public int getFillColor();
+    
+    public IntegerProperty fillColorProperty();
     
     /**
      * Set the current fill color of this item. The fill color is used to

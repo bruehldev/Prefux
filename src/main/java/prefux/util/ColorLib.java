@@ -231,7 +231,7 @@ public class ColorLib {
      * @return a Java Color object
      */
     public static Color getColor(double r, double g, double b, double a) {
-        return getColor(rgba(r,g,b,a));
+        return Color.color(r,g,b,a);
     }
 
     /**
@@ -243,7 +243,7 @@ public class ColorLib {
      * @return a Java Color object
      */
     public static Color getColor(double r, double g, double b) {
-        return getColor(r,g,b,1.0f);
+        return Color.color(r,g,b,1.0);
     }
     
     /**
@@ -255,7 +255,7 @@ public class ColorLib {
      * @return a Java Color object
      */
     public static Color getColor(int r, int g, int b, int a) {
-        return getColor(rgba(r,g,b,a));
+        return Color.rgb(r, g, b, a);
     }
     
     /**
@@ -266,7 +266,7 @@ public class ColorLib {
      * @return a Java Color object
      */
     public static Color getColor(int r, int g, int b) {
-        return getColor(r,g,b,255);
+        return Color.rgb(r,g,b,255);
     }
     
     /**
@@ -276,7 +276,7 @@ public class ColorLib {
      * @return a Java Color object
      */
     public static Color getGrayscale(int v) {
-        return getColor(v,v,v,255);
+        return Color.grayRgb(v);
     }
     
     /**
@@ -288,7 +288,7 @@ public class ColorLib {
     public static Color getColor(int rgba) {
         Color c = null;
         if ( (c=(Color)colorMap.get(rgba)) == null ) {
-            c = Color.rgb(red(rgba), green(rgba), blue(rgba), alpha(rgba));
+            c = Color.rgb(red(rgba), green(rgba), blue(rgba), alpha(rgba)/255.0);
             colorMap.put(rgba,c);
             misses++;
         }

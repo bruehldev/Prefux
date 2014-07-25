@@ -9,7 +9,9 @@ import java.util.Map.Entry;
 
 import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
@@ -53,7 +55,8 @@ public class TableVisualItem extends TableTuple<VisualTable> implements
 	private final DoubleProperty endXProp = new SimpleDoubleProperty();
 	private final DoubleProperty endYProp = new SimpleDoubleProperty();
 	private final DoubleProperty sizeProp = new SimpleDoubleProperty();
-	private final Map<String, DoubleProperty> PROPERTIES = new HashMap<String, DoubleProperty>() {
+	private final IntegerProperty fillColorProp = new SimpleIntegerProperty();
+	private final Map<String, DoubleProperty> DOUBLE_PROPERTIES = new HashMap<String, DoubleProperty>() {
 		private static final long serialVersionUID = -2801283956649359986L;
 		{
 			put(VisualItem.X, xProp);
@@ -63,6 +66,13 @@ public class TableVisualItem extends TableTuple<VisualTable> implements
 			put(VisualItem.STARTY, startYProp);
 			put(VisualItem.ENDY, endYProp);
 			put(VisualItem.SIZE, sizeProp);
+		}
+	};
+	private final Map<String, IntegerProperty> INT_PROPERTIES = new HashMap<String, IntegerProperty>() {
+		private static final long serialVersionUID = -9113767856174748105L;
+
+		{
+			put(VisualItem.FILLCOLOR, fillColorProp);
 		}
 	};
 
@@ -86,9 +96,9 @@ public class TableVisualItem extends TableTuple<VisualTable> implements
 		m_table = table;
 		m_row = m_table.isValidRow(row) ? row : -1;
 		m_table.addTableListener(this);
-//		PROPERTIES.entrySet().forEach(en -> {
-//			en.getValue().addListener(this);
-//		});
+		// PROPERTIES.entrySet().forEach(en -> {
+		// en.getValue().addListener(this);
+		// });
 	}
 
 	/**
@@ -179,7 +189,6 @@ public class TableVisualItem extends TableTuple<VisualTable> implements
 			return getBounds();
 
 		Visualization v = getVisualization();
-
 
 		setValidated(true);
 
@@ -719,10 +728,15 @@ public class TableVisualItem extends TableTuple<VisualTable> implements
 	public DoubleProperty endYProperty() {
 		return endYProp;
 	}
-	
+
 	@Override
 	public DoubleProperty sizeProperty() {
 		return sizeProp;
+	}
+
+	@Override
+	public IntegerProperty fillColorProperty() {
+		return fillColorProp;
 	}
 
 	@Override
@@ -730,9 +744,13 @@ public class TableVisualItem extends TableTuple<VisualTable> implements
 		if (!ignoreTableUpdate && type == EventConstants.UPDATE
 		        && (start == m_row) && (start == end)) {
 			String colName = getColumnName(col);
-			if (PROPERTIES.containsKey(colName)) {
+			if (DOUBLE_PROPERTIES.containsKey(colName)) {
 				Platform.runLater(() -> {
-					PROPERTIES.get(colName).set(t.getDouble(m_row, col));
+					DOUBLE_PROPERTIES.get(colName).set(t.getDouble(m_row, col));
+				});
+			} else if (INT_PROPERTIES.containsKey(colName)) {
+				Platform.runLater(() -> {
+					INT_PROPERTIES.get(colName).set(t.getInt(m_row, col));
 				});
 			}
 		}
@@ -744,12 +762,27 @@ public class TableVisualItem extends TableTuple<VisualTable> implements
 	        Number oldValue, Number newValue) {
 		ignoreTableUpdate = true;
 		try {
-			log.debug("Value changed "+observable+ " / "+oldValue+ " / "+newValue);
-			for (Entry<String, DoubleProperty> en : PROPERTIES.entrySet()) {
+			log.debug("Value changed " + observable + " / " + oldValue + " / "
+			        + newValue);
+			boolean found = false;
+			for (Entry<String, DoubleProperty> en : DOUBLE_PROPERTIES
+			        .entrySet()) {
 				if (observable == en.getValue()) {
 					log.debug("Property found");
 					setDouble(en.getKey(), newValue.doubleValue());
+					found = true;
 					break;
+				}
+			}
+			if (!found) {
+				for (Entry<String, IntegerProperty> en : INT_PROPERTIES
+				        .entrySet()) {
+					if (observable == en.getValue()) {
+						log.debug("Property found");
+						setInt(en.getKey(), newValue.intValue());
+						found = true;
+						break;
+					}
 				}
 			}
 		} finally {
