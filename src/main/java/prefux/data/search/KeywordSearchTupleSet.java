@@ -5,8 +5,12 @@ import java.util.logging.Logger;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
+import org.apache.lucene.document.Field.Index;
+import org.apache.lucene.document.Field.Store;
+import org.apache.lucene.document.Field.TermVector;
 import org.apache.lucene.queryParser.ParseException;
-import org.apache.lucene.search.Hits;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TopDocs;
 
 import prefux.data.Tuple;
 import prefux.util.StringLib;
@@ -87,9 +91,9 @@ public class KeywordSearchTupleSet extends SearchTupleSet {
         
         m_lucene.setReadMode(true);
         try {
-            Hits hits = m_lucene.search(query);
-            for ( int i=0; i < hits.length(); i++ ) {
-                Tuple t = getMatchingTuple(hits.doc(i));
+            TopDocs hits = m_lucene.search(query);
+            for ( ScoreDoc doc : hits.scoreDocs) {
+                Tuple t = getMatchingTuple(m_lucene.getIndexSearcher().doc(doc.doc));
                 addInternal(t);
             }
             Tuple[] add = getTupleCount() > 0 ? toArray() : null;
@@ -152,8 +156,8 @@ public class KeywordSearchTupleSet extends SearchTupleSet {
      */
     protected Document getDocument(int id, String text) {
         Document d = new Document();
-        d.add(Field.Text(LuceneSearcher.FIELD, text, m_storeTermVectors));
-        d.add(Field.Keyword(LuceneSearcher.ID, String.valueOf(id)));
+        d.add(new Field(LuceneSearcher.FIELD, text, Store.YES, Index.ANALYZED, TermVector.YES));
+        d.add(new Field(LuceneSearcher.ID, String.valueOf(id),Store.YES, Index.ANALYZED, TermVector.YES));
         return d;
     }
     

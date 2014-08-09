@@ -8,15 +8,16 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
-import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
-import org.apache.lucene.search.Searcher;
+import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
+import org.apache.lucene.util.Version;
 
 /**
  * Adapter class for interfacing with the Lucene search engine. By default,
@@ -39,19 +40,19 @@ public class LuceneSearcher {
     private Analyzer analyzer;
     private String[] fields;
     
-    private Searcher searcher;
+    private IndexSearcher searcher;
     private IndexReader reader;
     private IndexWriter writer;
     private boolean m_readMode = true;
     private boolean m_readOnly = false;
     
-    private HashMap m_hitCountCache;
+    private HashMap<String,Integer> m_hitCountCache;
         
     /**
      * Create a new LuceneSearcher using an in-memory search index.
      */
     public LuceneSearcher() {
-        this(new RAMDirectory(), FIELD, false);
+        this(new RAMDirectory(), FIELD);
     }
     
     /**
@@ -59,7 +60,7 @@ public class LuceneSearcher {
      * @param dir the Lucene Directory indicating the search index to use.
      */
     public LuceneSearcher(Directory dir) {
-        this(dir, FIELD, false);
+        this(dir, FIELD);
     }
     
     /**
@@ -69,8 +70,8 @@ public class LuceneSearcher {
      * @param field the Lucene Document field that should be indexed.
      * @param readOnly if this index is read-only or is writable.
      */
-    public LuceneSearcher(Directory dir, String field, boolean readOnly) {
-        this(dir, new String[]{field}, readOnly);
+    public LuceneSearcher(Directory dir, String field) {
+        this(dir, new String[]{field});
     }
     
     /**
@@ -80,24 +81,18 @@ public class LuceneSearcher {
      * @param fields the Lucene Document fields that should be indexed.
      * @param readOnly if this index is read-only or is writable.
      */
-    public LuceneSearcher(Directory dir, String[] fields, boolean readOnly) {
-        m_hitCountCache = new HashMap();
+    public LuceneSearcher(Directory dir, String[] fields) {
+        m_hitCountCache = new HashMap<>();
         directory = dir;
-        analyzer = new StandardAnalyzer();
+        analyzer = new StandardAnalyzer(Version.LUCENE_36);
         this.fields = (String[])fields.clone();
         try {
-            writer = new IndexWriter(directory, analyzer, !readOnly);
+        	IndexWriterConfig cfg = new IndexWriterConfig(Version.LUCENE_36, analyzer);
+            writer = new IndexWriter(directory, cfg);
             writer.close();
             writer = null;
         } catch (IOException e1) {
             e1.printStackTrace();
-        }
-        m_readOnly = readOnly;
-        if ( !readOnly ) {
-            setReadMode(false);
-        } else {
-            m_readMode = false;
-            setReadMode(true);
         }
     }
     
@@ -127,7 +122,8 @@ public class LuceneSearcher {
             }
             // open the writer
             try {
-                writer = new IndexWriter(directory, analyzer, false);
+            	IndexWriterConfig cfg = new IndexWriterConfig(Version.LUCENE_36, analyzer);
+                writer = new IndexWriter(directory, cfg);
             } catch (IOException e1) {
                 e1.printStackTrace();
                 return false;
@@ -136,7 +132,6 @@ public class LuceneSearcher {
             // optimize index and close writer
             try {
                 if ( writer != null ) {
-                    writer.optimize();
                     writer.close();
                 }
             } catch (IOException e1) {
@@ -165,15 +160,17 @@ public class LuceneSearcher {
      * @throws IOException if an input/ouput error occurs
      * @throws IllegalStateException if the searcher is in write mode
      */
-    public Hits search(String query) throws ParseException, IOException {
+    public TopDocs search(String query) throws ParseException, IOException {
         if ( m_readMode ) {
             Query q;
             if ( fields.length == 1 ) {
-                q = QueryParser.parse(query, fields[0], analyzer);
+            	QueryParser parser = new QueryParser(Version.LUCENE_36, fields[0], analyzer);
+                q = parser.parse(query);
             } else {
-                q = MultiFieldQueryParser.parse(query, fields, analyzer);
+            	MultiFieldQueryParser parser = new MultiFieldQueryParser(Version.LUCENE_36, fields, analyzer);
+                q = parser.parse(query);
             }
-            return searcher.search(q);
+            return searcher.search(q,100);
         } else {
             throw new IllegalStateException(
                     "Searches can only be performed when " +
@@ -193,9 +190,9 @@ public class LuceneSearcher {
      */
     public int numHits(String query) throws ParseException, IOException {
         Integer count;
-        if ( (count=(Integer)m_hitCountCache.get(query)) == null ) {
-            Hits hits = search(query);
-            count = new Integer(hits.length());
+        if ( (count=m_hitCountCache.get(query)) == null ) {
+            TopDocs hits = search(query);
+            count = new Integer(hits.totalHits);
             m_hitCountCache.put(query, count);
         }
         return count.intValue();
@@ -273,7 +270,7 @@ public class LuceneSearcher {
      * for more details.
      * @return returns the IndexSearcher.
      */
-    public Searcher getIndexSearcher() {
+    public IndexSearcher getIndexSearcher() {
         return searcher;
     }
     
