@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import prefux.Constants;
+import prefux.data.expression.Predicate;
 import prefux.data.tuple.TupleSet;
 import prefux.util.ColorLib;
 import prefux.util.ColorMap;
@@ -92,6 +93,16 @@ public class DataColorAction extends ColorAction {
             int dataType, String colorField, int[] palette)
     {
         super(group, colorField);
+        setDataType(dataType);
+        setDataField(dataField);
+        m_palette = palette;
+    }
+    
+    
+    public DataColorAction(String group, Predicate predicate, String dataField, 
+            int dataType, String colorField, int[] palette)
+    {
+        super(group, predicate, colorField);
         setDataType(dataType);
         setDataField(dataField);
         m_palette = palette;

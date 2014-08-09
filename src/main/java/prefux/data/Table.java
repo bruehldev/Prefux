@@ -1254,6 +1254,9 @@ public class Table extends AbstractTupleSet implements ColumnListener {
      */
     public final double getDouble(int row, String field) {
         int col = getColumnNumber(field);
+        if (col==-1) {
+        	throw new NoSuchFieldError("Field "+field+" does not exist on "+row);
+        }
         row = getColumnRow(row, col);
         return getColumn(col).getDouble(row);
     }

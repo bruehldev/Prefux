@@ -9,6 +9,12 @@ package prefux.util.force;
  */
 public interface Integrator {
 
-    public void integrate(ForceSimulator sim, long timestep);
+	/**
+	 * Returns the recommended timestep for the next iteration
+	 * @param sim
+	 * @param timestep
+	 * @return
+	 */
+    public long integrate(ForceSimulator sim, long timestep);
     
 } // end of interface Integrator

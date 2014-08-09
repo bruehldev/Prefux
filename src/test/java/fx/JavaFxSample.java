@@ -14,7 +14,7 @@ import prefux.Visualization;
 import prefux.action.ActionList;
 import prefux.action.RepaintAction;
 import prefux.action.assignment.DataColorAction;
-import prefux.action.assignment.DataSizeAction;
+import prefux.action.assignment.NodeDegreeSizeAction;
 import prefux.action.layout.graph.ForceDirectedLayout;
 import prefux.activity.Activity;
 import prefux.controls.DragControl;
@@ -23,7 +23,6 @@ import prefux.data.expression.Predicate;
 import prefux.data.expression.parser.ExpressionParser;
 import prefux.data.io.DataIOException;
 import prefux.data.io.GraphMLReader;
-import prefux.render.CombinedRenderer;
 import prefux.render.DefaultRendererFactory;
 import prefux.render.LabelRenderer;
 import prefux.render.ShapeRenderer;
@@ -46,6 +45,7 @@ public class JavaFxSample extends Application {
 		primaryStage.setTitle("Hello World!");
 		BorderPane root = new BorderPane();
 		primaryStage.setScene(new Scene(root, WIDTH, HEIGHT));
+		root.getStyleClass().add("display");
 		primaryStage.show();
 
 		Graph graph = null;
@@ -55,46 +55,66 @@ public class JavaFxSample extends Application {
 			Visualization vis = new Visualization();
 			vis.add(GROUP, graph);
 
-			ShapeRenderer sr = new ShapeRenderer();
+			ShapeRenderer female = new ShapeRenderer();
+			female.setFillMode(ShapeRenderer.GRADIENT_SPHERE);
 			LabelRenderer lr = new LabelRenderer("name");
 			ShapeRenderer male = new ShapeRenderer();
-			male.addStyle("prefux-shape-highlight");
+			male.setFillMode(ShapeRenderer.GRADIENT_SPHERE);
 			// lr.translate(5.0, 5.0);
 			// LabelRenderer lr2 = new LabelRenderer("name");
 			// lr2.addStyle("invisible");
 			// BorderPaneRenderer r = new BorderPaneRenderer();
-			CombinedRenderer r = new CombinedRenderer();
-			r.add(lr);
-			r.add(sr);
+//			CombinedRenderer r = new CombinedRenderer();
+//			r.add(lr);
+//			r.add(sr);
 
 			// create a new default renderer factory
 			// return our name label renderer as the default for all
 			// non-EdgeItems
 			// includes straight line edges for EdgeItems by default
-			DefaultRendererFactory rfa = new DefaultRendererFactory(r);
-			Predicate exp = ExpressionParser.predicate("gender='M'");
-			rfa.add(exp, male);
+			DefaultRendererFactory rfa = new DefaultRendererFactory();
+			Predicate expMale = ExpressionParser.predicate("gender='M'");
+			Predicate expFemale = ExpressionParser.predicate("gender='F'");
+			rfa.add(expMale, male);
+			rfa.add(expFemale, female);
 			vis.setRendererFactory(rfa);
 
-			ActionList layout = new ActionList(Activity.INFINITY);
+			ActionList layout = new ActionList(Activity.INFINITY,30);
 			layout.add(new ForceDirectedLayout("graph"));
 			layout.add(new RepaintAction());
 			vis.putAction("layout", layout);
 
 			ActionList nodeActions = new ActionList();
 			final String NODES = PrefuseLib.getGroupName(GROUP, Graph.NODES);
-			DataSizeAction size = new DataSizeAction(NODES, "age");
+			// DataSizeAction size = new DataSizeAction(NODES, "age");
+			// nodeActions.add(size);
+			NodeDegreeSizeAction size = new NodeDegreeSizeAction(NODES);
 			nodeActions.add(size);
-			int[] palette = new int[] {
-		            ColorLib.rgba(255,200,200,210),
-		            ColorLib.rgba(200,255,200,210),
-		            ColorLib.rgba(200,200,255,210)
-		        };
+			int[] femalePalette = new int[] { ColorLib.rgb(255, 247, 243),
+			        ColorLib.rgb(253, 224, 221), ColorLib.rgb(252, 197, 192),
+			        ColorLib.rgb(250, 159, 181), ColorLib.rgb(247, 104, 161),
+			        ColorLib.rgb(221, 52, 151), ColorLib.rgb(174, 1, 126),
+			        ColorLib.rgb(122, 1, 119), ColorLib.rgb(73, 0, 106) };
+			
+			int[] malePalette = new int[] {
+					ColorLib.rgb(255,247,251),
+					ColorLib.rgb(236,226,240),
+					ColorLib.rgb(208,209,230),
+					ColorLib.rgb(166,189,219),
+					ColorLib.rgb(103,169,207),
+					ColorLib.rgb(54,144,192),
+					ColorLib.rgb(2,129,138),
+					ColorLib.rgb(1,108,89),
+					ColorLib.rgb(1,70,54)
+			};
 
-			DataColorAction color = new DataColorAction(NODES, "age",
-			        Constants.ORDINAL, VisualItem.FILLCOLOR, palette);
-			nodeActions.add(color);
-			vis.putAction("nodes",nodeActions);
+			DataColorAction colorF = new DataColorAction(NODES, expFemale, "age",
+			        Constants.NUMERICAL, VisualItem.FILLCOLOR, femalePalette);
+			DataColorAction colorM = new DataColorAction(NODES, expMale, "age",
+			        Constants.NUMERICAL, VisualItem.FILLCOLOR, malePalette);
+			nodeActions.add(colorF);
+			nodeActions.add(colorM);
+			vis.putAction("nodes", nodeActions);
 
 			FxDisplay display = new FxDisplay(vis);
 			display.addControlListener(new DragControl());

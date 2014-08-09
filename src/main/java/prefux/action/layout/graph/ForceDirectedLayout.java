@@ -291,7 +291,10 @@ public class ForceDirectedLayout extends Layout {
 			// run force simulator
 			m_fsim.clear();
 			initSimulator(m_fsim);
-			m_fsim.runSimulator(timestep);
+			long newstep=m_fsim.runSimulator(timestep);
+			if (newstep!=timestep) {
+				m_maxstep=newstep;
+			}
 			updateNodePositions();
 		}
 		if (frac == 1.0) {

@@ -1393,9 +1393,9 @@ public class Graph extends CompositeTupleSet {
     // Graph Linkage Schema
     
     /** In-degree data field for the links table */
-    protected static final String INDEGREE  = "_indegree";
+    public static final String INDEGREE  = "_indegree";
     /** Out-degree data field for the links table */
-    protected static final String OUTDEGREE = "_outdegree";
+    public static final String OUTDEGREE = "_outdegree";
     /** In-links adjacency list data field for the links table */
     protected static final String INLINKS   = "_inlinks";
     /** Out-links adjacency list data field for the links table */

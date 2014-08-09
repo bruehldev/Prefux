@@ -15,7 +15,7 @@ public class EulerIntegrator implements Integrator {
     /**
      * @see prefux.util.force.Integrator#integrate(prefux.util.force.ForceSimulator, long)
      */
-    public void integrate(ForceSimulator sim, long timestep) {
+    public long integrate(ForceSimulator sim, long timestep) {
         double speedLimit = sim.getSpeedLimit();
         Iterator iter = sim.getItems();
         while ( iter.hasNext() ) {
@@ -33,6 +33,7 @@ public class EulerIntegrator implements Integrator {
                 item.velocity[1] = speedLimit * vy / v;
             }
         }
+        return timestep;
     }
 
 } // end of class EulerIntegrator

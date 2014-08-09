@@ -590,7 +590,7 @@ public class Visualization {
      * Add a group of decorators to an existing visual data group. Decorators
      * are VisualItem instances intended to "decorate" another VisualItem,
      * such as providing a label or dedicated interactive control, and are
-     * realizeed as {@link prefux.visual.DecoratorItem} instances that provide
+     * realized as {@link prefux.visual.DecoratorItem} instances that provide
      * access to the decorated item in addition to the standard VisualItem
      * properties. The generated table is created using the
      * {@link #addDerivedTable(String, String, Predicate, Schema)} method,

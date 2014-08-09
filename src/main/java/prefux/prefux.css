@@ -1,6 +1,12 @@
+.display {
+	-fx-background: darkgrey;
+}
+
 .prefux-shape {
 	-fx-fill: darkgrey;
 	-fx-alignment: center;
+	-fx-fill: radial-gradient(center 50% 50%, radius 50%, rgba(25,25,112,1), rgba(25,25,112,0.5) 50%, transparent);
+	
 }
 
 .prefux-shape-highlight {
