@@ -1171,7 +1171,7 @@ public class Graph extends CompositeTupleSet {
      * Get a filtered iterator over the edges and nodes of this graph.
      * @see prefux.data.tuple.TupleSet#tuples(prefux.data.expression.Predicate)
      */
-    public Iterator<?> tuples(Predicate filter) {
+    public Iterator tuples(Predicate filter) {
         if ( filter == null ) {
             return tuples();
         } else {
