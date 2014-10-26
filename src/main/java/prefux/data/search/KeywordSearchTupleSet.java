@@ -35,11 +35,9 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.document.Field.Index;
 import org.apache.lucene.document.Field.Store;
-import org.apache.lucene.document.Field.TermVector;
-import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.document.StringField;
+import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 
@@ -187,8 +185,8 @@ public class KeywordSearchTupleSet extends SearchTupleSet {
      */
     protected Document getDocument(int id, String text) {
         Document d = new Document();
-        d.add(new Field(LuceneSearcher.FIELD, text, Store.YES, Index.ANALYZED, TermVector.YES));
-        d.add(new Field(LuceneSearcher.ID, String.valueOf(id),Store.YES, Index.ANALYZED, TermVector.YES));
+        d.add(new StringField(LuceneSearcher.FIELD, text, Store.YES));
+        d.add(new StringField(LuceneSearcher.ID, String.valueOf(id),Store.YES));
         return d;
     }
     

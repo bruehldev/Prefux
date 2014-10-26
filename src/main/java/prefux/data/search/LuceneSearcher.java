@@ -37,12 +37,13 @@ import java.util.HashMap;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.queryParser.MultiFieldQueryParser;
-import org.apache.lucene.queryParser.ParseException;
-import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TopDocs;
@@ -115,10 +116,10 @@ public class LuceneSearcher {
     public LuceneSearcher(Directory dir, String[] fields) {
         m_hitCountCache = new HashMap<>();
         directory = dir;
-        analyzer = new StandardAnalyzer(Version.LUCENE_36);
+        analyzer = new StandardAnalyzer();
         this.fields = (String[])fields.clone();
         try {
-        	IndexWriterConfig cfg = new IndexWriterConfig(Version.LUCENE_36, analyzer);
+        	IndexWriterConfig cfg = new IndexWriterConfig(Version.LUCENE_4_10_1, analyzer);
             writer = new IndexWriter(directory, cfg);
             writer.close();
             writer = null;
@@ -145,7 +146,7 @@ public class LuceneSearcher {
         if ( !mode ) {
             // close any open searcher and reader
             try {
-                if ( searcher != null ) searcher.close();
+                // if ( searcher != null ) searcher.close();
                 if ( reader   != null ) reader.close();
             } catch ( Exception e ) {
                 e.printStackTrace();
@@ -153,7 +154,7 @@ public class LuceneSearcher {
             }
             // open the writer
             try {
-            	IndexWriterConfig cfg = new IndexWriterConfig(Version.LUCENE_36, analyzer);
+            	IndexWriterConfig cfg = new IndexWriterConfig(Version.LUCENE_4_10_1, analyzer);
                 writer = new IndexWriter(directory, cfg);
             } catch (IOException e1) {
                 e1.printStackTrace();
@@ -171,7 +172,7 @@ public class LuceneSearcher {
             }
             // open the reader and searcher
             try {
-                reader = IndexReader.open(directory);
+                reader = DirectoryReader.open(directory);
                 searcher = new IndexSearcher(reader);
             } catch ( Exception e ) {
                 e.printStackTrace();
@@ -191,14 +192,14 @@ public class LuceneSearcher {
      * @throws IOException if an input/ouput error occurs
      * @throws IllegalStateException if the searcher is in write mode
      */
-    public TopDocs search(String query) throws ParseException, IOException {
+    public TopDocs search(String query) throws IOException, ParseException {
         if ( m_readMode ) {
             Query q;
             if ( fields.length == 1 ) {
-            	QueryParser parser = new QueryParser(Version.LUCENE_36, fields[0], analyzer);
+            	QueryParser parser = new QueryParser(fields[0], analyzer);
                 q = parser.parse(query);
             } else {
-            	MultiFieldQueryParser parser = new MultiFieldQueryParser(Version.LUCENE_36, fields, analyzer);
+            	MultiFieldQueryParser parser = new MultiFieldQueryParser(fields, analyzer);
                 q = parser.parse(query);
             }
             return searcher.search(q,100);
