@@ -72,13 +72,13 @@ public class FilterIteratorFactory {
      * @param p the filter predicate
      * @return a filtered iterator over the tuples
      */
-    public static Iterator<Tuple> tuples(TupleSet ts, Predicate p) {
+    public static Iterator<? extends Tuple> tuples(TupleSet ts, Predicate p) {
         // no predicate means no filtering
         if ( p == null )
             return ts.tuples();
         
         // attempt to generate an optimized query plan
-        Iterator<Tuple> iter = null;
+        Iterator<? extends Tuple> iter = null;
         if ( ts instanceof Table ) {
             Table t = (Table)ts;
             IntIterator ii = getOptimizedIterator(t,p);

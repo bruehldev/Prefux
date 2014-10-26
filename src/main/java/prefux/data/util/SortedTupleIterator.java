@@ -56,7 +56,7 @@ public class SortedTupleIterator implements Iterator<Tuple> {
      * @param iter the source iterator of tuples
      * @param c the comparator to use for sorting
      */
-    public SortedTupleIterator(Iterator<Tuple> iter, Comparator<Tuple> c) {
+    public SortedTupleIterator(Iterator<? extends Tuple> iter, Comparator<? extends Tuple> c) {
         this(iter, 128, c);
     }
     
@@ -67,7 +67,7 @@ public class SortedTupleIterator implements Iterator<Tuple> {
      * @param size the expected number of tuples in the iterator
      * @param c the comparator to use for sorting
      */
-    public SortedTupleIterator(Iterator<Tuple> iter, int size, Comparator<Tuple> c) {
+    public SortedTupleIterator(Iterator<? extends Tuple> iter, int size, Comparator<? extends Tuple> c) {
         m_tuples = new ArrayList<>(size);
         init(iter, c);
     }
@@ -78,9 +78,9 @@ public class SortedTupleIterator implements Iterator<Tuple> {
      * @param iter the source iterator of tuples
      * @param c the comparator to use for sorting
      */
-    public void init(Iterator<Tuple> iter, Comparator<Tuple> c) {
+    public void init(Iterator<? extends Tuple> iter, Comparator<? extends Tuple> c) {
         m_tuples.clear();
-        m_cmp = c;
+        m_cmp = (Comparator<Tuple>) c;
         
         // populate tuple list
         while ( iter.hasNext() ) {

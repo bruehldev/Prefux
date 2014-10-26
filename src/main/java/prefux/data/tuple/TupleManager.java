@@ -165,7 +165,7 @@ public class TupleManager {
      * @param rows an iterator over table rows
      * @return an iterator over the tuples indicated by the input row iterator
      */
-    public Iterator<Tuple> iterator(IntIterator rows) {
+    public Iterator<? extends Tuple> iterator(IntIterator rows) {
         return new TupleManagerIterator(this, rows);
     }
     

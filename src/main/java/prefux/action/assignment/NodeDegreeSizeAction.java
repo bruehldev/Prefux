@@ -331,7 +331,7 @@ public class NodeDegreeSizeAction extends SizeAction {
 
 	private double[] getDegreeValues(TupleSet ts) {
 		double[] values = new double[ts.getTupleCount()];
-		Iterator<Tuple> it = ts.tuples();
+		Iterator<? extends Tuple> it = ts.tuples();
 		int i = 0;
 		while (it.hasNext()) {
 			Tuple vo = it.next();

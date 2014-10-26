@@ -715,7 +715,7 @@ public class Visualization {
         TupleSet ts = getFocusGroup(group);
         if ( ts != null ) {
             // invalidate the item to reflect group membership change
-            for ( Iterator<Tuple> items = ts.tuples(ValidatedPredicate.TRUE);
+            for ( Iterator<? extends Tuple> items = ts.tuples(ValidatedPredicate.TRUE);
                   items.hasNext(); )
             {
                 ((VisualItem)items.next()).setValidated(false);
@@ -734,7 +734,7 @@ public class Visualization {
         // remove group members from focus sets and invalidate them
         TupleSet[] focus = new TupleSet[m_focus.size()];
         m_focus.values().toArray(focus);
-        for ( Iterator<Tuple> items = ts.tuples(); items.hasNext(); ) {
+        for ( Iterator<? extends Tuple> items = ts.tuples(); items.hasNext(); ) {
             VisualItem item = (VisualItem)items.next();
             for ( int j=0; j<focus.length; ++j ) {
                 focus[j].removeTuple(item);
@@ -1063,7 +1063,7 @@ public class Visualization {
                          : convert(t.tuples(filter)));
     }
     
-    public Iterator<VisualItem> convert(Iterator<Tuple> tupleIt) {
+    public Iterator<VisualItem> convert(Iterator<? extends Tuple> tupleIt) {
     	return new Iterator<VisualItem>() {
 
 			@Override

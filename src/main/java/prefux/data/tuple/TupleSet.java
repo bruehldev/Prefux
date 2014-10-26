@@ -156,7 +156,7 @@ public interface TupleSet {
      * Return an iterator over the tuples in this tuple set.
      * @return an iterator over this set's tuples
      */
-    public Iterator<Tuple> tuples();
+    public Iterator<? extends Tuple> tuples();
     
     /**
      * Return an iterator over the tuples in this tuple set, filtered by
@@ -165,7 +165,7 @@ public interface TupleSet {
      * for which the predicate evaluates to true are included in the iteration
      * @return a filtered iterator over this set's tuples
      */
-    public Iterator<Tuple> tuples(Predicate filter);
+    public Iterator<? extends Tuple> tuples(Predicate filter);
     
     /**
      * Return an iterator over the tuples in this tuple set, filtered by
@@ -176,7 +176,7 @@ public interface TupleSet {
      * @param sort the sorting criteria by which to order the returned tuples
      * @return a filtered, sorted iterator over this set's tuples
      */
-    public Iterator<Tuple> tuples(Predicate filter, Sort sort);
+    public Iterator<? extends Tuple> tuples(Predicate filter, Sort sort);
     
     
     // -- Listeners -----------------------------------------------------------
