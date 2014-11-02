@@ -41,16 +41,15 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import prefux.render.AbstractShapeRenderer;
 import prefux.visual.VisualItem;
 
 public class FxGraphicsLib {
 
-	private static final Logger log = LoggerFactory
-			.getLogger(FxGraphicsLib.class);
+	private static final Logger log = LogManager.getLogger(FxGraphicsLib.class);
 
 	public static final String BORDER_CLASS = "itemBorder";
 

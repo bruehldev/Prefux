@@ -33,14 +33,13 @@ package prefux.render;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.transform.Transform;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import prefux.data.util.Point2D;
 import prefux.util.FxGraphicsLib;
@@ -69,8 +68,7 @@ import prefux.visual.VisualItem;
  */
 public abstract class AbstractShapeRenderer implements Renderer {
 
-	private static final Logger log = LoggerFactory
-	        .getLogger(AbstractShapeRenderer.class);
+	private static final Logger log = LogManager.getLogger(AbstractShapeRenderer.class);
 
 	public static final int RENDER_TYPE_NONE = 0;
 	public static final int RENDER_TYPE_DRAW = 1;

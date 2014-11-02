@@ -34,8 +34,8 @@ import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.shape.Line;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import prefux.data.util.Point2D;
 import prefux.visual.EdgeItem;
@@ -60,8 +60,7 @@ import prefux.visual.VisualItem;
  */
 public class EdgeRenderer extends AbstractShapeRenderer implements Renderer {
 
-	private static final Logger log = LoggerFactory
-	        .getLogger(EdgeRenderer.class);
+	private static final Logger log = LogManager.getLogger(EdgeRenderer.class);
 
 	public static final String DEFAULT_STYLE_CLASS = "prefux-edge";
 

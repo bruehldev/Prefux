@@ -31,9 +31,9 @@
 package prefux.action.assignment;
 
 import java.util.Iterator;
-import java.util.logging.Logger;
 
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import prefux.Constants;
 import prefux.data.Tuple;
@@ -65,8 +65,8 @@ import prefux.visual.VisualItem;
  * @author <a href="http://jheer.org">jeffrey heer</a>
  */
 public class NodeDegreeSizeAction extends SizeAction {
-	
-	private static final org.slf4j.Logger log = LoggerFactory.getLogger(NodeDegreeSizeAction.class);
+
+	private static final Logger log = LogManager.getLogger(NodeDegreeSizeAction.class);
 
 	private boolean in = true;
 	private boolean out = true;
@@ -386,8 +386,7 @@ public class NodeDegreeSizeAction extends SizeAction {
 			} else {
 				// check for non-binned quantile scale error
 				if (m_scale == Constants.QUANTILE_SCALE) {
-					Logger.getLogger(getClass().getName())
-					        .warning(
+					log.warn(
 					                "Can't use quantile scale with no binning. "
 					                        + "Defaulting to linear scale. Set the bin value "
 					                        + "greater than zero to use a quantile scale.");

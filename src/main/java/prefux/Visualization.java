@@ -38,8 +38,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import prefux.action.Action;
 import prefux.activity.Activity;
@@ -192,7 +192,7 @@ import prefux.visual.tuple.TableNodeItem;
  */
 public class Visualization {
 	
-	private static final Logger log = LoggerFactory.getLogger(Visualization.class);
+	private static final Logger log = LogManager.getLogger(Visualization.class);
     
     /** Data group name for indicating all groups */
     public static final String ALL_ITEMS 

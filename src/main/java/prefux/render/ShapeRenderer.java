@@ -45,8 +45,8 @@ import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import prefux.util.ColorLib;
 import prefux.visual.VisualItem;
@@ -62,8 +62,7 @@ import prefux.visual.VisualItem;
  */
 public class ShapeRenderer extends AbstractShapeRenderer implements Renderer {
 
-	private static final Logger log = LoggerFactory
-	        .getLogger(ShapeRenderer.class);
+	private static final Logger log = LogManager.getLogger(AbstractShapeRenderer.class);
 
 	public static final double DEFAULT_SIZE = 5.0;
 	

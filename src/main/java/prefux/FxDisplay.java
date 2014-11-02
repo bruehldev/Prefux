@@ -50,8 +50,8 @@ import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.transform.Scale;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import prefux.controls.Control;
 import prefux.data.expression.AndPredicate;
@@ -67,7 +67,7 @@ import com.sun.javafx.css.StyleManager;
 
 public class FxDisplay extends Group implements Display, EventHandler<Event> {
 
-    private static final Logger log = LoggerFactory.getLogger(FxDisplay.class);
+	private static final Logger log = LogManager.getLogger(FxDisplay.class);
 
     public static final String DEFAULT_STYLESHEET = "prefux/prefux.css";
 

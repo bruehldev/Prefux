@@ -36,8 +36,8 @@ import javafx.scene.Cursor;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import prefux.data.Table;
 import prefux.data.event.EventConstants;
@@ -61,8 +61,8 @@ public class DragControl extends ControlAdapter implements TableListener {
 	protected Point2D	        temp	       = new Point2D();
 	protected boolean	        dragged, wasFixed, resetItem;
 	private boolean	            fixOnMouseOver	= true;
-	private static final Logger	log	           = LoggerFactory
-	                                                   .getLogger(DragControl.class);
+	
+	private static final Logger log = LogManager.getLogger(DragControl.class);
 	private Delta	            delta	       = new Delta();
 
 	/**

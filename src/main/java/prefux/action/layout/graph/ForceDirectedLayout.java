@@ -34,8 +34,8 @@ import java.util.Iterator;
 
 import javafx.geometry.Rectangle2D;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import prefux.action.layout.Layout;
 import prefux.data.Graph;
@@ -93,7 +93,8 @@ public class ForceDirectedLayout extends Layout {
 	protected String	           m_nodeGroup;
 	protected String	           m_edgeGroup;
 	
-	private static final Logger log = LoggerFactory.getLogger(ForceDirectedLayout.class);
+	private static final Logger log = LogManager.getLogger(ForceDirectedLayout.class);
+
 
 	/**
 	 * Create a new ForceDirectedLayout. By default, this layout will not

@@ -48,8 +48,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.text.Font;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import prefux.Visualization;
 import prefux.data.Graph;
@@ -71,8 +71,7 @@ import prefux.visual.VisualTable;
  */
 public class TableVisualItem extends TableTuple<VisualTable> implements
         VisualItem, TableListener, ChangeListener<Number> {
-	private static final Logger log = LoggerFactory
-	        .getLogger(TableVisualItem.class);
+	private static final Logger log = LogManager.getLogger(TableVisualItem.class);
 
 	private Node node;
 

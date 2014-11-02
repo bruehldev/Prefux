@@ -36,8 +36,8 @@ import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import prefux.data.util.Point2D;
 import prefux.util.FxGraphicsLib;
@@ -45,8 +45,7 @@ import prefux.visual.VisualItem;
 
 public class CombinedRenderer extends ArrayList<Renderer> implements Renderer {
 
-	private static final Logger log = LoggerFactory
-	        .getLogger(CombinedRenderer.class);
+	private static final Logger log = LogManager.getLogger(CombinedRenderer.class);
 
 	/**
 	 * 

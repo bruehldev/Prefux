@@ -32,8 +32,8 @@ package prefux.util.force;
 
 import java.util.Iterator;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Updates velocity and position data using the 4th-Order Runge-Kutta method.
@@ -44,7 +44,7 @@ import org.slf4j.LoggerFactory;
  */
 public class RungeKuttaIntegrator implements Integrator {
 	
-	Logger log = LoggerFactory.getLogger(RungeKuttaIntegrator.class);
+	private static final Logger log = LogManager.getLogger(RungeKuttaIntegrator.class);
 	
 	// These are upper and lower bounds for the q-Factor, that is
 	// calculated by the Runge-Kutta coefficients.

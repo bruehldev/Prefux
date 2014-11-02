@@ -37,13 +37,13 @@ package prefux.render;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javafx.application.Platform;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.layout.StackPane;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import prefux.data.util.Point2D;
 import prefux.util.FxGraphicsLib;
 import prefux.visual.VisualItem;
@@ -51,8 +51,7 @@ import prefux.visual.VisualItem;
 public class StackPaneRenderer extends ArrayList<Renderer> implements Renderer,
 		List<Renderer> {
 
-	private static final Logger log = LoggerFactory
-			.getLogger(StackPaneRenderer.class);
+	private static final Logger log = LogManager.getLogger(StackPaneRenderer.class);
 
 	/**
 	 * 

@@ -37,15 +37,14 @@ package prefux.render;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import prefux.data.util.Point2D;
 import prefux.util.FxGraphicsLib;
@@ -105,8 +104,7 @@ public class BorderPaneRenderer implements Renderer {
 
 	}
 
-	private static final Logger log = LoggerFactory
-			.getLogger(BorderPaneRenderer.class);
+	private static final Logger log = LogManager.getLogger(BorderPaneRenderer.class);
 
 	private List<BorderRenderer> renderers = new ArrayList<>();
 
