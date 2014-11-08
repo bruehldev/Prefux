@@ -442,10 +442,10 @@ public class Table extends AbstractTupleSet implements ColumnListener {
     // Column Operations
     
     /**
-     * Internal method indicating if the given data field is included as a
+     * Method indicating if the given data field is included as a
      * data column.
      */
-    protected boolean hasColumn(String name) {
+    public boolean hasColumn(String name) {
         return getColumnNumber(name) != -1;
     }
     
