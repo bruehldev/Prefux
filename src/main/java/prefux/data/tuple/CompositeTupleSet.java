@@ -271,13 +271,14 @@ public class CompositeTupleSet extends AbstractTupleSet {
     /**
      * @see prefux.data.tuple.TupleSet#tuples(prefux.data.expression.Predicate)
      */
-    public Iterator tuples(Predicate filter) {
-        CompositeIterator ci = new CompositeIterator(m_map.size());
-        Iterator it = m_map.entrySet().iterator();
+    @SuppressWarnings("unchecked")
+    public Iterator<Tuple> tuples(Predicate filter) {
+        CompositeIterator<Tuple> ci = new CompositeIterator<Tuple>(m_map.size());
+		Iterator<Entry<String, TupleSet>> it = m_map.entrySet().iterator();
         for ( int i=0; it.hasNext(); ++i )  {
-            Map.Entry entry = (Map.Entry)it.next();
-            TupleSet ts = (TupleSet)entry.getValue();
-            ci.setIterator(i, ts.tuples(filter));
+            Entry<String, TupleSet> entry = it.next();
+            TupleSet ts = entry.getValue();
+            ci.setIterator(i, (Iterator<Tuple>) ts.tuples(filter));
         }
         return ci;
     }
