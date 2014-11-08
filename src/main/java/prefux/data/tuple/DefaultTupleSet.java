@@ -50,13 +50,13 @@ import prefux.data.event.EventConstants;
  */
 public class DefaultTupleSet extends AbstractTupleSet implements EventConstants
 {
-    protected LinkedHashSet m_tuples;
+    protected LinkedHashSet<Tuple> m_tuples;
 
     /**
      * Create a new, empty DefaultTupleSet.
      */
     public DefaultTupleSet() {
-        m_tuples = new LinkedHashSet();
+        m_tuples = new LinkedHashSet<Tuple>();
     }
     
     /**
@@ -142,7 +142,7 @@ public class DefaultTupleSet extends AbstractTupleSet implements EventConstants
      */
     public Tuple[] clearInternal() {
         Tuple[] t = new Tuple[getTupleCount()];
-        Iterator iter = tuples();
+        Iterator<Tuple> iter = tuples();
         for ( int i=0; iter.hasNext(); ++i ) {
             t[i] = (Tuple)iter.next();
         }
@@ -153,7 +153,7 @@ public class DefaultTupleSet extends AbstractTupleSet implements EventConstants
     /**
      * @see prefux.data.tuple.TupleSet#tuples()
      */
-    public Iterator tuples() {
+    public Iterator<Tuple> tuples() {
         return m_tuples.iterator();
     }
     
@@ -165,6 +165,11 @@ public class DefaultTupleSet extends AbstractTupleSet implements EventConstants
         Tuple[] t = new Tuple[getTupleCount()];
         m_tuples.toArray(t);
         return t;
+    }
+
+	@Override
+    public boolean hasColumn(String name) {
+	    return true;
     }
     
 } // end of class DefaultTupleSet

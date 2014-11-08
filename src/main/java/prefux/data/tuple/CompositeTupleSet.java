@@ -256,13 +256,14 @@ public class CompositeTupleSet extends AbstractTupleSet {
     /**
      * @see prefux.data.tuple.TupleSet#tuples()
      */
-    public Iterator tuples() {
-        CompositeIterator ci = new CompositeIterator(m_map.size());
+    @SuppressWarnings("unchecked")
+    public Iterator<Tuple> tuples() {
+        CompositeIterator<Tuple> ci = new CompositeIterator<Tuple>(m_map.size());
         Iterator<Entry<String, TupleSet>> it = m_map.entrySet().iterator();
         for ( int i=0; it.hasNext(); ++i )  {
             Entry<String, TupleSet> entry = it.next();
             TupleSet ts = entry.getValue();
-            ci.setIterator(i, ts.tuples());
+            ci.setIterator(i, (Iterator<Tuple>) ts.tuples());
         }
         return ci;
     }
@@ -296,11 +297,11 @@ public class CompositeTupleSet extends AbstractTupleSet {
      * {@link TupleSet#isAddColumnSupported()}.
      * @see prefux.data.tuple.TupleSet#addColumn(java.lang.String, java.lang.Class, java.lang.Object)
      */
-    public void addColumn(String name, Class type, Object defaultValue) {
-        Iterator it = m_map.entrySet().iterator();
+    public void addColumn(String name, Class<?> type, Object defaultValue) {
+        Iterator<Entry<String, TupleSet>> it = m_map.entrySet().iterator();
         while ( it.hasNext() ) {
-            Map.Entry entry = (Map.Entry)it.next();
-            TupleSet ts = (TupleSet)entry.getValue();
+            Entry<String, TupleSet> entry = it.next();
+            TupleSet ts = entry.getValue();
             if ( ts.isAddColumnSupported() ) {
                 try {
                     ts.addColumn(name, type, defaultValue);
@@ -318,11 +319,11 @@ public class CompositeTupleSet extends AbstractTupleSet {
      * {@link TupleSet#isAddColumnSupported()}.
      * @see prefux.data.tuple.TupleSet#addColumn(java.lang.String, java.lang.Class)
      */
-    public void addColumn(String name, Class type) {
-        Iterator it = m_map.entrySet().iterator();
+    public void addColumn(String name, Class<?> type) {
+        Iterator<Entry<String, TupleSet>> it = m_map.entrySet().iterator();
         while ( it.hasNext() ) {
-            Map.Entry entry = (Map.Entry)it.next();
-            TupleSet ts = (TupleSet)entry.getValue();
+            Entry<String, TupleSet> entry = it.next();
+            TupleSet ts = entry.getValue();
             if ( ts.isAddColumnSupported() ) {
                 try {
                     ts.addColumn(name, type);
@@ -341,10 +342,10 @@ public class CompositeTupleSet extends AbstractTupleSet {
      * @see prefux.data.tuple.TupleSet#addColumn(java.lang.String, prefux.data.expression.Expression)
      */
     public void addColumn(String name, Expression expr) {
-        Iterator it = m_map.entrySet().iterator();
+        Iterator<Entry<String, TupleSet>> it = m_map.entrySet().iterator();
         while ( it.hasNext() ) {
-            Map.Entry entry = (Map.Entry)it.next();
-            TupleSet ts = (TupleSet)entry.getValue();
+            Entry<String, TupleSet> entry = it.next();
+            TupleSet ts = entry.getValue();
             if ( ts.isAddColumnSupported() ) {
                 try {
                     ts.addColumn(name, expr);
@@ -355,6 +356,18 @@ public class CompositeTupleSet extends AbstractTupleSet {
                 s_logger.fine("Skipped addColumn for "+entry.getKey());
             }
         }
+    }
+    
+    public boolean hasColumn(String columnName)  {
+        Iterator<Entry<String, TupleSet>> it = m_map.entrySet().iterator();
+        while ( it.hasNext() ) {
+        	Entry<String, TupleSet> entry = it.next();
+        	TupleSet ts = entry.getValue();
+        	if (ts.hasColumn(columnName)) {
+        		return true;
+        	}
+        }
+        return false;
     }
 
     /**

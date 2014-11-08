@@ -202,7 +202,7 @@ public abstract class AbstractTupleSet implements TupleSet {
      * Unsupported by default.
      * @see prefux.data.tuple.TupleSet#addColumn(java.lang.String, java.lang.Class, java.lang.Object)
      */
-    public void addColumn(String name, Class type, Object defaultValue) {
+    public void addColumn(String name, Class<?> type, Object defaultValue) {
         throw new UnsupportedOperationException();
     }
 
@@ -210,7 +210,7 @@ public abstract class AbstractTupleSet implements TupleSet {
      * Unsupported by default.
      * @see prefux.data.tuple.TupleSet#addColumn(java.lang.String, java.lang.Class)
      */
-    public void addColumn(String name, Class type) {
+    public void addColumn(String name, Class<?> type) {
         throw new UnsupportedOperationException();
     }
 
@@ -230,9 +230,11 @@ public abstract class AbstractTupleSet implements TupleSet {
         throw new UnsupportedOperationException();
     }
     
+    public abstract boolean hasColumn(String name);
+    
     // -- Client Properties ---------------------------------------------------
     
-    private HashMap m_props;
+    private HashMap<String,Object> m_props;
     private SwingPropertyChangeSupport m_propSupport;
     
     /**
@@ -289,7 +291,7 @@ public abstract class AbstractTupleSet implements TupleSet {
             prev = m_props.remove(key);
         } else {
             if ( m_props == null )
-                m_props = new HashMap(2);
+                m_props = new HashMap<String, Object>(2);
             prev = m_props.put(key, value);
         }
         if ( m_propSupport != null )

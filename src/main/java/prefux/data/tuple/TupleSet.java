@@ -153,6 +153,13 @@ public interface TupleSet {
     public void addColumn(String name, Expression expr);
     
     /**
+     * Returns true, if the tuple set has the given column
+     * @param name
+     * @return
+     */
+    public boolean hasColumn(String name);
+    
+    /**
      * Return an iterator over the tuples in this tuple set.
      * @return an iterator over this set's tuples
      */
