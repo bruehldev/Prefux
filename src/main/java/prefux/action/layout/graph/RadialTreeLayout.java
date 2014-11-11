@@ -222,7 +222,7 @@ public class RadialTreeLayout extends TreeLayout {
 
         // compute offset due to children's angular width
         double dt = 0;
-        Iterator<Node> iter = sortedChildren(r);
+        Iterator<? extends Node> iter = sortedChildren(r);
         while ( iter.hasNext() ) {
             Node n = (Node)iter.next();
             if ( n == p ) break;
@@ -255,7 +255,7 @@ public class RadialTreeLayout extends TreeLayout {
         double diameter = d==0 ? 0 : Math.sqrt(w*w+h*h) / d;
         
         if ( n.isExpanded() && n.getChildCount() > 0 ) {
-            Iterator<Node> childIter = n.children();
+            Iterator<? extends Node> childIter = n.children();
             while ( childIter.hasNext() ) {
                 NodeItem c = (NodeItem)childIter.next();
                 aw += calcAngularWidth(c,d+1);
@@ -278,7 +278,7 @@ public class RadialTreeLayout extends TreeLayout {
         return angle;
     }
     
-    private Iterator<Node> sortedChildren(final NodeItem n) {
+    private Iterator<? extends Node> sortedChildren(final NodeItem n) {
         double base = 0;
         // update base angle for node ordering
         NodeItem p = (NodeItem)n.getParent();
@@ -335,7 +335,7 @@ public class RadialTreeLayout extends TreeLayout {
         double width = ((Params)n.get(PARAMS)).width;
         double cfrac, nfrac = 0.0;
         
-        Iterator<Node> childIter = sortedChildren(n);
+        Iterator<? extends Node> childIter = sortedChildren(n);
         while ( childIter != null && childIter.hasNext() ) {
             NodeItem c = (NodeItem)childIter.next();
             Params cp = (Params)c.get(PARAMS);

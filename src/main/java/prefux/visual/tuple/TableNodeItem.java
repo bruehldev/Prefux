@@ -120,21 +120,21 @@ public class TableNodeItem extends TableVisualItem implements NodeItem {
      * @see prefux.data.Node#inNeighbors()
      */
     public Iterator<Node> inNeighbors() {
-        return (Iterator<Node>) m_graph.inNeighbors(this);
+        return m_graph.inNeighbors(this);
     }
     
     /**
      * @see prefux.data.Node#outNeighbors()
      */
     public Iterator<Node> outNeighbors() {
-        return (Iterator<Node>) m_graph.outNeighbors(this);
+        return m_graph.outNeighbors(this);
     }
     
     /**
      * @see prefux.data.Node#neighbors()
      */
-    public Iterator<Node> neighbors() {
-        return (Iterator<Node>) m_graph.neighbors(this);
+    public Iterator<TableNodeItem> neighbors() {
+        return m_graph.neighbors(this);
     }
 
     // ------------------------------------------------------------------------

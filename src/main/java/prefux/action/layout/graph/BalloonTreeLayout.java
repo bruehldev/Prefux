@@ -112,7 +112,7 @@ public class BalloonTreeLayout extends TreeLayout {
         Params np = getParams(n);
         np.d = 0;
         double s = 0;
-        Iterator<Node> childIter = n.children();
+        Iterator<? extends Node> childIter = n.children();
         while ( childIter.hasNext() ) {
             NodeItem c = (NodeItem)childIter.next();
             if ( !c.isVisible() ) continue;
@@ -219,7 +219,7 @@ public class BalloonTreeLayout extends TreeLayout {
         
         Params np = getParams(n);
         int numChildren = 0;
-        Iterator<Node> childIter = n.children();
+        Iterator<? extends Node> childIter = n.children();
         while ( childIter.hasNext() ) {
             NodeItem c = (NodeItem)childIter.next();
             if ( c.isVisible() ) ++numChildren;

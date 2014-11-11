@@ -42,7 +42,7 @@ import prefux.data.Table;
  * 
  * @author <a href="http://jheer.org">jeffrey heer</a>
  */
-public class TableNode extends TableTuple implements Node {
+public class TableNode extends TableTuple<Table> implements Node {
 
     /**
      * The backing graph.
@@ -99,42 +99,45 @@ public class TableNode extends TableTuple implements Node {
     /**
      * @see prefux.data.Node#inEdges()
      */
-    public Iterator inEdges() {
-        return m_graph.inEdges(this);
+    @SuppressWarnings("unchecked")
+    public Iterator<Edge> inEdges() {
+        return (Iterator<Edge>) m_graph.inEdges(this);
     }
 
     /**
      * @see prefux.data.Node#outEdges()
      */
-    public Iterator outEdges() {
-        return m_graph.outEdges(this);
+    @SuppressWarnings("unchecked")
+    public Iterator<Edge> outEdges() {
+        return (Iterator<Edge>) m_graph.outEdges(this);
     }
 
     /**
      * @see prefux.data.Node#edges()
      */
-    public Iterator edges() {
-        return m_graph.edges(this);
+    @SuppressWarnings("unchecked")
+    public Iterator<Edge> edges() {
+        return (Iterator<Edge>) m_graph.edges(this);
     }
     
     /**
      * @see prefux.data.Node#inNeighbors()
      */
-    public Iterator inNeighbors() {
+    public Iterator<Node> inNeighbors() {
         return m_graph.inNeighbors(this);
     }
     
     /**
      * @see prefux.data.Node#outNeighbors()
      */
-    public Iterator outNeighbors() {
+    public Iterator<Node> outNeighbors() {
         return m_graph.outNeighbors(this);
     }
     
     /**
      * @see prefux.data.Node#neighbors()
      */
-    public Iterator neighbors() {
+    public Iterator<TableNode> neighbors() {
         return m_graph.neighbors(this);
     }
 

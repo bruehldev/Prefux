@@ -228,7 +228,7 @@ public class FisheyeTreeFilter extends GroupAction {
     private void visitDescendants(NodeItem p, NodeItem skip) {
         int lidx = ( skip == null ? 0 : p.getChildIndex(skip) );
         
-        Iterator<Node> children = p.children();
+        Iterator<? extends Node> children = p.children();
         
         p.setExpanded(children.hasNext());
         

@@ -41,9 +41,9 @@ import prefux.data.Node;
  * 
  * @author <a href="http://jheer.org">jeffrey heer</a>
  */
-public class NeighborIterator implements Iterator {
+public class NeighborIterator<T extends Node> implements Iterator<T> {
 
-    private Iterator m_edges;
+    private Iterator<? extends Edge> m_edges;
     private Node     m_node;
     
     /**
@@ -51,7 +51,7 @@ public class NeighborIterator implements Iterator {
      * @param n the source node
      * @param edges the node edges to iterate over
      */
-    public NeighborIterator(Node n, Iterator edges) {
+    public NeighborIterator(Node n, Iterator<? extends Edge> edges) {
         m_node = n;
         m_edges = edges;
     }
@@ -73,9 +73,10 @@ public class NeighborIterator implements Iterator {
     /**
      * @see java.util.Iterator#next()
      */
-    public Object next() {
-        Edge e = (Edge)m_edges.next();
-        return e.getAdjacentNode(m_node);
+    @SuppressWarnings("unchecked")
+    public T next() {
+        Edge e = m_edges.next();
+        return (T) e.getAdjacentNode(m_node);
     }
 
 } // end of class NeighborIterator
