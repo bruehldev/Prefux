@@ -24,6 +24,7 @@ import prefux.data.expression.parser.ExpressionParser;
 import prefux.data.io.DataIOException;
 import prefux.data.io.GraphMLReader;
 import prefux.render.DefaultRendererFactory;
+import prefux.render.EdgeRenderer;
 import prefux.render.LabelRenderer;
 import prefux.render.ShapeRenderer;
 import prefux.util.ColorLib;
@@ -31,18 +32,18 @@ import prefux.util.PrefuseLib;
 import prefux.visual.VisualItem;
 
 public class JavaFxSample extends Application {
-	public static void main(String[] args) {
-		launch(args);
-	}
 
-	private static final double WIDTH = 300;
-	private static final double HEIGHT = 250;
+
+
+	private static final double WIDTH = 1000;
+	private static final double HEIGHT = 800;
 	private static final String GROUP = "graph";
 
 	@Override
 	public void start(Stage primaryStage) {
 
-		primaryStage.setTitle("Hello World!");
+		// -- 1. setup dialog -----------------------------------------------------
+		primaryStage.setTitle("PRRV");
 		BorderPane root = new BorderPane();
 		primaryStage.setScene(new Scene(root, WIDTH, HEIGHT));
 		root.getStyleClass().add("display");
@@ -50,28 +51,26 @@ public class JavaFxSample extends Application {
 
 		Graph graph = null;
 		try {
-			// graph = new GraphMLReader().readGraph("data/graphml-sample.xml");
-			graph = new GraphMLReader().readGraph("data/socialnet2.xml");
+			// -- 2. load the data ------------------------------------------------
+			graph = new GraphMLReader().readGraph("data/socialnet.xml");
+
+			// -- 3. the visualization --------------------------------------------
 			Visualization vis = new Visualization();
 			vis.add(GROUP, graph);
 
+
+			// -- 4. the renderers and renderer factory ---------------------------
 			ShapeRenderer female = new ShapeRenderer();
 			female.setFillMode(ShapeRenderer.GRADIENT_SPHERE);
 			LabelRenderer lr = new LabelRenderer("name");
 			ShapeRenderer male = new ShapeRenderer();
 			male.setFillMode(ShapeRenderer.GRADIENT_SPHERE);
-			// lr.translate(5.0, 5.0);
-			// LabelRenderer lr2 = new LabelRenderer("name");
-			// lr2.addStyle("invisible");
-			// BorderPaneRenderer r = new BorderPaneRenderer();
-//			CombinedRenderer r = new CombinedRenderer();
-//			r.add(lr);
-//			r.add(sr);
 
 			// create a new default renderer factory
 			// return our name label renderer as the default for all
 			// non-EdgeItems
 			// includes straight line edges for EdgeItems by default
+			//EdgeRenderer er = new EdgeRenderer();
 			DefaultRendererFactory rfa = new DefaultRendererFactory();
 			Predicate expMale = ExpressionParser.predicate("gender='M'");
 			Predicate expFemale = ExpressionParser.predicate("gender='F'");
@@ -79,6 +78,7 @@ public class JavaFxSample extends Application {
 			rfa.add(expFemale, female);
 			vis.setRendererFactory(rfa);
 
+			// -- 5. the processing actions ---------------------------------------
 			ActionList layout = new ActionList(Activity.INFINITY,30);
 			layout.add(new ForceDirectedLayout("graph"));
 			layout.add(new RepaintAction());
@@ -108,16 +108,23 @@ public class JavaFxSample extends Application {
 					ColorLib.rgb(1,70,54)
 			};
 
-			DataColorAction colorF = new DataColorAction(NODES, expFemale, "age",
+			DataColorAction colorF = new DataColorAction(NODES, "age",
 			        Constants.NUMERICAL, VisualItem.FILLCOLOR, femalePalette);
-			DataColorAction colorM = new DataColorAction(NODES, expMale, "age",
+			DataColorAction colorM = new DataColorAction(NODES, "age",
 			        Constants.NUMERICAL, VisualItem.FILLCOLOR, malePalette);
 			nodeActions.add(colorF);
 			nodeActions.add(colorM);
 			vis.putAction("nodes", nodeActions);
 
+			// -- 6. the display and interactive controls -------------------------
 			FxDisplay display = new FxDisplay(vis);
 			display.addControlListener(new DragControl());
+
+			// -- 7. launch the visualization -------------------------------------
+			for(int i=0; EdgeRenderer.arrows.size()>i; i++) {
+				System.out.println(EdgeRenderer.arrows.get(i));
+			}
+			root.getChildren().addAll(EdgeRenderer.arrows);
 			root.setCenter(display);
 			root.setBottom(buildControlPanel(display));
 			vis.run("nodes");
@@ -139,6 +146,10 @@ public class JavaFxSample extends Application {
 		vbox.getChildren().addAll(txt, slider, txt2);
 		return vbox;
 
+	}
+
+	public static void main(String[] args) {
+		launch(args);
 	}
 
 }

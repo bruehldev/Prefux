@@ -43,6 +43,7 @@ import prefux.data.Table;
 import prefux.data.event.EventConstants;
 import prefux.data.event.TableListener;
 import prefux.data.util.Point2D;
+import prefux.render.EdgeRenderer;
 import prefux.util.PrefuseLib;
 import prefux.visual.VisualItem;
 
@@ -125,6 +126,9 @@ public class DragControl extends ControlAdapter implements TableListener {
 			item.getTable().addTableListener(this);
 			PrefuseLib.setX(activeItem, null, ev.getSceneX() + delta.x);
 			PrefuseLib.setY(activeItem, null, ev.getSceneY() + delta.y);
+			//for( EdgeRenderer.Arrow arrow: EdgeRenderer.arrows) {
+				//arrow.update(ev.getSceneX() , ev.getSceneY() );
+			//}
 		} else if (e.getEventType() == MouseEvent.MOUSE_DRAGGED) {
 			if (activeItem != null) {
 				PrefuseLib.setX(activeItem, null, ev.getSceneX() + delta.x);
