@@ -34,7 +34,6 @@ import prefux.visual.VisualItem;
 public class JavaFxSample extends Application {
 
 
-
 	private static final double WIDTH = 1000;
 	private static final double HEIGHT = 800;
 	private static final String GROUP = "graph";
@@ -108,9 +107,9 @@ public class JavaFxSample extends Application {
 					ColorLib.rgb(1,70,54)
 			};
 
-			DataColorAction colorF = new DataColorAction(NODES, "age",
+			DataColorAction colorF = new DataColorAction(NODES, "referenceCount",
 			        Constants.NUMERICAL, VisualItem.FILLCOLOR, femalePalette);
-			DataColorAction colorM = new DataColorAction(NODES, "age",
+			DataColorAction colorM = new DataColorAction(NODES, "referenceCount",
 			        Constants.NUMERICAL, VisualItem.FILLCOLOR, malePalette);
 			nodeActions.add(colorF);
 			nodeActions.add(colorM);
@@ -121,10 +120,14 @@ public class JavaFxSample extends Application {
 			display.addControlListener(new DragControl());
 
 			// -- 7. launch the visualization -------------------------------------
+			/** ArrowHeads
 			for(int i=0; EdgeRenderer.arrows.size()>i; i++) {
 				System.out.println(EdgeRenderer.arrows.get(i));
 			}
 			root.getChildren().addAll(EdgeRenderer.arrows);
+			 **/
+
+
 			root.setCenter(display);
 			root.setBottom(buildControlPanel(display));
 			vis.run("nodes");

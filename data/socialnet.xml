@@ -5,35 +5,29 @@
 	xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns 
         http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
 	<!-- data schema -->
-	<key id="name" for="node" attr.name="name" attr.type="string" />
-	<key id="gender" for="node" attr.name="gender" attr.type="string" />
-	<key id="age" for="node" attr.name="age" attr.type="int">
+	<key id="title" for="node" attr.name="title" attr.type="string" />
+	<key id="referenceCount" for="node" attr.name="referenceCount" attr.type="int">
 		<default>40</default>
 	</key>
-	<graph edgedefault="undirected">
-
+	<graph edgedefault="directed">
 
 		<!-- nodes -->
 		<node id="1">
-			<data key="name">Jeff</data>
-			<data key="gender">M</data>
-			<data key="age">31</data>
+			<data key="title">Jeff</data>
+			<data key="referenceCount">31</data>
 		</node>
 		<node id="2">
-			<data key="name">Ed</data>
-			<data key="gender">M</data>
-			<data key="age">25</data>
+			<data key="title">Ed</data>
+			<data key="referenceCount">25</data>
 		</node>
 		<node id="3">
-			<data key="name">Christiaan</data>
-			<data key="gender">M</data>
-			<data key="age">16</data>
+			<data key="title">Christiaan</data>
+			<data key="referenceCount">16</data>
 
 		</node>
 		<node id="4">
-			<data key="name">Emily</data>
-			<data key="gender">F</data>
-			<data key="age">44</data>
+			<data key="title">Emily</data>
+			<data key="referenceCount">44</data>
 		</node>
 
 		<!-- edges -->
@@ -43,11 +37,6 @@
 		<!-- ed's friends -->
 		<edge source="2" target="3"></edge>
 		<!-- christiaan's friends -->
-
 		<!-- emily's friends -->
-
-
-
-
 	</graph>
 </graphml>

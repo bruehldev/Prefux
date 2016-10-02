@@ -131,7 +131,7 @@ public class EdgeRenderer extends AbstractShapeRenderer implements Renderer {
 		Arrow arrow = new Arrow( line, arrowShape);
 		//Arrow arrow2 = (Arrow) item;
 
-		arrows.add(arrow);
+	//	arrows.add(arrow);
 		arrow.update();
 		if (bind) {
 			Platform.runLater(() -> {
@@ -139,12 +139,12 @@ public class EdgeRenderer extends AbstractShapeRenderer implements Renderer {
 				line.startYProperty().bind(edge.getSourceItem().yProperty());
 				line.endXProperty().bind(edge.getTargetItem().xProperty());
 				line.endYProperty().bind(edge.getTargetItem().yProperty());
-				arrow.opacityProperty().bind(edge.getSourceItem().xProperty());
-				arrow.translateXProperty().bind(edge.getTargetItem().xProperty());
-				arrow.translateYProperty().bind(edge.getTargetItem().yProperty());
-				arrow.layoutXProperty().bind(edge.getTargetItem().xProperty());
-				arrow.layoutYProperty().bind(edge.getTargetItem().yProperty());
-				arrow.rotateProperty().bind(edge.getTargetItem().sizeProperty());
+			//	arrow.opacityProperty().bind(edge.getSourceItem().xProperty());
+			//	arrow.translateXProperty().bind(edge.getTargetItem().xProperty());
+			//	arrow.translateYProperty().bind(edge.getTargetItem().yProperty());
+			//	arrow.layoutXProperty().bind(edge.getTargetItem().xProperty());
+			//	arrow.layoutYProperty().bind(edge.getTargetItem().yProperty());
+			//	arrow.rotateProperty().bind(edge.getTargetItem().sizeProperty());
 
 			});
 		}
