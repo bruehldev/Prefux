@@ -31,19 +31,20 @@
 package prefux.controls;
 
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
+import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import prefux.data.Table;
 import prefux.data.event.EventConstants;
 import prefux.data.event.TableListener;
 import prefux.data.util.Point2D;
-import prefux.render.EdgeRenderer;
 import prefux.util.PrefuseLib;
 import prefux.visual.VisualItem;
 
@@ -56,196 +57,215 @@ import prefux.visual.VisualItem;
  */
 public class DragControl extends ControlAdapter implements TableListener {
 
-	private VisualItem	        activeItem;
-	protected String	        action;
-	protected Point2D	        down	       = new Point2D();
-	protected Point2D	        temp	       = new Point2D();
-	protected boolean	        dragged, wasFixed, resetItem;
-	private boolean	            fixOnMouseOver	= true;
-	
-	private static final Logger log = LogManager.getLogger(DragControl.class);
-	private Delta	            delta	       = new Delta();
+    private VisualItem activeItem;
+    protected String action;
+    protected Point2D down = new Point2D();
+    protected Point2D temp = new Point2D();
+    protected boolean dragged, wasFixed, resetItem;
+    private boolean fixOnMouseOver = true;
+    private Tooltip mousePositionToolTip = new Tooltip("");
 
-	/**
-	 * Creates a new drag control that issues repaint requests as an item is
-	 * dragged.
-	 */
-	public DragControl() {
-	}
+    private static final Logger log = LogManager.getLogger(DragControl.class);
+    private Delta delta = new Delta();
 
-	/**
-	 * Creates a new drag control that invokes an action upon drag events.
-	 * 
-	 * @param action
-	 *            the action to run when drag events occur.
-	 */
-	public DragControl(String action) {
-		this.action = action;
-	}
+    /**
+     * Creates a new drag control that issues repaint requests as an item is
+     * dragged.
+     */
+    public DragControl() {
+    }
 
-	/**
-	 * Creates a new drag control that invokes an action upon drag events.
-	 * 
-	 * @param action
-	 *            the action to run when drag events occur
-	 * @param fixOnMouseOver
-	 *            indicates if object positions should become fixed (made
-	 *            stationary) when the mouse pointer is over an item.
-	 */
-	public DragControl(String action, boolean fixOnMouseOver) {
-		this.fixOnMouseOver = fixOnMouseOver;
-		this.action = action;
-	}
+    /**
+     * Creates a new drag control that invokes an action upon drag events.
+     *
+     * @param action the action to run when drag events occur.
+     */
+    public DragControl(String action) {
+        this.action = action;
+    }
 
-	/**
-	 * Determines whether or not an item should have it's position fixed when
-	 * the mouse moves over it.
-	 * 
-	 * @param s
-	 *            whether or not item position should become fixed upon mouse
-	 *            over.
-	 */
-	public void setFixPositionOnMouseOver(boolean s) {
-		fixOnMouseOver = s;
-	}
+    /**
+     * Creates a new drag control that invokes an action upon drag events.
+     *
+     * @param action         the action to run when drag events occur
+     * @param fixOnMouseOver indicates if object positions should become fixed (made
+     *                       stationary) when the mouse pointer is over an item.
+     */
+    public DragControl(String action, boolean fixOnMouseOver) {
+        this.fixOnMouseOver = fixOnMouseOver;
+        this.action = action;
+    }
 
-	@Override
-	public void itemEvent(VisualItem item, Event e) {
-		MouseEvent ev = (MouseEvent) e;
-		activeItem = item;
-		if (e.getEventType() == MouseEvent.MOUSE_PRESSED) {
-			delta.x = item.getX() - ev.getSceneX();
-			delta.y = item.getY() - ev.getSceneY();
-			item.getNode().setCursor(Cursor.MOVE);
-		} else if (e.getEventType() == MouseEvent.DRAG_DETECTED) {
-			log.info("Drag Event detected");
-			wasFixed = item.isFixed();
-			resetItem = true;
-			activeItem = item;
-			item.setFixed(true);
-			item.getTable().addTableListener(this);
-			PrefuseLib.setX(activeItem, null, ev.getSceneX() + delta.x);
-			PrefuseLib.setY(activeItem, null, ev.getSceneY() + delta.y);
-			//for( EdgeRenderer.Arrow arrow: EdgeRenderer.arrows) {
-				//arrow.update(ev.getSceneX() , ev.getSceneY() );
-			//}
-		} else if (e.getEventType() == MouseEvent.MOUSE_DRAGGED) {
-			if (activeItem != null) {
-				PrefuseLib.setX(activeItem, null, ev.getSceneX() + delta.x);
-				PrefuseLib.setY(activeItem, null, ev.getSceneY() + delta.y);
-			}
-		} else if (e.getEventType() == MouseDragEvent.MOUSE_DRAG_RELEASED ||
-				e.getEventType() == MouseEvent.MOUSE_RELEASED) {
-			if (activeItem != null) {
-				activeItem.setFixed(false);
-				activeItem = null;
-			}
-		}
-	}
+    /**
+     * Determines whether or not an item should have it's position fixed when
+     * the mouse moves over it.
+     *
+     * @param s whether or not item position should become fixed upon mouse
+     *          over.
+     */
+    public void setFixPositionOnMouseOver(boolean s) {
+        fixOnMouseOver = s;
+    }
 
-	@Override
-	public EventType<? extends Event> getEventType() {
-		return MouseEvent.ANY;
-	}
+    @Override
+    public void itemEvent(VisualItem item, Event e) {
 
-	// /**
-	// * @see prefux.controls.Control#itemEntered(prefux.visual.VisualItem,
-	// java.awt.event.MouseEvent)
-	// */
-	// public void itemEntered(VisualItem item, MouseEvent e) {
-	// Display d = (Display)e.getSource();
-	// d.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-	// activeItem = item;
-	// if ( fixOnMouseOver ) {
-	// wasFixed = item.isFixed();
-	// resetItem = true;
-	// item.setFixed(true);
-	// item.getTable().addTableListener(this);
-	// }
-	// }
-	//
-	// /**
-	// * @see prefux.controls.Control#itemExited(prefux.visual.VisualItem,
-	// java.awt.event.MouseEvent)
-	// */
-	// public void itemExited(VisualItem item, MouseEvent e) {
-	// if ( activeItem == item ) {
-	// activeItem = null;
-	// item.getTable().removeTableListener(this);
-	// if ( resetItem ) item.setFixed(wasFixed);
-	// }
-	// Display d = (Display)e.getSource();
-	// d.setCursor(Cursor.getDefaultCursor());
-	// } //
-	//
-	// /**
-	// * @see prefux.controls.Control#itemPressed(prefux.visual.VisualItem,
-	// java.awt.event.MouseEvent)
-	// */
-	// public void itemPressed(VisualItem item, MouseEvent e) {
-	// if (!SwingUtilities.isLeftMouseButton(e)) return;
-	// if ( !fixOnMouseOver ) {
-	// wasFixed = item.isFixed();
-	// resetItem = true;
-	// item.setFixed(true);
-	// item.getTable().addTableListener(this);
-	// }
-	// dragged = false;
-	// Display d = (Display)e.getComponent();
-	// d.getAbsoluteCoordinate(e.getPoint(), down);
-	// }
-	//
-	// /**
-	// * @see prefux.controls.Control#itemReleased(prefux.visual.VisualItem,
-	// java.awt.event.MouseEvent)
-	// */
-	// public void itemReleased(VisualItem item, MouseEvent e) {
-	// if (!SwingUtilities.isLeftMouseButton(e)) return;
-	// if ( dragged ) {
-	// activeItem = null;
-	// item.getTable().removeTableListener(this);
-	// if ( resetItem ) item.setFixed(wasFixed);
-	// dragged = false;
-	// }
-	// }
-	//
-	// /**
-	// * @see prefux.controls.Control#itemDragged(prefux.visual.VisualItem,
-	// java.awt.event.MouseEvent)
-	// */
-	// public void itemDragged(VisualItem item, MouseEvent e) {
-	// if (!SwingUtilities.isLeftMouseButton(e)) return;
-	// dragged = true;
-	// Display d = (Display)e.getComponent();
-	// d.getAbsoluteCoordinate(e.getPoint(), temp);
-	// double dx = temp.getX()-down.getX();
-	// double dy = temp.getY()-down.getY();
-	// double x = item.getX();
-	// double y = item.getY();
-	//
-	// item.setStartX(x); item.setStartY(y);
-	// item.setX(x+dx); item.setY(y+dy);
-	// item.setEndX(x+dx); item.setEndY(y+dy);
-	//
-	// if ( repaint )
-	// item.getVisualization().repaint();
-	//
-	// down.setLocation(temp);
-	// if ( action != null )
-	// d.getVisualization().run(action);
-	// }
+        MouseEvent ev = (MouseEvent) e;
+        activeItem = item;
+        //  Start Copy
+        if (item.get("name") != null) {
+            activeItem.getNode().setOnMouseEntered(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    String msg = item.get("name").toString();
+                    mousePositionToolTip.setText(msg);
+                    Node node = (Node) event.getSource();
+                    mousePositionToolTip.show(node, event.getScreenX() + 50, event.getScreenY());
+                }
+            });
+            activeItem.getNode().setOnMouseExited(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    mousePositionToolTip.hide();
+                    mousePositionToolTip.setText("");
+                }
+            });
+        }
+        // Copy end
 
-	/**
-	 * @see prefux.data.event.TableListener#tableChanged(prefux.data.Table, int,
-	 *      int, int, int)
-	 */
-	public void tableChanged(Table t, int start, int end, int col, int type) {
-		if (activeItem == null || type != EventConstants.UPDATE
-		        || col != t.getColumnNumber(VisualItem.FIXED))
-			return;
-		int row = activeItem.getRow();
-		if (row >= start && row <= end)
-			resetItem = false;
-	}
+        if (e.getEventType() == MouseEvent.MOUSE_PRESSED) {
+            delta.x = item.getX() - ev.getSceneX();
+            delta.y = item.getY() - ev.getSceneY();
+            item.getNode().setCursor(Cursor.MOVE);
+        } else if (e.getEventType() == MouseEvent.DRAG_DETECTED) {
+            log.info("Drag Event detected");
+            wasFixed = item.isFixed();
+            resetItem = true;
+            activeItem = item;
+            item.setFixed(true);
+            item.getTable().addTableListener(this);
+            PrefuseLib.setX(activeItem, null, ev.getSceneX() + delta.x);
+            PrefuseLib.setY(activeItem, null, ev.getSceneY() + delta.y);
+            //for( EdgeRenderer.Arrow arrow: EdgeRenderer.arrows) {
+            //arrow.update(ev.getSceneX() , ev.getSceneY() );
+            //}
+        } else if (e.getEventType() == MouseEvent.MOUSE_DRAGGED) {
+            if (activeItem != null) {
+                PrefuseLib.setX(activeItem, null, ev.getSceneX() + delta.x);
+                PrefuseLib.setY(activeItem, null, ev.getSceneY() + delta.y);
+            }
+        } else if (e.getEventType() == MouseDragEvent.MOUSE_DRAG_RELEASED ||
+                e.getEventType() == MouseEvent.MOUSE_RELEASED) {
+            if (activeItem != null) {
+                activeItem.setFixed(false);
+                activeItem = null;
+            }
+        }
+    }
+
+    @Override
+    public EventType<? extends Event> getEventType() {
+        return MouseEvent.ANY;
+    }
+
+    // /**
+    // * @see prefux.controls.Control#itemEntered(prefux.visual.VisualItem,
+    // java.awt.event.MouseEvent)
+    // */
+    // public void itemEntered(VisualItem item, MouseEvent e) {
+    // Display d = (Display)e.getSource();
+    // d.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    // activeItem = item;
+    // if ( fixOnMouseOver ) {
+    // wasFixed = item.isFixed();
+    // resetItem = true;
+    // item.setFixed(true);
+    // item.getTable().addTableListener(this);
+    // }
+    // }
+    //
+    // /**
+    // * @see prefux.controls.Control#itemExited(prefux.visual.VisualItem,
+    // java.awt.event.MouseEvent)
+    // */
+    // public void itemExited(VisualItem item, MouseEvent e) {
+    // if ( activeItem == item ) {
+    // activeItem = null;
+    // item.getTable().removeTableListener(this);
+    // if ( resetItem ) item.setFixed(wasFixed);
+    // }
+    // Display d = (Display)e.getSource();
+    // d.setCursor(Cursor.getDefaultCursor());
+    // } //
+    //
+    // /**
+    // * @see prefux.controls.Control#itemPressed(prefux.visual.VisualItem,
+    // java.awt.event.MouseEvent)
+    // */
+    // public void itemPressed(VisualItem item, MouseEvent e) {
+    // if (!SwingUtilities.isLeftMouseButton(e)) return;
+    // if ( !fixOnMouseOver ) {
+    // wasFixed = item.isFixed();
+    // resetItem = true;
+    // item.setFixed(true);
+    // item.getTable().addTableListener(this);
+    // }
+    // dragged = false;
+    // Display d = (Display)e.getComponent();
+    // d.getAbsoluteCoordinate(e.getPoint(), down);
+    // }
+    //
+    // /**
+    // * @see prefux.controls.Control#itemReleased(prefux.visual.VisualItem,
+    // java.awt.event.MouseEvent)
+    // */
+    // public void itemReleased(VisualItem item, MouseEvent e) {
+    // if (!SwingUtilities.isLeftMouseButton(e)) return;
+    // if ( dragged ) {
+    // activeItem = null;
+    // item.getTable().removeTableListener(this);
+    // if ( resetItem ) item.setFixed(wasFixed);
+    // dragged = false;
+    // }
+    // }
+    //
+    // /**
+    // * @see prefux.controls.Control#itemDragged(prefux.visual.VisualItem,
+    // java.awt.event.MouseEvent)
+    // */
+    // public void itemDragged(VisualItem item, MouseEvent e) {
+    // if (!SwingUtilities.isLeftMouseButton(e)) return;
+    // dragged = true;
+    // Display d = (Display)e.getComponent();
+    // d.getAbsoluteCoordinate(e.getPoint(), temp);
+    // double dx = temp.getX()-down.getX();
+    // double dy = temp.getY()-down.getY();
+    // double x = item.getX();
+    // double y = item.getY();
+    //
+    // item.setStartX(x); item.setStartY(y);
+    // item.setX(x+dx); item.setY(y+dy);
+    // item.setEndX(x+dx); item.setEndY(y+dy);
+    //
+    // if ( repaint )
+    // item.getVisualization().repaint();
+    //
+    // down.setLocation(temp);
+    // if ( action != null )
+    // d.getVisualization().run(action);
+    // }
+
+    /**
+     * @see prefux.data.event.TableListener#tableChanged(prefux.data.Table, int,
+     * int, int, int)
+     */
+    public void tableChanged(Table t, int start, int end, int col, int type) {
+        if (activeItem == null || type != EventConstants.UPDATE
+                || col != t.getColumnNumber(VisualItem.FIXED))
+            return;
+        int row = activeItem.getRow();
+        if (row >= start && row <= end)
+            resetItem = false;
+    }
 
 } // end of class DragControl

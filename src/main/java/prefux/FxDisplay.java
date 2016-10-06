@@ -50,9 +50,9 @@ import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.transform.Scale;
 
+import com.sun.javafx.css.StyleManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import prefux.controls.Control;
 import prefux.data.expression.AndPredicate;
 import prefux.data.expression.BooleanLiteral;
@@ -62,8 +62,6 @@ import prefux.data.util.Rectangle2D;
 import prefux.visual.EdgeItem;
 import prefux.visual.VisualItem;
 import prefux.visual.expression.VisiblePredicate;
-
-import com.sun.javafx.css.StyleManager;
 
 public class FxDisplay extends Group implements Display, EventHandler<Event> {
 

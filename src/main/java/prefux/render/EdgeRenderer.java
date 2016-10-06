@@ -35,18 +35,15 @@ import java.util.List;
 
 import javafx.application.Platform;
 import javafx.scene.Node;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 import javafx.scene.transform.Rotate;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import prefux.data.util.Point2D;
 import prefux.visual.EdgeItem;
 import prefux.visual.VisualItem;
-import prefux.render.ArrowHead;
 
 /**
  * <p>
@@ -85,26 +82,16 @@ public class EdgeRenderer extends AbstractShapeRenderer implements Renderer {
 			super(arg0);
 			this.line = line;
 			this.t = 1;
-			init();
+			//init();
 		}
 
 		private void init() {
-
-			setFill(Color.web("#ff0900"));
-
-			rz = new Rotate();
-			{
-				rz.setAxis(Rotate.Z_AXIS);
-			}
-			getTransforms().addAll(rz);
-			update();
+			update(0,0);
 		}
 
-		public void update() {
-			double size = Math.max(line.getBoundsInLocal().getWidth(), line.getBoundsInLocal().getHeight());
-			double scale = size / 4d;
-			setTranslateX(0);
-			setTranslateY(0);
+		public void update(final double x,final double y) {
+			setTranslateX(x);
+			setTranslateY(y);
 		}
 
 	}
@@ -121,31 +108,39 @@ public class EdgeRenderer extends AbstractShapeRenderer implements Renderer {
 
 	@Override
 	protected Node getRawShape(VisualItem item, boolean bind) {
-		System.out.println(item);
-		double[] arrowShape = new double[] { 0,0,10,20,-10,20 };
+
 		//System.out.println(item);
 		EdgeItem edge = (EdgeItem) item;
 		Line line = new Line();
 		//ArrowHead head = new ArrowHead();
 		line.setStrokeWidth(2);
-		Arrow arrow = new Arrow( line, arrowShape);
-		//Arrow arrow2 = (Arrow) item;
 
-	//	arrows.add(arrow);
-		arrow.update();
+		// Arrow generate
+		double edgeX = edge.getSourceItem().xProperty().get();
+		double edgeY = edge.getSourceItem().yProperty().get();
+
+		double[] arrowShape = new double[] {edgeX ,edgeY,10+edgeX,20+edgeY,edgeX-10,edgeY+20};
+		Arrow arrow = new Arrow( line, arrowShape);
+		arrows.add(arrow);
+		//PolygonRenderer;
+
+
 		if (bind) {
 			Platform.runLater(() -> {
 				line.startXProperty().bind(edge.getSourceItem().xProperty());
 				line.startYProperty().bind(edge.getSourceItem().yProperty());
 				line.endXProperty().bind(edge.getTargetItem().xProperty());
 				line.endYProperty().bind(edge.getTargetItem().yProperty());
-			//	arrow.opacityProperty().bind(edge.getSourceItem().xProperty());
-			//	arrow.translateXProperty().bind(edge.getTargetItem().xProperty());
-			//	arrow.translateYProperty().bind(edge.getTargetItem().yProperty());
-			//	arrow.layoutXProperty().bind(edge.getTargetItem().xProperty());
-			//	arrow.layoutYProperty().bind(edge.getTargetItem().yProperty());
-			//	arrow.rotateProperty().bind(edge.getTargetItem().sizeProperty());
 
+				// Arrow binds
+				System.out.println("edgeY:" + edgeY);
+
+				arrow.translateXProperty().bind(edge.getTargetItem().xProperty());
+				arrow.translateYProperty().bind(edge.getTargetItem().yProperty());
+				arrow.layoutXProperty().bind(edge.getTargetItem().xProperty());
+				arrow.layoutYProperty().bind(edge.getTargetItem().yProperty());
+				arrow.rotateProperty().bind(line.rotateProperty());
+				//arrow.property.bind(edge.getTargetItem().xProperty());
 			});
 		}
 
