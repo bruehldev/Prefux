@@ -113,7 +113,7 @@ public class EdgeRenderer extends AbstractShapeRenderer implements Renderer {
 		EdgeItem edge = (EdgeItem) item;
 		Line line = new Line();
 		//ArrowHead head = new ArrowHead();
-		line.setStrokeWidth(2);
+		//line.setStrokeWidth(2);
 
 		// Arrow generate
 		double edgeX = edge.getSourceItem().xProperty().get();
