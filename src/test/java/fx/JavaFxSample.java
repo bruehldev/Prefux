@@ -11,7 +11,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import prefux.Constants;
@@ -32,6 +31,7 @@ import prefux.data.Table;
 import prefux.data.expression.Predicate;
 import prefux.data.expression.parser.ExpressionParser;
 import prefux.render.DefaultRendererFactory;
+import prefux.render.EdgeRenderer;
 import prefux.render.LabelRenderer;
 import prefux.render.ShapeRenderer;
 import prefux.util.ColorLib;
@@ -50,21 +50,18 @@ public class JavaFxSample extends Application {
 	private CheckBox keyCB = new CheckBox();
 	private CheckBox titleCB = new CheckBox();
 	private OwnControl cl = new OwnControl();
-
-	// For grid pane
-	private static final int columnCount = 1;
-	private static final int rowCount = 3;
-	private static final Color backgroundColor = Color.RED;
+	private BorderPane root = new BorderPane();
 
 	@Override
 	public void start(Stage primaryStage) {
 
 		primaryStage.setTitle("Sample Graph");
 		//BorderPane root = new BorderPane();
-		BorderPane root = new BorderPane();
+
 		primaryStage.setScene(new Scene(root, WIDTH, HEIGHT));
 		root.getStyleClass().add("display");
 		primaryStage.show();
+
 
 			// graph = new GraphMLReader().readGraph("data/graphml-sample.xml");
 			// Create tables for node and edge data, and configure their columns.
@@ -101,7 +98,7 @@ public class JavaFxSample extends Application {
 		n3.set("name", "Jonny");
 		n3.set("gender", "F");
 		n3.set("age", 11);
-		n4.set("name", "Lonley");
+		n4.set("name", "Me");
 		n4.set("gender", "F");
 		n4.set("age", 10);
 				Edge e1 = graph.addEdge(n1, n2);
@@ -200,11 +197,19 @@ public class JavaFxSample extends Application {
 		display.prefHeight(root.getPrefHeight());
 
 			display.addControlListener(new DragControl());
-
-
-		//gridPane.setHgap(root.getPrefHeight()/3);
 		root.prefWidthProperty().bind(primaryStage.widthProperty());
 		root.prefHeightProperty().bind(primaryStage.heightProperty());
+
+		//Bind pref Witdh and Height to according stage
+		root.prefWidthProperty().bind(primaryStage.widthProperty());
+		root.prefHeightProperty().bind(primaryStage.heightProperty());
+
+		display.prefHeight(root.getPrefHeight());
+		display.prefWidth(root.getPrefWidth());
+
+		for (int i = 0; EdgeRenderer.arrowHeadList.size() > i; i++) {
+			display.getChildren().add(EdgeRenderer.arrowHeadList.get(i));
+		}
 
 		//gridPane.setPrefWidth(root.getPrefWidth());
 		//gridPane.setPrefHeight(root.getPrefHeight());
@@ -237,13 +242,16 @@ public class JavaFxSample extends Application {
 */
 
 		//gridpane.setBackground(new Background(new BackgroundFill(Color.RED,null,null)));
+
+
+
 			root.setCenter(display);
 			root.setBottom(buildControlPanel(display));
 			root.setTop(showKeyCheckBox(display, root));
 
-			vis.run("nodes");
-			vis.run("color");
-			vis.run("layout");
+		vis.run("nodes");
+		vis.run("color");
+		vis.run("layout");
 		}
 
 	private Node buildControlPanel(FxDisplay display) {
@@ -276,7 +284,7 @@ public class JavaFxSample extends Application {
 				if(it.hasNext()) {
 					VisualItem item = it.next();
 					if (item instanceof NodeItem) {
-						cl.itemEvent(item, e, display, pane);
+						cl.itemEvent(item, display, pane);
 					}
 				}
 			}
@@ -285,10 +293,18 @@ public class JavaFxSample extends Application {
 			cl.hideToolTips();
 		}
 		if(titleCB.isSelected()){
+			display.setTranslateX(100 - display.getLayoutBounds().getMinX());
+			display.setTranslateY(100 - display.getLayoutBounds().getMinY());
+			display.computeAreaInScreen();
+
+
+
 
 		}
 		else {
 
+			display.setTranslateX(0);
+			display.setTranslateY(0);
 		}
 	}
 }

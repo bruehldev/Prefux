@@ -97,6 +97,7 @@ public abstract class AbstractShapeRenderer implements Renderer {
 	 *      prefux.visual.VisualItem)
 	 */
 	public void render(Parent g, VisualItem item, boolean bind) {
+		System.out.println("Parent:" + g + ", item:" + item + ",bind" + bind);
 		log.debug("Rendering item " + item);
 		Node shape = getShape(item, bind);
 		if (shape != null)

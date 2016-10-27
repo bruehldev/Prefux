@@ -59,6 +59,7 @@ import prefux.data.expression.BooleanLiteral;
 import prefux.data.expression.Predicate;
 import prefux.data.util.Point2D;
 import prefux.data.util.Rectangle2D;
+import prefux.render.EdgeRenderer;
 import prefux.visual.EdgeItem;
 import prefux.visual.VisualItem;
 import prefux.visual.expression.VisiblePredicate;
@@ -78,7 +79,7 @@ public class FxDisplay extends Group implements Display, EventHandler<Event> {
     private List<Control> m_controls = new ArrayList<>();
 
     private Map<Node, VisualItem> m_registeredNodes = new HashMap<>();
-    
+
     private Scale zoomScale = new Scale();
     private DoubleProperty zoomFactor = new SimpleDoubleProperty(1.0);
     private DoubleProperty zoomPivotX = new SimpleDoubleProperty(0.0);
@@ -271,6 +272,7 @@ public class FxDisplay extends Group implements Display, EventHandler<Event> {
      */
     @Override
     public void handle(Event event) {
+
         VisualItem item = findItem(event.getSource());
         if (item != null) {
         	if (event.getEventType() == MouseEvent.MOUSE_ENTERED) {
@@ -290,7 +292,7 @@ public class FxDisplay extends Group implements Display, EventHandler<Event> {
         }
     }
 
-    private VisualItem findItem(Object source) {
+    public VisualItem findItem(Object source) {
         if (source instanceof Node) {
             return m_registeredNodes.get((Node) source);
         } else {

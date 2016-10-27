@@ -36,12 +36,12 @@ import javafx.geometry.Rectangle2D;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import prefux.action.layout.Layout;
 import prefux.data.Graph;
 import prefux.data.Schema;
 import prefux.data.tuple.TupleSet;
 import prefux.data.util.Point2D;
+import prefux.render.EdgeRenderer;
 import prefux.util.PrefuseLib;
 import prefux.util.force.DragForce;
 import prefux.util.force.ForceItem;
@@ -413,6 +413,7 @@ public class ForceDirectedLayout extends Layout {
 	 *            the force simulator driving this layout
 	 */
 	protected synchronized void initSimulator(ForceSimulator fsim) {
+		EdgeRenderer.calcArrowHeadsAngleNew();
 		// make sure we have force items to work with
 		TupleSet ts = m_vis.getGroup(m_nodeGroup);
 		if (ts == null)

@@ -1,8 +1,8 @@
 package prefux.controls;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import javafx.event.Event;
 import javafx.scene.Node;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.BorderPane;
@@ -22,7 +22,7 @@ public class OwnControl extends ControlAdapter implements TableListener {
 
     private VisualItem activeItem;
     protected boolean resetItem;
-    private ArrayList<Tooltip> toolTipList = new ArrayList<>();
+    private List<Tooltip> toolTipList = new ArrayList<>();
 
 
     private static final Logger log = LogManager.getLogger(DragControl.class);
@@ -38,7 +38,7 @@ public class OwnControl extends ControlAdapter implements TableListener {
             resetItem = false;
     }
 
-    public void itemEvent(VisualItem item, Event e, FxDisplay display, BorderPane root) {
+    public void itemEvent(VisualItem item, FxDisplay display, BorderPane root) {
         //VisualItem item = display.findItem(item);
         activeItem = item;
         //  Start Copy
