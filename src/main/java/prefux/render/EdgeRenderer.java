@@ -38,8 +38,6 @@ import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
-import javafx.scene.shape.StrokeLineCap;
-import javafx.scene.transform.Rotate;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -64,41 +62,9 @@ import prefux.visual.VisualItem;
  */
 public class EdgeRenderer extends AbstractShapeRenderer implements Renderer {
 
-	public static List<Polygon> arrowHeads = new ArrayList<>();
+
 	public static List<EdgeItem> edgeList = new ArrayList<>();
 	public static List<Polygon> arrowHeadList = new ArrayList<>();
-
-	public static class Arrow extends Polygon {
-
-		public double rotate;
-		public float t;
-		Line line;
-		Rotate rz;
-
-		public Arrow( Line line) {
-			super();
-			this.line = line;
-			this.t = 1;
-			init();
-		}
-
-		public Arrow( Line line, double... arg0) {
-			super(arg0);
-			this.line = line;
-			this.t = 1;
-			//init();
-		}
-
-		private void init() {
-			update(0,0);
-		}
-
-		public void update(final double x,final double y) {
-			setTranslateX(x);
-			setTranslateY(y);
-		}
-
-	}
 
 	private static final Logger log = LogManager.getLogger(EdgeRenderer.class);
 
@@ -113,35 +79,14 @@ public class EdgeRenderer extends AbstractShapeRenderer implements Renderer {
 	@Override
 	protected Node getRawShape(VisualItem item, boolean bind) {
 
-		//System.out.println(item);
 		EdgeItem edge = (EdgeItem) item;
 		Line line = new Line();
-		//ArrowHead head = new ArrowHead();
-		//line.setStrokeWidth(2);
-
-		// Arrow generate
-		double edgeX = edge.getSourceItem().xProperty().get();
-		double edgeY = edge.getSourceItem().yProperty().get();
-
-		//Arrow arrow = new Arrow( line, arrowShape);
-		//arrows.add(arrow);
-		//PolygonRenderer;
-		//double[] arrowShape = new double[] {edgeX ,edgeY,10+edgeX,20+edgeY,edgeX-10,edgeY+20};
-		// 1. Left bottom / 2. top right middle / 3. left top
-		double[] arrowShape = new double[] {-10, -10, 10, -5, -10, 0};
-		//double circleRadius = 0;
-	//	double[] arrowShape = new double[] {edge.getTargetItem().getX()-10, edge.getTargetItem().getY()-10, edge.getTargetItem().getX(),
-	//			edge.getTargetItem().getY(),edge.getTargetItem().getX()-10,edge.getTargetItem().getY()};
-		Polygon arrowHead = new Polygon(arrowShape);
-		Polygon triangle = new Polygon();
-		System.out.println(edge.getSourceItem().get("name").toString() + " and " + edge.getTargetItem().get("name").toString());
+		double[] arrowShape = new double[] {-10, -5, 10, 0, -10, 5};
+		Polygon triangle = new Polygon(arrowShape);
 		if(!edge.getSourceItem().get("name").toString().matches(edge.getTargetItem().get("name").toString())) {
-			//arrowHeads.add(arrowHead);
 			edgeList.add(edge);
 			arrowHeadList.add(triangle);
-
 		}
-		Rotate rotationTransform = new Rotate();
 
 		if (bind) {
 			Platform.runLater(() -> {
@@ -157,163 +102,104 @@ public class EdgeRenderer extends AbstractShapeRenderer implements Renderer {
 					line.endXProperty().bind(edge.getTargetItem().xProperty());
 					line.endYProperty().bind(edge.getTargetItem().yProperty());
 
+
+
+				//triangle.translateXProperty().bind(edge.getTargetItem().xProperty());
+				//triangle.translateYProperty().bind(edge.getTargetItem().yProperty());
+
 				if(!edge.getSourceItem().get("name").toString().matches(edge.getTargetItem().get("name").toString())) {
-					createArrowHead(edge, triangle);
-
-
-
-					// Start calculate angle
-					//double pitch = Math.sqrt(Math.pow((edge.getTargetItem().getX() - edge.getSourceItem().getX())
-					//		/ (edge.getTargetItem().getY() - edge.getSourceItem().getY()), 2));
-					//double angle =Math.atan(pitch);
-
-					//System.out.println("Angle for " + ((EdgeItem) item).getTargetItem().get("name").toString() + " is " + angle);
-
-					//Double currentx = edge.getTargetItem().getX() - edge.getSourceItem().getX() - (0.5*arrowHead.getBoundsInLocal().getMinX());
-					//Double currenty = edge.getTargetItem().getY() - edge.getSourceItem().getY() - (0.5*arrowHead.getBoundsInLocal().getMinY());
-					//Double currentAngle = Math.toDegrees(Math.atan2(currenty,currentx));
-
-					//Rotate arrowHeadRotation = new Rotate(currentAngle, edge.getTargetItem().getX(),edge.getTargetItem().getY());
-					//arrowHeadRotation.pivotXProperty().bind(edge.getSourceItem().xProperty());
-					//arrowHeadRotation.pivotYProperty().bind(edge.getSourceItem().yProperty());
-					//arrowHeadRotation.setAxis(Rotate.Z_AXIS);
-					//edge.getAdjacentItem((NodeItem) arrowHead);
-
-					//((NodeItem) arrowHead).setNode(edge.getNode());
-					//arrowHead.getTransforms().add(arrowHeadRotation);
+					//createArrowHead(edge, triangle);
 				}
-
-
-					//arrowHead.translateXProperty().bind(edge.getTargetItem().xProperty());
-					//arrowHead.translateYProperty().bind(edge.getTargetItem().yProperty());
-				//arrowHead.rotationAxisProperty().bind(edge.getNode().rotationAxisProperty());
-				//arrowHead.rotateProperty().bind(line.rotateProperty());
-/*
-					double pitch = Math.sqrt(Math.pow(edge.getTargetItem().getX() - edge.getSourceItem().getX(), 2)
-							/ Math.pow(edge.getTargetItem().getY() - edge.getSourceItem().getY(), 2));
-					double angle = Math.tan(pitch);
-					arrowHead.getTransforms().add(new Rotate(angle, edge.getTargetItem().getX(), edge.getTargetItem().getY()));
-					*/
 
 			});
 		}
-
-
 		return line;
 	}
 
+
 	public static void calcArrowHeadsAngle() {
-
-
+		try
+		{Thread.sleep(0);}
+		catch (Exception e)
+		{e.printStackTrace();}
 		int accordingEdge = 0;
-		for (Polygon arrowHead:arrowHeads) {
+		for (Polygon arrowHead:arrowHeadList) {
+
+			try
+			{Thread.sleep(0);}
+			catch (Exception e)
+			{e.printStackTrace();}
 			EdgeItem edge = (EdgeItem) edgeList.get(accordingEdge);
+
+			javafx.geometry.Point2D targetPoint = new javafx.geometry.Point2D(edge.getTargetItem().xProperty().getValue(),edge.getTargetItem().yProperty().getValue());
+			javafx.geometry.Point2D sourcePoint = new javafx.geometry.Point2D(edge.getSourceItem().xProperty().getValue(),edge.getSourceItem().yProperty().getValue());
+			javafx.geometry.Point2D middlePoint = targetPoint.midpoint(sourcePoint);
+			javafx.geometry.Point2D quarterPoint = targetPoint.midpoint(middlePoint);
+
 			Double currentx = edge.getTargetItem().getX() - edge.getSourceItem().getX() - (0.5*arrowHead.getBoundsInLocal().getMaxX());
 			Double currenty = edge.getTargetItem().getY() - edge.getSourceItem().getY() - (0.5*arrowHead.getBoundsInLocal().getMaxY());
 			Double currentAngle = Math.toDegrees(Math.atan2(currenty,currentx));
 			//System.out.println(edge.getTargetItem().getShape());
 			//System.out.println(currentAngle);
-
+			arrowHead.setTranslateX(quarterPoint.getX());
+			arrowHead.setTranslateY(quarterPoint.getY());
 			arrowHead.setRotate(currentAngle);
 			accordingEdge++;
 		}
 	}
 
-	public static Polygon createArrowHead(EdgeItem edge, Polygon currentTriangle) {
-		// Example shape: {-10, -10, 10, -5, -10, 0}
+	public static void createArrowHead() {
 
-		double circleRadius = edge.getSourceItem().getNode().getBaselineOffset()/2;
-		// Calc rise of edge alpha
-		double alpha = Math.toDegrees(Math.atan2(edge.getTargetItem().getY() - edge.getSourceItem().getY(),
-				edge.getTargetItem().getX() - edge.getSourceItem().getX()));
-		// Calc triangle in circle
-		double a = Math.cos(alpha)*circleRadius;
-		double b = Math.sin(alpha)*circleRadius;
-
-		// Calc cut point of circle and edge
-		double sX = edge.getTargetItem().getX()-a;
-		double sY = edge.getTargetItem().getY()+b;
-		//System.out.println("Taget node "+ edge.getTargetItem().getX() + "/" + edge.getTargetItem().getY());
-		//System.out.println("Spitze "+ sX + "/" + sY);
-		// Function to calc axis of bottom arrowhead points
-		double arrowMiddleLength = 10;
-		// Point of arrowheadlength in line
-		double a1 = Math.cos(alpha)*arrowMiddleLength;
-		double b1 = Math.sin(alpha)*arrowMiddleLength;
-		double mX = sX-a1;
-		double mY = sY+b1;
-		// point to right corner
-		double wechselwinkel = 90-alpha;
-		double lengtOfBottomLine = 10;
-		double a2 = Math.cos(wechselwinkel)*lengtOfBottomLine/2;
-		double b2 = Math.sin(wechselwinkel)*lengtOfBottomLine/2;
-		double rX = mX+a2;
-		double rY = mY+b2;
-
-		// Calc left corner point
-		double lX = mX-a2;
-		double lY = mY-b2;
-
-		// Point of bottem left corner
-		double x1 = lX;
-		double y1 = lY;
-		// Point of the head
-		double x2 = sX;
-		double y2 = sY;
-		// Point of bottem right corner
-		double x3 = rX;
-		double y3 = rY;
-		currentTriangle.getPoints().setAll(
-				x1, y1,
-				x2, y2,
-				x3, y3
-		);
-		currentTriangle.setStroke(Color.FORESTGREEN);
-		currentTriangle.setStrokeWidth(4);
-		currentTriangle.setStrokeLineCap(StrokeLineCap.ROUND);
-		currentTriangle.setFill(Color.CORNSILK.deriveColor(0, 1.2, 1, 0.6));
-		return currentTriangle;
-
-	}
-
-	public static void syncArrowHead() {
-
-	}
-
-	public static void calcArrowHeadsAngleNew() {
+		try
+		{Thread.sleep(0);}
+		catch (Exception e)
+		{e.printStackTrace();}
 		int accordingEdge = 0;
+		// Example shape: {-10, -10, 10, -5, -10, 0}
 		for (Polygon arrowHead:arrowHeadList) {
 			EdgeItem edge = (EdgeItem) edgeList.get(accordingEdge);
-
-			double circleRadius = edge.getSourceItem().getNode().getBaselineOffset()/2;
+			//double circleRadius = edge.getSourceItem().getNode().getBaselineOffset()/2;
+			double circleRadius = 5;
 			// Calc rise of edge alpha
-			double alpha = Math.toDegrees(Math.atan2(edge.getTargetItem().getY() - edge.getSourceItem().getY(),
-					edge.getTargetItem().getX() - edge.getSourceItem().getX()));
+			System.out.println(edge.getTargetItem().getY() + "==" + edge.getTargetItem().yProperty().getValue());
+			System.out.println(edge.getTargetItem().getX() + "==" + edge.getTargetItem().xProperty().getValue());
+			double alpha = (Math.toDegrees(Math.tan(-edge.getTargetItem().getY() + edge.getSourceItem().getY() /
+					edge.getTargetItem().getX() - edge.getSourceItem().getX()))) % 360;
+			double alphaForwechselwinkel = Math.tan(-edge.getTargetItem().getY() + edge.getSourceItem().getY() /
+					edge.getTargetItem().getX() - edge.getSourceItem().getX());
+			System.out.println("alpha" + alpha);
 			// Calc triangle in circle
-			double a = Math.cos(alpha)*circleRadius;
-			double b = Math.sin(alpha)*circleRadius;
+			double a = Math.cos(alpha) * circleRadius;
+			double b = Math.sin(alpha) * circleRadius;
 
 			// Calc cut point of circle and edge
-			double sX = edge.getTargetItem().getX()-a;
-			double sY = edge.getTargetItem().getY()+b;
+			//double sX = edge.getTargetItem().getX()-a;
+			//double sY = edge.getTargetItem().getY()+b;
+			double sX = edge.getTargetItem().getX();
+			double sY = edge.getTargetItem().getY();
+			System.out.println("Taget node " + edge.getTargetItem().getX() + "/" + edge.getTargetItem().getY());
+			System.out.println("Spitze " + sX + "/" + sY);
 			// Function to calc axis of bottom arrowhead points
 			double arrowMiddleLength = 10;
 			// Point of arrowheadlength in line
-			double a1 = Math.cos(alpha)*arrowMiddleLength;
-			double b1 = Math.sin(alpha)*arrowMiddleLength;
-			double mX = sX-a1;
-			double mY = sY+b1;
+			double a1 = Math.cos(alpha) * arrowMiddleLength;
+			double b1 = Math.sin(alpha) * arrowMiddleLength;
+			double mX = sX - a1;
+			double mY = sY + b1;
+			System.out.println("mittelpunkt" + mX + "/" + mY);
 			// point to right corner
-			double wechselwinkel = 90-alpha;
+			double wechselwinkel = (Math.toDegrees(-1 / alphaForwechselwinkel)) % 360;
+			System.out.println("wechselwinkel" + wechselwinkel);
 			double lengtOfBottomLine = 10;
-			double a2 = Math.cos(wechselwinkel)*lengtOfBottomLine/2;
-			double b2 = Math.sin(wechselwinkel)*lengtOfBottomLine/2;
-			double rX = mX+a2;
-			double rY = mY+b2;
-
+			double a2 = Math.cos(wechselwinkel) * lengtOfBottomLine / 2;
+			double b2 = Math.sin(wechselwinkel) * lengtOfBottomLine / 2;
+			double rX = mX + a2;
+			double rY = mY + b2;
+			System.out.println("Right point" + rX + "/" + rY);
 			// Calc left corner point
-			double lX = mX-a2;
-			double lY = mY-b2;
+			double lX = mX - a2;
+			double lY = mY - b2;
+			System.out.println("Left point" + lX + "/" + lY);
 
 			// Point of bottem left corner
 			double x1 = lX;
@@ -329,9 +215,136 @@ public class EdgeRenderer extends AbstractShapeRenderer implements Renderer {
 					x2, y2,
 					x3, y3
 			);
+			arrowHead.setStroke(Color.BLACK);
+			//currentTriangle.setStrokeWidth(4);
+			//currentTriangle.setStrokeLineCap(StrokeLineCap.ROUND);
+			arrowHead.setFill(Color.CORNSILK.deriveColor(0, 1.2, 1, 0.6));
+		}
+		//return currentTriangle;
+
+	}
+
+	public static void calcArrowHeadsAngleNew() {
+		try
+		{Thread.sleep(0);}
+		catch (Exception e)
+		{e.printStackTrace();}
+		int accordingEdge = 0;
+		for (Polygon arrowHead:arrowHeadList) {
+			EdgeItem edge = (EdgeItem) edgeList.get(accordingEdge);
+			double deltaX = -edge.getTargetItem().getX()+edge.getSourceItem().getX();
+			double deltaY = -edge.getTargetItem().getY()+edge.getSourceItem().getY();
+			double length = Math.sqrt(Math.pow(deltaX,2)+Math.pow(deltaY,2));
+			javafx.geometry.Point2D steigungsVektor = new javafx.geometry.Point2D(-edge.getTargetItem().getX()+edge.getSourceItem().getX(),
+					-edge.getTargetItem().getY()+edge.getSourceItem().getY());
+			javafx.geometry.Point2D middlePointOfArrowHead = new javafx.geometry.Point2D(steigungsVektor.normalize().getX()*10+edge.getTargetItem().getX(),
+					steigungsVektor.normalize().getY()*10+edge.getTargetItem().getY());
+			javafx.geometry.Point2D orthogonalPointOfArrowHead = new javafx.geometry.Point2D(1,-(deltaX/deltaY));
+
+			javafx.geometry.Point2D stuetzRightPointOfArrowHead = new javafx.geometry.Point2D(orthogonalPointOfArrowHead.getX()+middlePointOfArrowHead.getX(),
+					orthogonalPointOfArrowHead.getY()+middlePointOfArrowHead.getY());
+			javafx.geometry.Point2D stuetzLeftPointOfArrowHead = new javafx.geometry.Point2D(orthogonalPointOfArrowHead.getX()+middlePointOfArrowHead.getX(),
+					-orthogonalPointOfArrowHead.getY()+middlePointOfArrowHead.getY());
+
+			arrowHead.getPoints().setAll(
+					edge.getTargetItem().getX(), edge.getTargetItem().getY(),
+					(stuetzRightPointOfArrowHead.normalize().getX()*10+middlePointOfArrowHead.getX()),
+					(stuetzRightPointOfArrowHead.normalize().getY()*10+middlePointOfArrowHead.getY()),
+					//orthogonalPointOfArrowHead.getX(), orthogonalPointOfArrowHead.getY()
+					(stuetzLeftPointOfArrowHead.normalize().getX()*10+middlePointOfArrowHead.getX()),
+					(stuetzLeftPointOfArrowHead.normalize().getY()*10+middlePointOfArrowHead.getY())
+					//stuetzLeftPointOfArrowHead.getX(), stuetzLeftPointOfArrowHead.getY()
+			);
+			System.out.println("Distance of Nodes"+length);
+			System.out.println("Distance of Target to middleP"+middlePointOfArrowHead.distance(edge.getTargetItem().getX(),edge.getTargetItem().getY()));
+			System.out.println("Distance of middleP to Orth"+middlePointOfArrowHead.distance(orthogonalPointOfArrowHead.getX(),orthogonalPointOfArrowHead.getY()));
+			System.out.println("Distance of middleP StuezR"+middlePointOfArrowHead.distance(stuetzRightPointOfArrowHead.getX(),stuetzRightPointOfArrowHead.getY()));
+			System.out.println("Distance of middleP StuezL"+middlePointOfArrowHead.distance(stuetzLeftPointOfArrowHead.getX(),stuetzLeftPointOfArrowHead.getY()));
+			System.out.println("Distance of middleP StuezRN"+middlePointOfArrowHead.distance((stuetzRightPointOfArrowHead.normalize().getX()*10+middlePointOfArrowHead.getX())
+					,(stuetzRightPointOfArrowHead.normalize().getY()*10+middlePointOfArrowHead.getY())));
+			System.out.println("Distance of middleP StuezLN"+middlePointOfArrowHead.distance(	(stuetzLeftPointOfArrowHead.normalize().getX()*10+middlePointOfArrowHead.getX()),
+					(stuetzLeftPointOfArrowHead.normalize().getY()*10+middlePointOfArrowHead.getY())));
+
 			accordingEdge++;
 		}
 	}
+	/*public static void calcArrowHeadsAngleNew() {
+
+		try
+		{Thread.sleep(0);}
+		catch (Exception e)
+		{e.printStackTrace();}
+		int accordingEdge = 0;
+		for (Polygon arrowHead:arrowHeadList) {
+			EdgeItem edge = (EdgeItem) edgeList.get(accordingEdge);
+			try
+			{Thread.sleep(0);}
+			catch (Exception e)
+			{e.printStackTrace();}
+			// Example shape: {-10, -10, 10, -5, -10, 0}
+			double circleRadius = 5;
+			// Calc rise of edge alpha
+			double alpha = (Math.toDegrees(Math.tan(edge.getTargetItem().getY() - edge.getSourceItem().getY()/
+					edge.getTargetItem().getX() - edge.getSourceItem().getX())))%360;
+			double alphaForwechselwinkel = Math.tan(edge.getTargetItem().getY() - edge.getSourceItem().getY()/
+					edge.getTargetItem().getX() - edge.getSourceItem().getX());
+			System.out.println("alpha"+alpha);
+			// Calc triangle in circle
+			double a = Math.cos(alpha)*circleRadius;
+			double b = Math.sin(alpha)*circleRadius;
+
+			// Calc cut point of circle and edge
+		//	double sX = edge.getTargetItem().getX()-a;
+		//	double sY = edge.getTargetItem().getY()+b;
+			double sX = edge.getTargetItem().getX();
+			double sY = edge.getTargetItem().getY();
+
+			System.out.println("Taget node "+ edge.getTargetItem().getX() + "/" + edge.getTargetItem().getY());
+			System.out.println("Spitze "+ sX + "/" + sY);
+			// Function to calc axis of bottom arrowhead points
+			double arrowMiddleLength = 10;
+			// Point of arrowheadlength in line
+			double a1 = Math.cos(alpha)*arrowMiddleLength;
+			double b1 = Math.sin(alpha)*arrowMiddleLength;
+			//double mX = sX-a1;
+			//double mY = sY+b1;
+			double mX = sX-10;
+			double mY = sY+10;
+			System.out.println("mittelpunkt" + mX + "/" + mY);
+			// point to right corner
+			double wechselwinkel = (Math.toDegrees(-1/alphaForwechselwinkel))%360;
+			System.out.println("wechselwinkel"+wechselwinkel);
+			double lengtOfBottomLine = 10;
+			double a2 = Math.cos(wechselwinkel)*lengtOfBottomLine/2;
+			double b2 = Math.sin(wechselwinkel)*lengtOfBottomLine/2;
+			double rX = mX+a2;
+			double rY = mY+b2;
+			System.out.println("Right point"+rX +"/" + rY);
+			// Calc left corner point
+			double lX = mX-a2;
+			double lY = mY-b2;
+			System.out.println("Left point"+lX +"/" + lY);
+
+			// Point of bottem left corner
+			double x1 = lX;
+			double y1 = lY;
+			// Point of the head
+			double x2 = sX;
+			double y2 = sY;
+			// Point of bottem right corner
+			double x3 = rX;
+			double y3 = rY;
+			arrowHead.getPoints().setAll(
+					x2, y2,
+					x3, y3,
+					x1, y1,
+					mX,mY
+
+			);
+
+			accordingEdge++;
+		}
+	}*/
 
 	@Override
 	public String getDefaultStyle() {

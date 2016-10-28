@@ -106,7 +106,7 @@ public class JavaFxSample extends Application {
 				Edge e3 = graph.addEdge(n4, n4);
 				//Edge e3 = g.addEdge(n2, n3);
 				e1.setString("label", "a");
-				e2.setString("label", "b");
+				//e2.setString("label", "b");
 				//e3.setString("label", "c");
 			//}
 
@@ -210,41 +210,7 @@ public class JavaFxSample extends Application {
 		for (int i = 0; EdgeRenderer.arrowHeadList.size() > i; i++) {
 			display.getChildren().add(EdgeRenderer.arrowHeadList.get(i));
 		}
-
-		//gridPane.setPrefWidth(root.getPrefWidth());
-		//gridPane.setPrefHeight(root.getPrefHeight());
-		/**
-		root.setBackground(new Background(new BackgroundFill(backgroundColor, null, null)));
-
-		ColumnConstraints cc = new ColumnConstraints();
-		cc.setFillWidth(true);
-		cc.setHgrow(Priority.ALWAYS);
-
-		// Add column and row
-		root.getColumnConstraints().add(cc);
-		RowConstraints rc = new RowConstraints();
-
-		rc.setFillHeight(true);
-		rc.setVgrow(Priority.ALWAYS);
-		for (int i = 0; i < rowCount; i++) {
-				root.getRowConstraints().add(rc);
-		}
-
-		// Add elements to gridPane
-		Node zoomSlider = buildControlPanel(display);
-		root.setHalignment(display, HPos.CENTER);
-		//root.setValignment(zoomSlider, VPos.BOTTOM);
-		root.add(showKeyCheckBox(display, root),0,0);
-		root.add(display,0,1);
-
-		root.add(zoomSlider,0,2);
-
-*/
-
-		//gridpane.setBackground(new Background(new BackgroundFill(Color.RED,null,null)));
-
-
-
+		System.out.println("we added " + EdgeRenderer.arrowHeadList.size() +" arrowheads");
 			root.setCenter(display);
 			root.setBottom(buildControlPanel(display));
 			root.setTop(showKeyCheckBox(display, root));

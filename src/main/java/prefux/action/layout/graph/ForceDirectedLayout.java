@@ -413,7 +413,7 @@ public class ForceDirectedLayout extends Layout {
 	 *            the force simulator driving this layout
 	 */
 	protected synchronized void initSimulator(ForceSimulator fsim) {
-		EdgeRenderer.calcArrowHeadsAngleNew();
+		EdgeRenderer.calcArrowHeadsAngle();
 		// make sure we have force items to work with
 		TupleSet ts = m_vis.getGroup(m_nodeGroup);
 		if (ts == null)
