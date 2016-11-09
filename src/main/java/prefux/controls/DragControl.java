@@ -113,11 +113,11 @@ public class DragControl extends ControlAdapter implements TableListener {
         MouseEvent ev = (MouseEvent) e;
         activeItem = item;
         //  Start Copy
-        if (item.get("name") != null) {
+        if (item.get("bibtexkey") != null) {
             activeItem.getNode().setOnMouseEntered(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    String msg = item.get("name").toString();
+                    String msg = item.get("bibtexkey").toString();
                     mousePositionToolTip.setText(msg);
                     Node node = (Node) event.getSource();
                     mousePositionToolTip.show(node, event.getScreenX() + 50, event.getScreenY());

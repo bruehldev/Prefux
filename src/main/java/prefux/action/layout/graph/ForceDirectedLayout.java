@@ -32,6 +32,7 @@ package prefux.action.layout.graph;
 
 import java.util.Iterator;
 
+import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
 
 import org.apache.logging.log4j.LogManager;
@@ -386,6 +387,10 @@ public class ForceDirectedLayout extends Layout {
 			setX(item, referrer, x);
 			setY(item, referrer, y);
 		}
+
+		Platform.runLater(() -> {
+			EdgeRenderer.calcArrowHeadsAngle();
+		});
 	}
 
 	/**
@@ -413,7 +418,7 @@ public class ForceDirectedLayout extends Layout {
 	 *            the force simulator driving this layout
 	 */
 	protected synchronized void initSimulator(ForceSimulator fsim) {
-		EdgeRenderer.calcArrowHeadsAngle();
+
 		// make sure we have force items to work with
 		TupleSet ts = m_vis.getGroup(m_nodeGroup);
 		if (ts == null)
@@ -440,6 +445,7 @@ public class ForceDirectedLayout extends Layout {
 			fsim.addItem(fitem);
 		}
 		if (m_edgeGroup != null) {
+
 			iter = m_vis.visibleItems(m_edgeGroup);
 			while (iter.hasNext()) {
 				EdgeItem e = (EdgeItem) iter.next();
@@ -452,7 +458,9 @@ public class ForceDirectedLayout extends Layout {
 				fsim.addSpring(f1, f2, (coeff >= 0 ? coeff : -1.),
 				        (slen >= 0 ? slen : -1.));
 			}
+
 		}
+
 	}
 
 	/**

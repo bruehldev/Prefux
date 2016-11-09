@@ -67,7 +67,7 @@ public class JavaFxSample extends Application {
 			// Create tables for node and edge data, and configure their columns.
 			Table nodeData = new Table();
 			Table edgeData = new Table();
-			nodeData.addColumn("name", String.class);
+			nodeData.addColumn("bibtexkey", String.class);
 			nodeData.addColumn("gender", String.class);
 			nodeData.addColumn("age", int.class);
 			edgeData.addColumn(Graph.DEFAULT_SOURCE_KEY, int.class);
@@ -89,16 +89,16 @@ public class JavaFxSample extends Application {
 				prefux.data.Node n2 = graph.addNode();
 				prefux.data.Node n3 = graph.addNode();
 				prefux.data.Node n4 = graph.addNode();
-				n1.set("name", "Jeff");
+				n1.set("bibtexkey", "Jeff");
 				n1.set("gender", "M");
 				n1.set("age", 31);
-		n2.set("name", "Mek");
+		n2.set("bibtexkey", "Mek");
 		n2.set("gender", "M");
 		n2.set("age", 91);
-		n3.set("name", "Jonny");
+		n3.set("bibtexkey", "Jonny");
 		n3.set("gender", "F");
 		n3.set("age", 11);
-		n4.set("name", "Me");
+		n4.set("bibtexkey", "Me");
 		n4.set("gender", "F");
 		n4.set("age", 10);
 				Edge e1 = graph.addEdge(n1, n2);
@@ -116,7 +116,7 @@ public class JavaFxSample extends Application {
 
 			ShapeRenderer female = new ShapeRenderer();
 			female.setFillMode(ShapeRenderer.GRADIENT_SPHERE);
-			LabelRenderer lr = new LabelRenderer("name");
+			LabelRenderer lr = new LabelRenderer("bibtexkey");
 			ShapeRenderer male = new ShapeRenderer();
 			male.setFillMode(ShapeRenderer.GRADIENT_SPHERE);
 			 lr.translate(5.0, 5.0);
@@ -210,7 +210,6 @@ public class JavaFxSample extends Application {
 		for (int i = 0; EdgeRenderer.arrowHeadList.size() > i; i++) {
 			display.getChildren().add(EdgeRenderer.arrowHeadList.get(i));
 		}
-		System.out.println("we added " + EdgeRenderer.arrowHeadList.size() +" arrowheads");
 			root.setCenter(display);
 			root.setBottom(buildControlPanel(display));
 			root.setTop(showKeyCheckBox(display, root));

@@ -42,37 +42,20 @@ public class OwnControl extends ControlAdapter implements TableListener {
         //VisualItem item = display.findItem(item);
         activeItem = item;
         //  Start Copy
-        if (item.get("name") != null) {
-
-
-
+        if (item.get("bibtexkey") != null) {
             Tooltip mousePositionToolTip = new Tooltip("");
             toolTipList.add(mousePositionToolTip);
-            System.out.println("parent"+ display.localToScreen(item.getX(),item.getY()));
-
-
-
-            String msg = item.get("name").toString();
+            String msg = item.get("bibtexkey").toString();
             mousePositionToolTip.setGraphicTextGap(0);
             mousePositionToolTip.setText(msg);
             Node node = (Node) item.getNode();
-
-
             mousePositionToolTip.show(root.getScene().getWindow(),
                     display.localToScreen(item.getX(),item.getY()).getX() ,
                     display.localToScreen(item.getX(),item.getY()).getY());
             mousePositionToolTip.xProperty().doubleExpression(node.translateXProperty());
             mousePositionToolTip.yProperty().doubleExpression(node.translateYProperty());
-
-            //mousePositionToolTip.xProperty().doubleExpression(((ObservableDoubleValue) display.localToScreen(item.getX(), item.getY())));
-            //mousePositionToolTip.yProperty().doubleExpression(((ObservableDoubleValue) display.localToScreen(item.getX(), item.getY())));
-
-
-
         }
-        // Copy end
     }
-
     public void hideToolTips() {
         toolTipList.forEach(Tooltip -> {
             Tooltip.hide();
